@@ -17,6 +17,6 @@ deploy:
   helm:
     releases:
       - name: postgresql
-        remoteChart: postgresql
+        remoteChart: postgresql-ha
         repo: https://charts.bitnami.com/bitnami
         namespace: dis
