@@ -31,6 +31,7 @@ jobs:
       - name: create kubeconfig
         run: |
           mkdir ${HOME}/.kube
+          cp k8s/config.yaml ${HOME}/.kube/config
           cd ${HOME}/.kube
           sed -i 's;$KUBE_CLUSTER_NAME;${{ secrets.KUBE_CLUSTER_NAME }};g' config
           sed -i 's;$KUBE_CLUSTER_SERVER;${{ secrets.KUBE_CLUSTER_SERVER }};g' config
