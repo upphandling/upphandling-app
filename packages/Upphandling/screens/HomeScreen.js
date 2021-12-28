@@ -1,6 +1,6 @@
 import React from 'react'
-import {SafeAreaView} from 'react-native'
-import {Button, Layout} from '@ui-kitten/components'
+import {SafeAreaView, StyleSheet} from 'react-native'
+import {Avatar, Button, Layout} from '@ui-kitten/components'
 import {Dis} from '../components/Dis'
 
 import list from '../data/dis.json'
@@ -15,7 +15,11 @@ export const HomeScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Avatar
+        source={require('../assets/thumb-up-dynamic-color.png')}
+        style={styles.image}
+      />
+      <Layout style={styles.container}>
         {list.map(dis => (
           <Dis dis={dis} onPress={() => openDIS(dis.id)} />
         ))}
@@ -24,3 +28,16 @@ export const HomeScreen = ({navigation}) => {
     </SafeAreaView>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: '100%',
+    padding: 10,
+    minHeight: 350,
+  },
+})

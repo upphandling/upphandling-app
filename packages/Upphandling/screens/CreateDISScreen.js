@@ -1,14 +1,16 @@
 import React, {useState} from 'react'
-import {SafeAreaView, ScrollView, View} from 'react-native'
+import {KeyboardAvoidingView, ScrollView, View} from 'react-native'
 import moment from 'moment'
 
-import {StyleSheet} from 'react-native'
 import {
   Avatar,
   Button,
   Datepicker,
+  Divider,
   Icon,
   Input,
+  NativeDateService,
+  StyleService,
   Text,
 } from '@ui-kitten/components'
 import list from '../data/dis.json'
@@ -16,11 +18,57 @@ import list from '../data/dis.json'
 const CalendarIcon = props => <Icon {...props} name="calendar" />
 
 export const CreateDISScreen = ({navigation}) => {
-  const defaultDate = moment().add(4, 'weeks').startOf('isoWeek').valueOf()
+  const defaultDate = moment().add(4, 'weeks').startOf('isoWeek').toDate()
   const [startDate, setStartDate] = useState(defaultDate)
   const [title, setTitle] = useState()
   const [organisation, setOrganisation] = useState()
   const [repo, setRepo] = useState()
+
+  const i18n = {
+    dayNames: {
+      short: ['sö', 'må', 'ti', 'on', 'to', 'fre', 'lö'],
+      long: [
+        'söndag',
+        'måndag',
+        'tisdag',
+        'onsdag',
+        'torsdag',
+        'fredag',
+        'lördag',
+      ],
+    },
+    monthNames: {
+      short: [
+        'jan',
+        'feb',
+        'mar',
+        'apr',
+        'maj',
+        'jun',
+        'jul',
+        'aug',
+        'sep',
+        'okt',
+        'nov',
+        'dec',
+      ],
+      long: [
+        'januari',
+        'februari',
+        'mars',
+        'april',
+        'maj',
+        'juni',
+        'juli',
+        'augusti',
+        'september',
+        'oktokber',
+        'november',
+        'december',
+      ],
+    },
+  }
+  const dateService = new NativeDateService('sv-se', {startDayOfWeek: 1, i18n})
 
   const create = () => {
     // TODO: global state with redux or something?
@@ -29,15 +77,16 @@ export const CreateDISScreen = ({navigation}) => {
   }
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <ScrollView style={styles.container}>
-        <Avatar
-          source={require('../assets/new-folder-dynamic-gradient.png')}
-          style={styles.image}
-        />
+    <KeyboardAvoidingView style={styles.container}>
+      <ScrollView style={styles.form} level="1">
+        <View style={styles.imageContainer}>
+          <Avatar
+            source={require('../assets/notebook-dynamic-gradient.png')}
+            style={styles.image}
+          />
+        </View>
         <Input
           style={styles.input}
-          size="medium"
           label="Rubrik"
           placeholder="Rubrik på upphandlingen"
           value={title}
@@ -46,7 +95,6 @@ export const CreateDISScreen = ({navigation}) => {
 
         <Input
           style={styles.input}
-          size="medium"
           label="Upphandlande organisation"
           placeholder="Namn på organisationen"
           value={organisation}
@@ -55,53 +103,69 @@ export const CreateDISScreen = ({navigation}) => {
 
         <Datepicker
           label="Senaste ansökningsdatum"
-          placeholder="Pick Date"
+          placeholder="Välj slutdatum"
+          style={styles.input}
+          dateService={dateService}
           date={startDate}
           onSelect={nextDate => setStartDate(nextDate)}
           accessoryRight={CalendarIcon}
         />
-        <View style={styles.rowContainer}>
-          <Input
-            style={styles.input}
-            label="Github repo"
-            size="small"
-            placeholder="Github repo"
-            value={repo}
-            onChangeText={setRepo}
-          />
-          <Input style={styles.input} size="large" placeholder="Large" />
-        </View>
+        <Input
+          style={styles.input}
+          label="Github repo"
+          placeholder="Github repo"
+          value={repo}
+          onChangeText={setRepo}
+        />
         <Input
           multiline={true}
+          style={styles.input}
           textStyle={{minHeight: 64}}
+          label="Beskrivning"
           placeholder="Beskrivning"
         />
-
-        <Button onPress={create}>Skapa</Button>
-        <Text category="c2">
-          När du har skapat denna DIS kommer du få en länk som du kan annonsera
-          på t ex Mercell
-        </Text>
       </ScrollView>
-    </SafeAreaView>
+      <Divider />
+      <Button onPress={create} size="giant" style={styles.addButton}>
+        Skapa
+      </Button>
+      <Text category="s2" style={styles.info}>
+        När du har skapat denna DIS kommer du få en länk som du kan annonsera på
+        t ex Mercell
+      </Text>
+    </KeyboardAvoidingView>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    minHeight: 420,
-    padding: 10,
+const styles = StyleService.create({
+  form: {
+    flex: 1,
+    paddingHorizontal: 4,
+    paddingVertical: 24,
   },
-  rowContainer: {
+  container: {
+    flex: 1,
+    backgroundColor: 'background-basic-color-2',
+  },
+  imageContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   image: {
-    width: '40%',
-    minHeight: 150,
+    flex: 1,
+    minHeight: 350,
   },
   input: {
-    marginVertical: 10,
+    marginHorizontal: 12,
+    marginVertical: 8,
+  },
+  addButton: {
+    marginHorizontal: 16,
+    marginTop: 24,
+  },
+  info: {
+    marginHorizontal: 16,
+    marginVertical: 16,
   },
 })
