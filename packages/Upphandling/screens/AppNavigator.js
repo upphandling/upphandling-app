@@ -9,9 +9,21 @@ const {Navigator, Screen} = createStackNavigator()
 
 const HomeNavigator = () => (
   <Navigator>
-    <Screen name="Home" component={HomeScreen} />
-    <Screen name="CreateDIS" component={CreateDISScreen} />
-    <Screen name="OpenDIS" component={DISScreen} />
+    <Screen
+      name="Home"
+      component={HomeScreen}
+      options={{title: 'Upphandling.app'}}
+    />
+    <Screen
+      name="CreateDIS"
+      component={CreateDISScreen}
+      options={{title: 'Skapa nytt DIS'}}
+    />
+    <Screen
+      name="OpenDIS"
+      component={DISScreen}
+      options={{title: 'Detaljer'}}
+    />
   </Navigator>
 )
 
