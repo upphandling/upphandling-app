@@ -3,3 +3,4 @@ export * from './company.controller';
 export * from './tender.controller';
 export * from './offer.controller';
 export * from './person.controller';
+export * from './assignment.controller';

@@ -8,6 +8,7 @@ const application_1 = require("./application");
 async function main(options = {}) {
     const app = new application_1.ApiApplication(options);
     await app.boot();
+    await app.migrateSchema();
     await app.start();
     const url = app.restServer.url;
     console.log(`Server is running at ${url}`);

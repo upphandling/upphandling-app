@@ -1,0 +1,22 @@
+apiVersion: skaffold/v2beta23
+kind: Config
+metadata:
+  name: dis
+build:
+  artifacts:
+  - image: opendis/dis-api
+    context: packages/api
+    docker:
+      dockerfile: Dockerfile
+  insecureRegistries:
+    - registry.skolplattformen.org
+deploy:
+  kubectl:
+    manifests:
+    - k8s/api.yaml
+  helm:
+    releases:
+      - name: postgresql
+        remoteChart: postgresql
+        repo: https://charts.bitnami.com/bitnami
+        namespace: dis
