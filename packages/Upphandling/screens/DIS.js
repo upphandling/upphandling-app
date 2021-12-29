@@ -12,11 +12,15 @@ import {
 import list from '../data/dis.json'
 import {ImageOverlay} from '../components/ImageOverlay'
 
-export const DIS = ({route}) => {
+export const DIS = ({navigation, route}) => {
   const id = route.params.id
   const dis = list.find(item => item.id === id)
 
   const styles = useStyleSheet(themedStyles)
+
+  const apply = () => {
+    navigation.navigate('ApplyDIS', {id})
+  }
 
   const renderOptionItemIcon = (style, icon) => <Icon {...style} name={icon} />
 
@@ -68,7 +72,7 @@ export const DIS = ({route}) => {
     <ScrollView style={styles.container}>
       <ImageOverlay
         style={styles.image}
-        source={require('../assets/locker-dynamic-color.png')}
+        source={require('../assets/notebook-dynamic-gradient.png')}
       />
       <Card
         style={styles.bookingCard}
@@ -87,7 +91,9 @@ export const DIS = ({route}) => {
         <Text style={styles.dateLabel} appearance="hint" category="p2">
           {dis.startDate.toString()}
         </Text>
-        <Button style={styles.bookButton}>Ansök</Button>
+        <Button style={styles.bookButton} onPress={apply}>
+          Ansök
+        </Button>
       </Card>
       <Text style={styles.sectionLabel} category="s1">
         Beskrivning
@@ -108,7 +114,7 @@ export const DIS = ({route}) => {
       <Text style={styles.sectionLabel} category="s1">
         Process
       </Text>
-      <ButtonGroup style={styles.buttonGroup} status="success" size="small">
+      <ButtonGroup style={styles.buttonGroup} status="info" size="small">
         <Button accessoryLeft={<Icon name="alert-triangle" />}>
           Annonsera
         </Button>
@@ -128,6 +134,7 @@ const themedStyles = StyleService.create({
     backgroundColor: 'background-basic-color-2',
   },
   image: {
+    marginTop: -130,
     height: 360,
   },
   bookingCard: {
@@ -162,7 +169,9 @@ const themedStyles = StyleService.create({
     borderRadius: 16,
   },
   footer: {
-    marginHorizontal: 8,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   optionList: {
     flexDirection: 'row',
