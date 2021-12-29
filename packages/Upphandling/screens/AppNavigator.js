@@ -1,28 +1,27 @@
 import React from 'react'
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
-import {HomeScreen} from './HomeScreen'
-import {CreateDISScreen} from './CreateDISScreen'
-import {DISScreen} from './DISScreen'
+import {Home} from './Home'
+import {CreateDIS} from './CreateDIS'
+import {DIS} from './DIS'
+import {FindDIS} from './FindDIS'
 
 const {Navigator, Screen} = createStackNavigator()
 
 const HomeNavigator = () => (
   <Navigator>
-    <Screen
-      name="Home"
-      component={HomeScreen}
-      options={{title: 'Upphandling.app'}}
-    />
+    <Screen name="Home" component={Home} options={{title: 'Upphandling.app'}} />
     <Screen
       name="CreateDIS"
-      component={CreateDISScreen}
+      component={CreateDIS}
       options={{title: 'Skapa nytt DIS'}}
     />
+    <Screen name="OpenDIS" component={DIS} options={{title: 'Detaljer'}} />
+
     <Screen
-      name="OpenDIS"
-      component={DISScreen}
-      options={{title: 'Detaljer'}}
+      name="FindDIS"
+      component={FindDIS}
+      options={{title: 'Hitta upphandling'}}
     />
   </Navigator>
 )

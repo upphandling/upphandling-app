@@ -17,12 +17,13 @@ import list from '../data/dis.json'
 
 const CalendarIcon = props => <Icon {...props} name="calendar" />
 
-export const CreateDISScreen = ({navigation}) => {
+export const CreateDIS = ({navigation}) => {
   const defaultDate = moment().add(4, 'weeks').startOf('isoWeek').toDate()
   const [startDate, setStartDate] = useState(defaultDate)
   const [title, setTitle] = useState()
   const [organisation, setOrganisation] = useState()
   const [repo, setRepo] = useState()
+  const [description, setDescription] = useState()
 
   const i18n = {
     dayNames: {
@@ -72,7 +73,13 @@ export const CreateDISScreen = ({navigation}) => {
 
   const create = () => {
     // TODO: global state with redux or something?
-    list.push({id: Math.floor(Math.random()), title, startDate, organisation})
+    list.push({
+      id: Math.floor(Math.random()),
+      title,
+      startDate,
+      organisation,
+      description,
+    })
     navigation.navigate('Home')
   }
 
@@ -96,7 +103,7 @@ export const CreateDISScreen = ({navigation}) => {
         <Input
           style={styles.input}
           label="Upphandlande organisation"
-          placeholder="Namn på organisationen"
+          placeholder="Namn på din organisation"
           value={organisation}
           onChangeText={setOrganisation}
         />
@@ -123,11 +130,13 @@ export const CreateDISScreen = ({navigation}) => {
           textStyle={{minHeight: 64}}
           label="Beskrivning"
           placeholder="Beskrivning"
+          value={description}
+          onChangeText={setDescription}
         />
       </ScrollView>
       <Divider />
       <Button onPress={create} size="giant" style={styles.addButton}>
-        Skapa
+        Förhandsgranska
       </Button>
       <Text category="s2" style={styles.info}>
         När du har skapat denna DIS kommer du få en länk som du kan annonsera på
