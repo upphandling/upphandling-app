@@ -29,21 +29,21 @@ const Footer = ({approvedCompanies, stars, repo}) => (
         appearance="ghost"
         status="basic"
         accessoryLeft={BriefcaseIcon}>
-        {`${approvedCompanies}`}
+        {`${approvedCompanies ?? 0}`}
       </Button>
       <Button
         style={styles.iconButton}
         appearance="ghost"
         status="danger"
         accessoryLeft={HeartIcon}>
-        {`${approvedCompanies}`}
+        {`${approvedCompanies ?? 0}`}
       </Button>
       <Button
         style={styles.iconButton}
         appearance="ghost"
         status="basic"
         accessoryLeft={StarIcon}>
-        {`${stars}`}
+        {`${stars ?? 0}`}
       </Button>
       {repo ? (
         <Button

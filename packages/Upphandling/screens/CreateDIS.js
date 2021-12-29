@@ -119,8 +119,9 @@ export const CreateDIS = ({navigation}) => {
         />
         <Input
           style={styles.input}
-          label="Github repo"
+          label="Github/Bitbucket repo"
           placeholder="Github repo"
+          textContentType="URL"
           value={repo}
           onChangeText={setRepo}
         />
