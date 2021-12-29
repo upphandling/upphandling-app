@@ -73,14 +73,15 @@ export const CreateDIS = ({navigation}) => {
 
   const create = () => {
     // TODO: global state with redux or something?
-    list.push({
+    const newDis = {
       id: Math.floor(Math.random()),
       title,
       startDate,
       organisation,
       description,
-    })
-    navigation.navigate('Home')
+    }
+    list.push(newDis)
+    navigation.navigate('OpenDIS', {id: newDis.id})
   }
 
   return (
