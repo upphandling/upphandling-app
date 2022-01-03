@@ -29,6 +29,21 @@ spec:
         image: opendis/dis-api
         ports:
         - containerPort: 3000
+        resources: {}
+        env:
+          - name: PGHOST
+            value: postgresql-ha
+          - name: PGUSER
+            value: postgres
+          - name: PGDATABASE
+            value: dis
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgresqlpostgresql-postgresql-ha-postgresql
+                key: postgresql-password
+          - name: DATABASE_URL
+            value: "postgres://$(PGUSER):$(PGPASSWORD)@$(PGHOST)/$(PGDATABASE)"
 
 ---
 apiVersion: networking.k8s.io/v1

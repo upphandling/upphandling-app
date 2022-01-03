@@ -8,8 +8,6 @@ build:
     context: packages/api
     docker:
       dockerfile: Dockerfile
-  insecureRegistries:
-    - registry.skolplattformen.org
 deploy:
   kubectl:
     manifests:

@@ -48,14 +48,14 @@ export const ApplyDIS = ({navigation, route}) => {
         <Input
           style={styles.input}
           label="Organisationsnummer"
-          placeholder="Ditt organisationsnr"
+          placeholder="Ert organisationsnr"
           value={orgnr}
           onChangeText={setOrgnr}
         />
         <Input
           style={styles.input}
           label="Företagsnamn"
-          placeholder="Ditt företagsnamn"
+          placeholder="Ert företagsnamn"
           value={name}
           onChangeText={setName}
         />
@@ -64,21 +64,22 @@ export const ApplyDIS = ({navigation, route}) => {
           multiline={true}
           style={styles.input}
           textStyle={{minHeight: 64}}
-          label="Beskrivning av ditt företag"
+          label="Beskrivning av ert företag"
           placeholder="Beskrivning"
           value={description}
           onChangeText={setDescription}
         />
         <Text category="s2" style={styles.info}>
-          Era tjänster
+          Efterfrågade tjänster som ni erbjuder
         </Text>
 
         <View style={styles.toggles}>
-          {dis.services.map(service => (
+          {dis.services.map((service, i) => (
             <Toggle
               checked={services[service]}
               style={styles.toggle}
-              onChange={checked =>
+              key={i}
+              onValuehange={checked =>
                 setServices({...services, [service]: checked})
               }>
               {service}

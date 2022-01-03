@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
-  extends: '@react-native-community',
+  extends: ['@iteam/eslint-config-react'],
   rules: {
-    semi: ['error', 'never'],
+    'comma-dangle': ['error', 'always'],
   },
-};
+}
