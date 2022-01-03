@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: opendis/dis-api
+        image: api
         ports:
         - containerPort: 3000
         resources: {}

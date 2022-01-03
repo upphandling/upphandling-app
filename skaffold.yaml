@@ -4,7 +4,7 @@ metadata:
   name: dis
 build:
   artifacts:
-  - image: opendis/dis-api
+  - image: api
     context: packages/api
     docker:
       dockerfile: Dockerfile
