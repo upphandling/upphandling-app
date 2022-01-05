@@ -23,4 +23,5 @@ deploy:
 
       - name: vault
         remoteChart: vault
+        namespace: dis
         repo: https://helm.releases.hashicorp.com
