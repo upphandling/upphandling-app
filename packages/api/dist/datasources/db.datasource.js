@@ -7,12 +7,12 @@ const repository_1 = require("@loopback/repository");
 const config = {
     name: 'db',
     connector: 'postgresql',
-    url: '',
-    host: 'localhost',
+    url: process.env.DATABASE_URL || '',
+    host: process.env.PGHOST || 'localhost',
     port: 5432,
-    user: 'postgres',
-    password: 'keyboardcat',
-    database: ''
+    user: process.env.PGUSER || 'postgres',
+    password: process.env.PGPASSWORD || 'keyboardcat',
+    database: process.env.PGDATABASE || ''
 };
 // Observe application's life cycle to disconnect the datasource when
 // application is stopped. This allows the application to be shut down
