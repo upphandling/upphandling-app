@@ -20,16 +20,9 @@ deploy:
         remoteChart: postgresql-ha
         repo: https://charts.bitnami.com/bitnami
         namespace: dis
-      - name: consul
-        remoteChart: consul
-        repo: https://helm.releases.hashicorp.com
-        namespace: dis
-
       - name: vault
         remoteChart: vault
         namespace: dis
         repo: https://helm.releases.hashicorp.com
         setValues:
-          server.ha.enabled: true
-          server.ha.replicas: 3
           global.name: consul
