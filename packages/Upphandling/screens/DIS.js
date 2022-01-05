@@ -9,7 +9,7 @@ import {
   Text,
   useStyleSheet,
 } from '@ui-kitten/components'
-import list from '../data/dis.json'
+import list from '../hooks/dis.json'
 import {ImageOverlay} from '../components/ImageOverlay'
 
 export const DIS = ({navigation, route}) => {

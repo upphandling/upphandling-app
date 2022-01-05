@@ -13,7 +13,8 @@ import {
   StyleService,
   Text,
 } from '@ui-kitten/components'
-import list from '../data/dis.json'
+import { createTender } from '../api/tenders'
+import { useMutation } from 'react-query'
 
 const CalendarIcon = props => <Icon {...props} name="calendar" />
 
@@ -70,8 +71,9 @@ export const CreateDIS = ({navigation}) => {
     },
   }
   const dateService = new NativeDateService('sv-se', {startDayOfWeek: 1, i18n})
-
-  const create = () => {
+  const addTodoMutation = useMutation(createTender)
+  
+  const create = async () => {
     // TODO: global state with redux or something?
     const newDis = {
       id: Math.floor(Math.random()),
@@ -80,8 +82,9 @@ export const CreateDIS = ({navigation}) => {
       organisation,
       description,
     }
-    list.push(newDis)
-    navigation.navigate('OpenDIS', {id: newDis.id})
+
+    const { id } = await addTodoMutation.mutateAsync(newDis)
+    navigation.navigate('OpenDIS', {id})
   }
 
   return (

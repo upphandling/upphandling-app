@@ -1,15 +1,20 @@
 import React from 'react'
-import {SafeAreaView, ScrollView} from 'react-native'
-import list from '../data/dis.json'
-import {DisCard} from '../components/DisCard'
+import { SafeAreaView, ScrollView, Text } from 'react-native'
+import { DisCard } from '../components/DisCard'
+import { useTenders } from '../hooks/useTenders'
 
-export const FindDIS = ({navigation}) => {
-  const openDIS = id => navigation.navigate('OpenDIS', {id})
+export const FindDIS = ({ navigation }) => {
+  const { data, error, isFetching } = useTenders()
+
+  if (isFetching) return <Text>Loading...</Text>
+  if (error) return <Text>Error: {error.message}</Text>
+
+  const openDIS = (id) => navigation.navigate('OpenDIS', { id })
 
   return (
     <SafeAreaView>
       <ScrollView>
-        {list.map(dis => (
+        {data.map((dis) => (
           <DisCard dis={dis} onPress={() => openDIS(dis.id)} />
         ))}
       </ScrollView>

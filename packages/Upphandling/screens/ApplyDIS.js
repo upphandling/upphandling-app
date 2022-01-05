@@ -15,7 +15,7 @@ import {
   Text,
   Toggle,
 } from '@ui-kitten/components'
-import list from '../data/dis.json'
+import list from '../hooks/dis.json'
 
 export const ApplyDIS = ({navigation, route}) => {
   const {id} = route.params

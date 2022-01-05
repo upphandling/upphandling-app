@@ -20,3 +20,7 @@ deploy:
         remoteChart: postgresql-ha
         repo: https://charts.bitnami.com/bitnami
         namespace: dis
+
+      - name: vault
+        remoteChart: vault
+        repo: https://helm.releases.hashicorp.com
