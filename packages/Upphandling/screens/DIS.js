@@ -15,7 +15,10 @@ import { useDis } from '../hooks/useDis'
 
 export const DIS = ({navigation, route}) => {
   const id = route.params.id
+  console.log('finding dis', id)
   const { status, data: dis, error, isFetching } = useDis(id)
+
+  if (isFetching) return <Text>Loading...</Text>
 
   const styles = useStyleSheet(themedStyles)
 
