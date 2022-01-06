@@ -5,6 +5,8 @@ export class Dis extends Entity {
   @property({
     type: 'string',
     id: true,
+    generated: true,
+    required: false,
     defaultFn: 'uuidv4',
   })
   id?: string;
