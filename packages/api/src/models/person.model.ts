@@ -11,7 +11,7 @@ export class Person extends Entity {
   @property({
     type: 'string',
     id: true,
-    generated: true,
+    defaultFn: 'uuidv4',
   })
   id?: string;
 
