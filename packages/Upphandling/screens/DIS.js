@@ -11,10 +11,11 @@ import {
 } from '@ui-kitten/components'
 import list from '../hooks/dis.json'
 import {ImageOverlay} from '../components/ImageOverlay'
+import { useDis } from '../hooks/useDis'
 
 export const DIS = ({navigation, route}) => {
   const id = route.params.id
-  const dis = list.find(item => item.id === id)
+  const { status, data: dis, error, isFetching } = useDis(id)
 
   const styles = useStyleSheet(themedStyles)
 

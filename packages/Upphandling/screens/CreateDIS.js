@@ -13,7 +13,7 @@ import {
   StyleService,
   Text,
 } from '@ui-kitten/components'
-import { createTender } from '../api/tenders'
+import { createDis } from '../api/dis'
 import { useMutation } from 'react-query'
 
 const CalendarIcon = props => <Icon {...props} name="calendar" />
@@ -71,20 +71,20 @@ export const CreateDIS = ({navigation}) => {
     },
   }
   const dateService = new NativeDateService('sv-se', {startDayOfWeek: 1, i18n})
-  const addTodoMutation = useMutation(createTender)
+  const addDISMutation = useMutation(createDis)
   
   const create = async () => {
     // TODO: global state with redux or something?
     const newDis = {
-      id: Math.floor(Math.random()),
       title,
       startDate,
       organisation,
       description,
     }
 
-    const { id } = await addTodoMutation.mutateAsync(newDis)
-    navigation.navigate('OpenDIS', {id})
+    const result = await addDISMutation.mutateAsync(newDis)
+    console.log(result)
+    navigation.navigate('OpenDIS', {id: result.data.id})
   }
 
   return (
@@ -141,11 +141,13 @@ export const CreateDIS = ({navigation}) => {
       </ScrollView>
       <Divider />
       <Button onPress={create} size="giant" style={styles.addButton}>
-        Förhandsgranska
+        {addDISMutation.isLoading ? 'Skapar...' : 'Skapa'}
       </Button>
       <Text category="s2" style={styles.info}>
-        När du har skapat denna DIS kommer du få en länk som du kan annonsera på
-        t ex Mercell
+        {addDISMutation.isError ? addDISMutation.error.message : 
+        `När du har skapat denna DIS kommer du få en länk som du kan annonsera på
+        t ex Mercell`
+        }
       </Text>
     </KeyboardAvoidingView>
   )
