@@ -32,7 +32,7 @@ spec:
         resources: {}
         env:
           - name: PGHOST
-            value: postgresql-postgresql-ha-postgresql
+            value: postgresql-postgresql-ha-pgpool
           - name: PGUSER
             value: postgres
           - name: PGDATABASE

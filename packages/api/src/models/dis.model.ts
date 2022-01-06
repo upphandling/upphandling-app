@@ -5,11 +5,9 @@ export class Dis extends Entity {
   @property({
     type: 'string',
     id: true,
-    generated: true,
-    required: true,
-    defaultFn: 'uuidv4',
+    required: false,
   })
-  id: string;
+  id?: string;
 
   @property({
     type: 'string',
