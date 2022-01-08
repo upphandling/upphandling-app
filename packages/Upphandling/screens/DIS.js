@@ -12,6 +12,7 @@ import {
 import list from '../hooks/dis.json'
 import {ImageOverlay} from '../components/ImageOverlay'
 import { useDis } from '../hooks/useDis'
+import serviceIcons  from '../data/services.json'
 
 export const DIS = ({navigation, route}) => {
   const id = route.params.id
@@ -28,15 +29,6 @@ export const DIS = ({navigation, route}) => {
 
   const renderOptionItemIcon = (style, icon) => <Icon {...style} name={icon} />
 
-  const serviceIcons = {
-    Underhåll: 'arrowhead-right',
-    Ny: 'sun-outline',
-    Utveckling: 'cube-outline',
-    Översättning: 'globe',
-    Design: 'color-palette',
-    UX: 'person-done',
-    Team: 'people',
-  }
 
   const renderOptionItem = (service, index) => (
     <Button
@@ -119,13 +111,13 @@ export const DIS = ({navigation, route}) => {
         Process
       </Text>
       <ButtonGroup style={styles.buttonGroup} status="info" size="small">
-        <Button accessoryLeft={<Icon name="alert-triangle" />}>
+        <Button accessoryLeft={<Icon name="alert-triangle" />} style={styles.processStep}>
           Annonsera
         </Button>
-        <Button disabled={true} accessoryLeft={<Icon name="star" />}>
+        <Button disabled={true} accessoryLeft={<Icon name="star" />} style={styles.processStep}>
           Tilldela
         </Button>
-        <Button disabled={true} accessoryLeft={<Icon name="briefcase" />}>
+        <Button disabled={true} accessoryLeft={<Icon name="briefcase" />} style={styles.processStep}>
           Startad
         </Button>
       </ButtonGroup>
@@ -144,6 +136,7 @@ const themedStyles = StyleService.create({
   bookingCard: {
     marginTop: -80,
     margin: 16,
+    borderRadius: 20,
   },
   title: {
     width: '65%',
@@ -203,4 +196,8 @@ const themedStyles = StyleService.create({
     borderRadius: 8,
     marginHorizontal: 8,
   },
+  processStep: {
+    borderTopEndRadius: 15,
+    borderBottomEndRadius: 15,
+  }
 })

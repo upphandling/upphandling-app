@@ -16,25 +16,36 @@ import {
   Toggle,
 } from '@ui-kitten/components'
 import list from '../hooks/dis.json'
+import { useDis } from '../hooks/useDis'
+import { createOffer } from '../api/offers'
+import { useMutation } from 'react-query'
+import { createCompany } from '../api/companies'
+
 
 export const ApplyDIS = ({navigation, route}) => {
   const {id} = route.params
-  const dis = list.find(item => item.id === id)
+  const {data: dis, isLoading} = useDis(id)
+
+  if (isLoading) return <Text>Loading...</Text>
 
   const [name, setName] = useState()
   const [orgnr, setOrgnr] = useState()
   const [description, setDescription] = useState()
   const [services, setServices] = useState({})
 
-  const apply = () => {
+  const createCompanyMutation = useMutation(createCompany)
+
+  const apply = async () => {
     const company = {
       name,
       orgnr,
       description,
       services,
     }
-    dis.appliedCompanies = (dis.appliedCompanies || []).push(company)
-    navigation.navigate('OpenDIS', {id: id})
+    const result = await createCompanyMutation.mutate(company)
+    console.log('result', result)
+    createOffer(offer)
+    navigation.navigate('OpenDIS', {id})
   }
 
   return (
@@ -74,7 +85,7 @@ export const ApplyDIS = ({navigation, route}) => {
         </Text>
 
         <View style={styles.toggles}>
-          {dis.services.map((service, i) => (
+          {dis.services?.map((service, i) => (
             <Toggle
               checked={services[service]}
               style={styles.toggle}

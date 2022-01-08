@@ -16,6 +16,12 @@ export class Tender extends Entity {
   startDate: string;
 
   @property({
+    type: 'string',
+    required: true,
+  })
+  disId: string;
+
+  @property({
     type: 'date',
     required: true,
   })

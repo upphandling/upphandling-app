@@ -1,8 +1,10 @@
-import React, {useState} from 'react'
-import {KeyboardAvoidingView, ScrollView, View} from 'react-native'
+import React, { useState } from 'react'
+import { KeyboardAvoidingView, ScrollView, View } from 'react-native'
 import moment from 'moment'
 
 import {
+  Autocomplete,
+  AutocompleteItem,
   Avatar,
   Button,
   Datepicker,
@@ -12,67 +14,74 @@ import {
   NativeDateService,
   StyleService,
   Text,
+  Toggle,
 } from '@ui-kitten/components'
 import { createDis } from '../api/dis'
 import { useMutation } from 'react-query'
+import { ServicePicker } from '../components/ServicePicker'
+const CalendarIcon = (props) => <Icon {...props} name="calendar" />
 
-const CalendarIcon = props => <Icon {...props} name="calendar" />
+const i18n = {
+  dayNames: {
+    short: ['sö', 'må', 'ti', 'on', 'to', 'fre', 'lö'],
+    long: [
+      'söndag',
+      'måndag',
+      'tisdag',
+      'onsdag',
+      'torsdag',
+      'fredag',
+      'lördag',
+    ],
+  },
+  monthNames: {
+    short: [
+      'jan',
+      'feb',
+      'mar',
+      'apr',
+      'maj',
+      'jun',
+      'jul',
+      'aug',
+      'sep',
+      'okt',
+      'nov',
+      'dec',
+    ],
+    long: [
+      'januari',
+      'februari',
+      'mars',
+      'april',
+      'maj',
+      'juni',
+      'juli',
+      'augusti',
+      'september',
+      'oktokber',
+      'november',
+      'december',
+    ],
+  },
+}
 
-export const CreateDIS = ({navigation}) => {
+export const CreateDIS = ({ navigation }) => {
   const defaultDate = moment().add(4, 'weeks').startOf('isoWeek').toDate()
   const [startDate, setStartDate] = useState(defaultDate)
   const [title, setTitle] = useState()
   const [organisation, setOrganisation] = useState()
   const [repo, setRepo] = useState()
   const [description, setDescription] = useState()
+  const [services, setServices] = useState({})
 
-  const i18n = {
-    dayNames: {
-      short: ['sö', 'må', 'ti', 'on', 'to', 'fre', 'lö'],
-      long: [
-        'söndag',
-        'måndag',
-        'tisdag',
-        'onsdag',
-        'torsdag',
-        'fredag',
-        'lördag',
-      ],
-    },
-    monthNames: {
-      short: [
-        'jan',
-        'feb',
-        'mar',
-        'apr',
-        'maj',
-        'jun',
-        'jul',
-        'aug',
-        'sep',
-        'okt',
-        'nov',
-        'dec',
-      ],
-      long: [
-        'januari',
-        'februari',
-        'mars',
-        'april',
-        'maj',
-        'juni',
-        'juli',
-        'augusti',
-        'september',
-        'oktokber',
-        'november',
-        'december',
-      ],
-    },
-  }
-  const dateService = new NativeDateService('sv-se', {startDayOfWeek: 1, i18n})
+  const dateService = new NativeDateService('se', {
+    format: 'YYYY-MM-DD',
+    startDayOfWeek: 1,
+    i18n,
+  })
   const addDISMutation = useMutation(createDis)
-  
+
   const create = async () => {
     // TODO: global state with redux or something?
     const newDis = {
@@ -80,11 +89,14 @@ export const CreateDIS = ({navigation}) => {
       startDate,
       organisation,
       description,
+      services: Object.entries(services)
+        .filter(([item, checked]) => checked)
+        .map(([item]) => item),
     }
 
     const result = await addDISMutation.mutateAsync(newDis)
     console.log(result)
-    navigation.navigate('OpenDIS', {id: result.data.id})
+    navigation.navigate('OpenDIS', { id: result.data.id })
   }
 
   return (
@@ -118,7 +130,7 @@ export const CreateDIS = ({navigation}) => {
           style={styles.input}
           dateService={dateService}
           date={startDate}
-          onSelect={nextDate => setStartDate(nextDate)}
+          onSelect={(nextDate) => setStartDate(nextDate)}
           accessoryRight={CalendarIcon}
         />
         <Input
@@ -132,22 +144,22 @@ export const CreateDIS = ({navigation}) => {
         <Input
           multiline={true}
           style={styles.input}
-          textStyle={{minHeight: 64}}
+          textStyle={{ minHeight: 64 }}
           label="Beskrivning"
           placeholder="Beskrivning"
           value={description}
           onChangeText={setDescription}
         />
+        <ServicePicker onChange={setServices} services={services} />
       </ScrollView>
       <Divider />
       <Button onPress={create} size="giant" style={styles.addButton}>
         {addDISMutation.isLoading ? 'Skapar...' : 'Skapa'}
       </Button>
       <Text category="s2" style={styles.info}>
-        {addDISMutation.isError ? addDISMutation.error.message : 
-        `När du har skapat denna DIS kommer du få en länk som du kan annonsera på
-        t ex Mercell`
-        }
+        {addDISMutation.isError
+          ? addDISMutation.error.message
+          : `När du har skapat denna DIS kommer du få en länk som du kan publicera`}
       </Text>
     </KeyboardAvoidingView>
   )
@@ -157,7 +169,6 @@ const styles = StyleService.create({
   form: {
     flex: 1,
     paddingHorizontal: 4,
-    paddingVertical: 24,
   },
   container: {
     flex: 1,
@@ -167,6 +178,7 @@ const styles = StyleService.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    marginTop: -200,
   },
   image: {
     flex: 1,
@@ -178,10 +190,19 @@ const styles = StyleService.create({
   },
   addButton: {
     marginHorizontal: 16,
-    marginTop: 24,
+    marginTop: 16,
   },
   info: {
     marginHorizontal: 16,
     marginVertical: 16,
+  },
+  grid: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  gridItem: {
+    flex: 1,
+    width: '32%',
   },
 })

@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build": "lb-tsc",
+    "dev": "nodemon dist/index.js --watch src --watch dist",
     "build:watch": "lb-tsc --watch",
     "lint": "npm run eslint && npm run prettier:check",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",
@@ -53,7 +54,10 @@
     "@loopback/rest": "^11.0.0",
     "@loopback/rest-explorer": "^4.0.0",
     "@loopback/service-proxy": "^4.0.0",
+    "cross-fetch": "^3.1.4",
     "loopback-connector-postgresql": "^5.4.0",
+    "moment": "^2.29.1",
+    "node-fetch": "^3.1.0",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
@@ -61,7 +65,9 @@
     "@loopback/eslint-config": "^12.0.0",
     "@loopback/testlab": "^4.0.0",
     "@types/node": "^10.17.60",
+    "@types/node-fetch": "^3.0.3",
     "eslint": "^7.32.0",
+    "nodemon": "^2.0.15",
     "source-map-support": "^0.5.20",
     "typescript": "~4.5.2"
   }
