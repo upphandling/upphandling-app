@@ -1,6 +1,6 @@
 import {Entity, model, property} from '@loopback/repository';
 
-@model()
+@model({settings: {strict: false}})
 export class Company extends Entity {
   @property({
     type: 'string',
@@ -153,8 +153,99 @@ export class Company extends Entity {
   })
   zipCode: string;
 
+  @property({
+    type: 'string',
+    required: false,
+  })
+  communeCode: string // '80',
+  
+  @property({
+    type: 'string',
+    required: false,
+  })
+  companyName: string // 'Iteam Solutions Aktiebolag',
+  
+  @property({
+    type: 'string',
+    required: false,
+  })
+  email: string // 'info@iteam.se',
+  
+  @property({
+    type: 'string',
+    required: false,
+  })
+  faxNumber: string // '08-220322',
+  
+  @property({
+    type: 'string',
+    required: false,
+  })
+  numberEmployeesInterval: string // '20-49 anställda',
+  
+  @property({
+    type: 'string',
+    required: false,
+  })
+  preliminaryTaxRegDate: string // '19980101',
+  
+  @property({
+    type: 'string',
+    required: false,
+  })
+  vatRegDate: string // '1998-01',
+  
+  @property({
+    type: 'string',
+    required: false,
+  })
+  topDirectorFunction: string // 'Verkställande direktör',
+  
+  @property({
+    type: 'string',
+    required: false,
+  })
+  topDirectorName: string // 'Landgren, Per Christian',
+  
+  @property({
+    type: 'string',
+    required: false,
+  })
+  visitAddress: string // 'Järntorgsgatan 12 4TR',
+  
+  @property({
+    type: 'string',
+    required: false,
+  })
+  visitCommune: string // 'GÖTEBORG',
+  
+  @property({
+    type: 'string',
+    required: false,
+  })
+  visitCounty: string // 'VÄSTRA GÖTALAND',
+  
+  @property({
+    type: 'string',
+    required: false,
+  })
+  visitStreet: string // 'Järntorgsgatan 12 4TR',
+  
+  @property({
+    type: 'string',
+    required: false,
+  })
+  visitTown: string // 'Göteborg',
+  
+  @property({
+    type: 'string',
+    required: false,
+  })
+  visitZipCode: string // '41301',
+
   constructor(data?: Partial<Company>) {
     super(data);
+    Object.assign(this, data)
   }
 }
 
