@@ -37,14 +37,12 @@ export const ApplyDIS = ({navigation, route}) => {
 
   const apply = async () => {
     const company = {
-      name,
-      orgnr,
-      description,
-      services,
+      orgnr
     }
-    const result = await createCompanyMutation.mutate(company)
+    console.log('mutate company', company)
+    const result = await createCompanyMutation.mutateAsync(company)
+    console.log('got result', result)
     setName(result.name)
-    console.log('result', result)
   }
 
   return (
@@ -99,7 +97,7 @@ export const ApplyDIS = ({navigation, route}) => {
       </ScrollView>
       <Divider />
       <Button onPress={apply} size="giant" style={styles.addButton}>
-        Ansök
+        {createCompanyMutation.isLoading? 'Skapar företag...' : 'Ansök'}
       </Button>
       <Text category="s2" style={styles.info}>
         När du ansökt kommer du få ett mail när du godkänts som leverantör

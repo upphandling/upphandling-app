@@ -4,6 +4,8 @@ export const getCompanies = async () => {
   return data
 }
 
-export const createCompany = (company) => {
-  return axios.post('https://api.upphandling.app/companies', company)
+export const createCompany = async (company) => {
+  console.log('calling api with company', company)
+  const { data } = await axios.post('https://api.upphandling.app/companies', company)
+  return data
 }
