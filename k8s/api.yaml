@@ -42,6 +42,16 @@ spec:
               secretKeyRef:
                 name: postgresql-postgresql-ha-postgresql
                 key: postgresql-password
+          - name: ROARING_KEY
+            valueFrom:
+              secretKeyRef:
+                name: roaring
+                key: key
+          - name: ROARING_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: roaring
+                key: secret        
           - name: DATABASE_URL
             value: "postgres://$(PGUSER):$(PGPASSWORD)@$(PGHOST)/$(PGDATABASE)"
 
