@@ -38,16 +38,16 @@ export class CompanyController {
       content: {
         'application/json': {
           schema: getModelSchemaRef(Company, {
-            title: 'NewCompany',
-            exclude: ['id'],
+            title: 'NewCompany'
           }),
         },
       },
     })
-    company: Omit<Company, 'id'>
+    company: Company
   ): Promise<Company> {
-    const latestCompanyRecord = await Roaring.lookupCompany(company.orgnr)
+    const latestCompanyRecord = await Roaring.lookupCompany(company.id)
     if (latestCompanyRecord){
+      company.id = latestCompanyRecord.companyId
       company.name = latestCompanyRecord.companyName
       delete latestCompanyRecord.companyId
       delete latestCompanyRecord.companyName

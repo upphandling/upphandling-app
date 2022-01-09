@@ -37,7 +37,7 @@ export const ApplyDIS = ({navigation, route}) => {
 
   const apply = async () => {
     const company = {
-      orgnr
+      id: orgnr
     }
     console.log('mutate company', company)
     const result = await createCompanyMutation.mutateAsync(company)

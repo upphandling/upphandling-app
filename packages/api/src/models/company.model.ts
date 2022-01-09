@@ -10,16 +10,10 @@ export class Company extends Entity {
 
   @property({
     type: 'string',
-    id: true,
-    defaultFn: 'uuidv4',
-  })
-  id?: string;
-
-  @property({
-    type: 'string',
     required: true,
+    id: true,
   })
-  orgnr: string;
+  id: string;
 
   @property({
     type: 'object',

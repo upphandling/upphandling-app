@@ -1,4 +1,5 @@
 import fetch from 'cross-fetch'
+import moment from 'moment'
 
 export class Roaring {
   private static token : {access_token: string, expires_in: number}
@@ -26,7 +27,7 @@ export class Roaring {
   public static async lookupCompany(orgnr: string) {
     const roaringToken = await Roaring.getToken()
     const info = await fetch(
-      `https://api.roaring.io/se/company/overview/2.0/history/${orgnr}`,
+      `https://api.roaring.io/se/company/overview/2.0/history/${orgnr}?fromDate=${moment().add(-1, 'year').startOf('year').format('YYYY-MM-DD')}&toDate=${moment().format('YYYY-MM-DD')}`,
       {
         
         headers: {
