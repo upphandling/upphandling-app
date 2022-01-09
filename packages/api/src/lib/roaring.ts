@@ -4,7 +4,7 @@ import moment from 'moment'
 export class Roaring {
   private static token : {access_token: string, expires_in: number}
   public static async getToken(): Promise<{access_token:string}> {
-    if (Roaring.token !== null) return Roaring.token
+    if (Roaring.token !== undefined) return Roaring.token
     const key = process.env.ROARING_KEY || 'e3YCCMVKvA0Pu5lAsmd02hk2xloa' // sandbox
     const secret = process.env.ROARING_SECRET || '0Ly8E04vUWzn534aCNXSKhaMhewa' // sandbox
     const base64 = Buffer.from(`${key}:${secret}`).toString('base64')
@@ -18,7 +18,6 @@ export class Roaring {
     })
     .then(res => res.json())
     Roaring.token = token
-
     // remove token automatically after expiry date
     setTimeout(() => Roaring.token = null!, (token.expires_in ?? 3600) * 1000 )
     return token

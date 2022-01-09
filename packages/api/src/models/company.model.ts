@@ -10,6 +10,7 @@ export class Company extends Entity {
 
   @property({
     type: 'string',
+    description: "Organisationsnummer",
     required: true,
     id: true,
   })

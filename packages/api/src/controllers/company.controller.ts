@@ -45,6 +45,7 @@ export class CompanyController {
     })
     company: Company
   ): Promise<Company> {
+    console.log('got copmany', company)
     const latestCompanyRecord = await Roaring.lookupCompany(company.id)
     if (latestCompanyRecord){
       company.id = latestCompanyRecord.companyId
