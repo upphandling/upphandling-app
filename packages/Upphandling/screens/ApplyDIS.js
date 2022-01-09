@@ -43,9 +43,8 @@ export const ApplyDIS = ({navigation, route}) => {
       services,
     }
     const result = await createCompanyMutation.mutate(company)
+    setName(result.name)
     console.log('result', result)
-    createOffer(offer)
-    navigation.navigate('OpenDIS', {id})
   }
 
   return (

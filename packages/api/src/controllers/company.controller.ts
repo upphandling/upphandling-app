@@ -19,8 +19,8 @@ import {
 } from '@loopback/rest'
 import { Company } from '../models'
 import { CompanyRepository } from '../repositories'
-import fetch from 'cross-fetch'
 import moment from 'moment'
+import { Roaring } from '../lib/roaring'
 
 export class CompanyController {
   constructor(
@@ -46,7 +46,7 @@ export class CompanyController {
     })
     company: Omit<Company, 'id'>
   ): Promise<Company> {
-    const latestCompanyRecord = await this.lookupCompany(company.orgnr)
+    const latestCompanyRecord = await Roaring.lookupCompany(company.orgnr)
     if (latestCompanyRecord){
       company.name = latestCompanyRecord.companyName
       delete latestCompanyRecord.companyId
@@ -139,45 +139,6 @@ export class CompanyController {
     return this.companyRepository.create(company)
   }
 
-  private async getToken(): Promise<string> {
-    const key = process.env.ROARING_KEY || 'e3YCCMVKvA0Pu5lAsmd02hk2xloa' // sandbox
-    const secret = process.env.ROARING_SECRET || '0Ly8E04vUWzn534aCNXSKhaMhewa' // sandbox
-    const base64 = Buffer.from(`${key}:${secret}`).toString('base64')
-    const token = await fetch('https://api.roaring.io/token', {
-      method: 'POST',
-      body: 'grant_type=client_credentials',
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: `Basic ${base64}`
-      }
-    }).then(res => res.json())
-    return token.access_token
-  }
-
-  private async lookupCompany(orgnr: string) {
-    const roaringToken = await this.getToken()
-    const info = await fetch(
-      `https://api.roaring.io/se/company/overview/2.0/history/${orgnr}?fromDate=2016-12-11&toDate=2018-02-21`,
-      {
-        
-        headers: {
-          'Authorization': `Bearer ${roaringToken}`,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-      }}
-    ).then((res: any) => {
-      console.dir(res)
-      console.log(res.ok)
-      console.log(res.status)
-      return res.json()
-    }) as any
-
-
-    const latestCompanyRecord = info.records ? info.records[0] : null
-    console.log('roaring response', latestCompanyRecord)
-
-    return latestCompanyRecord
-  }
 
   @get('/companies')
   @response(200, {
