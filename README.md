@@ -14,6 +14,8 @@
 ### 🏠 [Homepage](https://upphandling.app)
 ### 🤖 [API](https://api.upphandling.app/explore)
 
+<img src="https://upphandling.app/assets/images/show-dis.png" width="25%"/>
+
 This is the mono repo for the [app](packages/app), built in React Native and our open [API](packages/api), built in Typescript and Loopback. You can also find our [landning page](../landing-page) in a separate repository.
 
 ## Install
