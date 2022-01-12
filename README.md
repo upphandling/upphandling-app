@@ -12,26 +12,35 @@
 > The best way to procure open source software
 
 ### 🏠 [Homepage](https://upphandling.app)
+
 ### 🤖 [API](https://api.upphandling.app/explore)
 
 <img src="https://upphandling.app/assets/images/show-dis.png" width="25%"/>
 
-This is the mono repo for the [app](packages/app), built in React Native and our open [API](packages/api), built in Typescript and Loopback. You can also find our [landning page](../landing-page) in a separate repository.
+This is the mono repo for the [app](packages/Upphandling), built in React Native and our open [API](packages/api), built in Typescript and Loopback. You can also find our [landning page](../landing-page) in a separate repository.
 
-## Install
+# App development
+
+Here's a quick start!
+
+## Install app dependencies
 
 ```sh
-cd packages/app
+cd packages/Upphandling
 yarn install
 yarn pod
 ```
 
-## Usage
+## Running the app
 
 ```sh
-cd packages/app
+cd packages/Upphandling
 yarn ios # or yarn android
 ```
+
+# API development
+
+[Go read the API README](/packages/api)
 
 ## Deploy API
 
@@ -45,16 +54,25 @@ skaffold run
 
 👤 **Christian Landgren**
 
-* Website: https://iteam.se
-* Twitter: [@landgren](https://twitter.com/landgren)
-* Github: [@irony](https://github.com/irony)
-* LinkedIn: [@christian.landgren](https://linkedin.com/in/christian.landgren)
+- Website: https://iteam.se
+- Twitter: [@landgren](https://twitter.com/landgren)
+- Github: [@irony](https://github.com/irony)
+- LinkedIn: [@christian.landgren](https://linkedin.com/in/christian.landgren)
 
 👤 **Johan Linåker**
-* Twitter: [@johanlinaker](https://twitter.com/johanlinaker)
+
+- Twitter: [@johanlinaker](https://twitter.com/johanlinaker)
 
 👤 **Ted Stalte**
-* Website: https://www.staltec.se
+
+- Website: https://www.staltec.se
+
+👤 **Stefan Wallin**
+
+- Website: https://stefan-wallin.se
+- Twitter: [@Stefan_Wallin](https://twitter.com/Stefan_Wallin)
+- Github: [@StefanWallin](https://github.com/StefanWallin)
+- LinkedIn: [@stefanwallin](https://www.linkedin.com/in/stefanwallin/)
 
 ## Show your support
 
