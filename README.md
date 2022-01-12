@@ -33,10 +33,12 @@ cd packages/app
 yarn ios # or yarn android
 ```
 
-## Run tests
+## Deploy API
+
+First make sure you are connected to the correct Kubernetes cluster. This command is run automatically for all commits in our main branch and builds and deploys code directly to our production cluster. Please look at [k8s](k8s) folder for more details about the infrastructure.
 
 ```sh
-yarn run test
+skaffold run
 ```
 
 ## Authors
