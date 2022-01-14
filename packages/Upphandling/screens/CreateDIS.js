@@ -19,6 +19,7 @@ import {
 import { createDis } from '../api/dis'
 import { useMutation } from 'react-query'
 import { ServicePicker } from '../components/ServicePicker'
+import { TechnologyPicker } from '../components/TechnologyPicker'
 const CalendarIcon = (props) => <Icon {...props} name="calendar" />
 
 const i18n = {
@@ -74,6 +75,7 @@ export const CreateDIS = ({ navigation }) => {
   const [repo, setRepo] = useState()
   const [description, setDescription] = useState()
   const [services, setServices] = useState({})
+  const [technologies, setTechnologies] = useState({})
 
   const dateService = new NativeDateService('se', {
     format: 'YYYY-MM-DD',
@@ -83,7 +85,6 @@ export const CreateDIS = ({ navigation }) => {
   const addDISMutation = useMutation(createDis)
 
   const create = async () => {
-    // TODO: global state with redux or something?
     const newDis = {
       title,
       startDate,
@@ -151,6 +152,7 @@ export const CreateDIS = ({ navigation }) => {
           onChangeText={setDescription}
         />
         <ServicePicker onChange={setServices} services={services} />
+        <TechnologyPicker onChange={setTechnologies} technologies={technologies} />
       </ScrollView>
       <Divider />
       <Button onPress={create} size="giant" style={styles.addButton}>

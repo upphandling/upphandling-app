@@ -5,7 +5,7 @@ export const getCompanies = async () => {
 }
 
 export const getCompanyFromId = async (id) => {
-  const { data } = await axios.get('https://api.upphandling.app/companies/${id}')
+  const { data } = await axios.get(`https://api.upphandling.app/companies/${id}`)
   return data
 }
 

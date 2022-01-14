@@ -5467,6 +5467,11 @@ scheduler@^0.20.1:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
 
+se-orgnr-validator@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/se-orgnr-validator/-/se-orgnr-validator-1.0.3.tgz#158c6c5772b8f426d6f174d6692b4e8ba4a22b74"
+  integrity sha512-Cj4/+Ve+3hV+HpWW6fr8fLkZficc6SD/+5mSi+GKQlk4ZZSXXz8/dhRdoSR/BH2ibdA3G7W3tLzEtl2cryyqyw==
+
 "semver@2 || 3 || 4 || 5", semver@^5.5.0, semver@^5.6.0:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
