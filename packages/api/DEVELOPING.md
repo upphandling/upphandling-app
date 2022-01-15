@@ -7,8 +7,8 @@ users.
 
 Install the following extensions:
 
- - [eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
- - [prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
 ## Development workflow
 
@@ -34,3 +34,20 @@ Install the following extensions:
    suite and lint the code for both programming and style errors. You should run
    this command manually whenever you have new changes to test. Test failures
    and linter errors will be printed to the terminal.
+
+### Developing with Docker Compose
+
+**Startup the api in watch-mode**
+
+```
+   cd packages/api/
+   cp .env_example .env
+   docker build . -t upphandling.app/api
+   docker-compose up -d
+```
+
+**Run ts-compiler in another terminal**
+
+```
+   npm run build:watch
+```
