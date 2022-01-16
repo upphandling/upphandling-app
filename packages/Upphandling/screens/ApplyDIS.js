@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   ImageBackground,
   KeyboardAvoidingView,
@@ -22,10 +22,11 @@ import { createOffer } from '../api/offers'
 import { useMutation } from 'react-query'
 import { createCompany, getCompanyFromId } from '../api/companies'
 import checkOrgnr from 'se-orgnr-validator'
+import { Field } from '../components/Field'
 
-export const ApplyDIS = ({navigation, route}) => {
-  const {id} = route.params
-  const {data: dis, isLoading} = useDis(id)
+export const ApplyDIS = ({ navigation, route }) => {
+  const { id } = route.params
+  const { data: dis, isLoading } = useDis(id)
 
   if (isLoading) return <Text>Loading...</Text>
 
@@ -48,14 +49,18 @@ export const ApplyDIS = ({navigation, route}) => {
 
   const apply = async () => {
     if (!checkOrgnr(orgnr)) return setValid(false)
-    const result = await createCompanyMutation.mutateAsync({id: orgnr})
+    const result = await createCompanyMutation.mutateAsync({ id: orgnr })
     console.log('got result', result)
     setCompany(result)
   }
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <ScrollView style={styles.form} level="1">
+      <ScrollView
+        level="1"
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+      >
         <ImageBackground
           source={require('../assets/mail-dynamic-gradient.png')}
           style={styles.image}
@@ -68,30 +73,112 @@ export const ApplyDIS = ({navigation, route}) => {
           value={orgnr}
           onChangeText={setOrgnr}
         />
-        <Input
-          style={styles.input}
-          label="Företagsnamn"
-          disabled
-          placeholder="Ert företagsnamn"
-          value={company?.name}
-        />
+        {!valid && company ? null : (
+          <View>
+            <Text style={styles.field} category="h6">
+              Företagsinformation
+            </Text>
+            <Field
+              style={styles.field}
+              label="Företagsnamn"
+              disabled
+              placeholder="Ert företagsnamn"
+              value={company?.name}
+            />
 
-        <Input value={company?.phoneNumber} disabled style={styles.input} label="Telefonnummer" placeholder="Telefonnummer"  />
-        <Input value={company?.email} disabled style={styles.input} label="E-post" placeholder="E-post"  />
-        <Input value={company?.address} disabled style={styles.input} label="Adress" placeholder="Adress" />
-        <Input value={company?.town} disabled style={styles.input} label="Stad" placeholder="Stad"  />
-        <Input value={company?.zipCode} disabled style={styles.input} label="Postnummer" placeholder="Postnummer"  />
-        <Input value={company?.country} disabled style={styles.input} label="Land" placeholder="Land"  />
-        <Input value={company?.industryText} disabled style={styles.input} label="Verksamhet" placeholder="Programvaruleverantör etc" />
-        <Input value={company?.legalGroupText} disabled style={styles.input} label="Typ av organisation" placeholder="Aktiebolag/Handelsbolag etc" />
-        <Input value={company?.website} style={styles.input} label="Hemsida" placeholder="Hemsida"  />
-        <Input value={company?.numberEmployeesInterval} disabled style={styles.input} label="Antal anställda" placeholder="Antal anställda" />
-        <Divider />
-        <Toggle style={styles.toggle} disabled status="success" checked={company?.vatReg}>Moms registrerad</Toggle>
-        <Input style={styles.input} disabled label="VD" placeholder="VD / firmatecknare" value={company?.topDirectorName} />
+            <Field
+              value={company?.phoneNumber}
+              disabled
+              style={styles.field}
+              label="Telefonnummer"
+              placeholder="Telefonnummer"
+            />
+            <Field
+              value={company?.email}
+              disabled
+              style={styles.field}
+              label="E-post"
+              placeholder="E-post"
+            />
+            <Field
+              value={company?.address}
+              disabled
+              style={styles.field}
+              label="Adress"
+              placeholder="Adress"
+            />
+            <Field
+              value={company?.zipCode + ' ' + company?.town}
+              disabled
+              style={styles.field}
+              label="Postnummer"
+              placeholder="Postnummer"
+            />
+            {company.country ? (
+              <Field
+                value={company?.country}
+                disabled
+                style={styles.field}
+                label="Land"
+                placeholder="Land"
+              />
+            ) : null}
+            <Field
+              value={company?.industryText}
+              disabled
+              style={styles.field}
+              label="Verksamhet"
+              placeholder="Programvaruleverantör etc"
+            />
+            <Field
+              value={company?.legalGroupText}
+              disabled
+              style={styles.field}
+              label="Typ av organisation"
+              placeholder="Aktiebolag/Handelsbolag etc"
+            />
+            <Field
+              value={company?.website}
+              style={styles.field}
+              label="Hemsida"
+              placeholder="Hemsida"
+            />
+            <Field
+              value={company?.numberEmployeesInterval}
+              disabled
+              style={styles.field}
+              label="Antal anställda"
+              placeholder="Antal anställda"
+            />
+            <Field
+              style={styles.field}
+              disabled
+              status="success"
+              label="Moms registrerad"
+              value={company?.vatReg ? `Ja (${company?.vatRegDate})` : 'Nej'}
+            />
+            <Field
+              style={styles.field}
+              disabled
+              label="VD"
+              placeholder="VD / firmatecknare"
+              value={company?.topDirectorName}
+            />
+          </View>
+        )}
 
         {dis?.technologies?.map((technology, index) => (
-          <CheckBox key={index} style={styles.checkbox} checked={technologies[technology.id]} onChange={() => setTechnologies({...technologies, [technology.id]: !technologies[technology.id]})}>
+          <CheckBox
+            key={index}
+            style={styles.checkbox}
+            checked={technologies[technology.id]}
+            onChange={() =>
+              setTechnologies({
+                ...technologies,
+                [technology.id]: !technologies[technology.id],
+              })
+            }
+          >
             <Text>{technology.name}</Text>
           </CheckBox>
         ))}
@@ -99,7 +186,7 @@ export const ApplyDIS = ({navigation, route}) => {
         <Input
           multiline={true}
           style={styles.input}
-          textStyle={{minHeight: 64}}
+          textStyle={{ minHeight: 64 }}
           label="Beskrivning av ert företag"
           placeholder="Beskrivning"
           value={description}
@@ -115,24 +202,30 @@ export const ApplyDIS = ({navigation, route}) => {
               checked={services[service]}
               style={styles.toggle}
               key={i}
-              onValuehange={checked =>
-                setServices({...services, [service]: checked})
-              }>
+              onValuehange={(checked) =>
+                setServices({ ...services, [service]: checked })
+              }
+            >
               {service}
             </Toggle>
           ))}
         </View>
+        <Divider />
+        <View style={styles.footer}>
+          <Button
+            onPress={apply}
+            size="giant"
+            disabled={!valid}
+            style={styles.addButton}
+          >
+            {createCompanyMutation.isLoading ? 'Skapar företag...' : 'Ansök'}
+          </Button>
+          <Text category="s2" style={styles.info}>
+            När du ansökt kommer du få ett mail när du godkänts som leverantör
+            senast {dis.startDate}
+          </Text>
+        </View>
       </ScrollView>
-      <Divider />
-      <View style={styles.footer}>
-        <Button onPress={apply} size="giant" disabled={!valid} style={styles.addButton}>
-          {createCompanyMutation.isLoading? 'Skapar företag...' : 'Ansök'}
-        </Button>
-        <Text category="s2" style={styles.info}>
-          När du ansökt kommer du få ett mail när du godkänts som leverantör
-          senast {dis.startDate}
-        </Text>
-      </View>
     </KeyboardAvoidingView>
   )
 }
@@ -179,5 +272,22 @@ const styles = StyleService.create({
     color: '#999',
     marginHorizontal: 16,
     marginVertical: 16,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'background-basic-color-2',
+  },
+  contentContainer: {
+    paddingVertical: 24,
+  },
+  field: {
+    padding: 16,
+  },
+  section: {
+    marginTop: 24,
+  },
+  doneButton: {
+    marginHorizontal: 24,
+    marginTop: 24,
   },
 })
