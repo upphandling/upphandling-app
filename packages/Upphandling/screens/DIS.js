@@ -15,6 +15,9 @@ import { ImageOverlay } from '../components/ImageOverlay'
 import { useDis } from '../hooks/useDis'
 import serviceIcons from '../data/services.json'
 import { Issues } from '../components/Issues'
+import moment from 'moment'
+import 'moment/locale/sv' 
+moment.locale('sv')
 
 export const DIS = ({ navigation, route }) => {
   const id = route.params.id
@@ -80,17 +83,18 @@ export const DIS = ({ navigation, route }) => {
         disabled={true}
         footer={renderBookingFooter}
       >
-        <Text style={styles.title} category="h6">
+        <Text style={styles.title} category="h2">
           {dis.title}
         </Text>
-        <Text style={styles.dateLabel} appearance="hint" category="p2">
+        <Text style={styles.dateLabel} category="h6">
           {dis.organisation}
         </Text>
-        <Text style={styles.priceLabel} category="h6">
-          {dis.status}
+        <Text style={styles.priceLabel} category="p2">
+          {dis.status ?? 'Startar'}
         </Text>
-        <Text style={styles.dateLabel} appearance="hint" category="p2">
-          {dis.startDate.toString()}
+        <Text style={styles.dateLabel} category="p2">
+          {moment(dis.startDate).format('YYYY-MM-DD')} (
+          {moment().to(moment(dis.startDate))})
         </Text>
         <Button style={styles.bookButton} onPress={apply}>
           Ansök

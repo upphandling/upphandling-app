@@ -173,6 +173,12 @@ export class Company extends Entity {
     required: false,
   })
   email: string // 'info@iteam.se',
+
+  @property({
+    type: 'string',
+    required: false,
+  })
+  website: string // 'https://www.iteam.se/',
   
   @property({
     type: 'string',

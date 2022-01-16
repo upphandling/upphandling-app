@@ -23,6 +23,8 @@ import { useMutation } from 'react-query'
 import { createCompany, getCompanyFromId } from '../api/companies'
 import checkOrgnr from 'se-orgnr-validator'
 import { Field } from '../components/Field'
+import { CompanyDetails } from '../components/CompanyDetails'
+import moment from 'moment'
 
 export const ApplyDIS = ({ navigation, route }) => {
   const { id } = route.params
@@ -32,6 +34,7 @@ export const ApplyDIS = ({ navigation, route }) => {
 
   const [orgnr, setOrgnr] = useState()
   const [description, setDescription] = useState()
+  const [website, setWebsite] = useState(company?.website)
   const [services, setServices] = useState({})
   const [technologies, setTechnologies] = useState({})
   const [company, setCompany] = useState()
@@ -49,7 +52,7 @@ export const ApplyDIS = ({ navigation, route }) => {
 
   const apply = async () => {
     if (!checkOrgnr(orgnr)) return setValid(false)
-    const result = await createCompanyMutation.mutateAsync({ id: orgnr })
+    const result = await createCompanyMutation.mutateAsync({ id: orgnr, description, website })
     console.log('got result', result)
     setCompany(result)
   }
@@ -73,99 +76,7 @@ export const ApplyDIS = ({ navigation, route }) => {
           value={orgnr}
           onChangeText={setOrgnr}
         />
-        {!valid && company ? null : (
-          <View>
-            <Text style={styles.field} category="h6">
-              Företagsinformation
-            </Text>
-            <Field
-              style={styles.field}
-              label="Företagsnamn"
-              disabled
-              placeholder="Ert företagsnamn"
-              value={company?.name}
-            />
-
-            <Field
-              value={company?.phoneNumber}
-              disabled
-              style={styles.field}
-              label="Telefonnummer"
-              placeholder="Telefonnummer"
-            />
-            <Field
-              value={company?.email}
-              disabled
-              style={styles.field}
-              label="E-post"
-              placeholder="E-post"
-            />
-            <Field
-              value={company?.address}
-              disabled
-              style={styles.field}
-              label="Adress"
-              placeholder="Adress"
-            />
-            <Field
-              value={company?.zipCode + ' ' + company?.town}
-              disabled
-              style={styles.field}
-              label="Postnummer"
-              placeholder="Postnummer"
-            />
-            {company.country ? (
-              <Field
-                value={company?.country}
-                disabled
-                style={styles.field}
-                label="Land"
-                placeholder="Land"
-              />
-            ) : null}
-            <Field
-              value={company?.industryText}
-              disabled
-              style={styles.field}
-              label="Verksamhet"
-              placeholder="Programvaruleverantör etc"
-            />
-            <Field
-              value={company?.legalGroupText}
-              disabled
-              style={styles.field}
-              label="Typ av organisation"
-              placeholder="Aktiebolag/Handelsbolag etc"
-            />
-            <Field
-              value={company?.website}
-              style={styles.field}
-              label="Hemsida"
-              placeholder="Hemsida"
-            />
-            <Field
-              value={company?.numberEmployeesInterval}
-              disabled
-              style={styles.field}
-              label="Antal anställda"
-              placeholder="Antal anställda"
-            />
-            <Field
-              style={styles.field}
-              disabled
-              status="success"
-              label="Moms registrerad"
-              value={company?.vatReg ? `Ja (${company?.vatRegDate})` : 'Nej'}
-            />
-            <Field
-              style={styles.field}
-              disabled
-              label="VD"
-              placeholder="VD / firmatecknare"
-              value={company?.topDirectorName}
-            />
-          </View>
-        )}
+        {valid && company ? <CompanyDetails company={company} /> : null}
 
         {dis?.technologies?.map((technology, index) => (
           <CheckBox
@@ -184,6 +95,13 @@ export const ApplyDIS = ({ navigation, route }) => {
         ))}
         <Divider />
         <Input
+          style={styles.input}
+          label="Hemsida"
+          placeholder="https://www.example.com"
+          value={website}
+          onChangeText={setWebsite}
+        />
+        <Input
           multiline={true}
           style={styles.input}
           textStyle={{ minHeight: 64 }}
@@ -192,24 +110,28 @@ export const ApplyDIS = ({ navigation, route }) => {
           value={description}
           onChangeText={setDescription}
         />
-        <Text category="s2" style={styles.info}>
-          Efterfrågade tjänster som ni erbjuder
-        </Text>
+        {dis.services.length ? (
+          <View>
+            <Text category="s2" style={styles.info}>
+              Efterfrågade tjänster som ni erbjuder
+            </Text>
 
-        <View style={styles.toggles}>
-          {dis.services?.map((service, i) => (
-            <Toggle
-              checked={services[service]}
-              style={styles.toggle}
-              key={i}
-              onValuehange={(checked) =>
-                setServices({ ...services, [service]: checked })
-              }
-            >
-              {service}
-            </Toggle>
-          ))}
-        </View>
+            <View style={styles.toggles}>
+              {dis.services?.map((service, i) => (
+                <Toggle
+                  checked={services[service]}
+                  style={styles.toggle}
+                  key={i}
+                  onValuehange={(checked) =>
+                    setServices({ ...services, [service]: checked })
+                  }
+                >
+                  {service}
+                </Toggle>
+              ))}
+            </View>
+          </View>
+        ) : null}
         <Divider />
         <View style={styles.footer}>
           <Button
@@ -222,7 +144,7 @@ export const ApplyDIS = ({ navigation, route }) => {
           </Button>
           <Text category="s2" style={styles.info}>
             När du ansökt kommer du få ett mail när du godkänts som leverantör
-            senast {dis.startDate}
+            senast {moment(dis.startDate).format('YYYY-MM-DD')}
           </Text>
         </View>
       </ScrollView>
@@ -272,16 +194,6 @@ const styles = StyleService.create({
     color: '#999',
     marginHorizontal: 16,
     marginVertical: 16,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: 'background-basic-color-2',
-  },
-  contentContainer: {
-    paddingVertical: 24,
-  },
-  field: {
-    padding: 16,
   },
   section: {
     marginTop: 24,

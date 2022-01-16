@@ -69,7 +69,7 @@ export const CreateDIS = ({ navigation }) => {
   const [startDate, setStartDate] = useState(defaultDate)
   const [title, setTitle] = useState()
   const [organisation, setOrganisation] = useState()
-  const [repo, setRepo] = useState('')
+  const [repo, setRepo] = useState('https://github.com/')
   const [description, setDescription] = useState()
   const [services, setServices] = useState({})
   const [technologies, setTechnologies] = useState({})
@@ -95,7 +95,7 @@ export const CreateDIS = ({ navigation }) => {
 
     const result = await addDISMutation.mutateAsync(newDis)
     console.log(result)
-    navigation.navigate('OpenDIS', { id: result.data.id })
+    navigation.reset('OpenDIS', { id: result.data.id })
   }
 
   return (
@@ -138,7 +138,7 @@ export const CreateDIS = ({ navigation }) => {
           placeholder="Github repo"
           textContentType="URL"
           value={repo}
-          onChangeText={setRepo}
+          onChangeText={(val) => setRepo(val.toLowerCase())}
         />
         <Input
           multiline={true}

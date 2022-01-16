@@ -21,7 +21,6 @@ export const Issues = ({url}) => {
   const urlWithoutProtocol = url.toLowerCase().replace('https://', '').replace('http://', '')
   const [owner, repo] = urlWithoutProtocol.split('?')[0].split('/').slice(-2)
   const { data, error, isFetching } = useIssues(owner, repo)
-console.log('data', data)
   if (isFetching) return <Text>Loading...{owner} {repo}</Text>
   if (error) return <Text>Error loading issues: {error.message} {owner} {repo}</Text>
 
@@ -52,7 +51,6 @@ const styles = StyleService.create({
   detailItem: {
     marginHorizontal: 4,
     borderRadius: 16,
-    maxWidth: 100,
   },
   body: {
     // ellipsis and text-overflow: ellipsis;
