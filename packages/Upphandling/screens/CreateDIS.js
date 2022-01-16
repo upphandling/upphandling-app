@@ -1,10 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { KeyboardAvoidingView, ScrollView, View } from 'react-native'
 import moment from 'moment'
 
 import {
-  Autocomplete,
-  AutocompleteItem,
   Avatar,
   Button,
   Datepicker,
@@ -14,11 +12,11 @@ import {
   NativeDateService,
   StyleService,
   Text,
-  Toggle,
 } from '@ui-kitten/components'
 import { createDis } from '../api/dis'
 import { useMutation } from 'react-query'
 import { ServicePicker } from '../components/ServicePicker'
+import { TechnologyPicker } from '../components/TechnologyPicker'
 const CalendarIcon = (props) => <Icon {...props} name="calendar" />
 
 const i18n = {
@@ -71,9 +69,10 @@ export const CreateDIS = ({ navigation }) => {
   const [startDate, setStartDate] = useState(defaultDate)
   const [title, setTitle] = useState()
   const [organisation, setOrganisation] = useState()
-  const [repo, setRepo] = useState()
+  const [repo, setRepo] = useState('https://github.com/')
   const [description, setDescription] = useState()
   const [services, setServices] = useState({})
+  const [technologies, setTechnologies] = useState({})
 
   const dateService = new NativeDateService('se', {
     format: 'YYYY-MM-DD',
@@ -83,12 +82,12 @@ export const CreateDIS = ({ navigation }) => {
   const addDISMutation = useMutation(createDis)
 
   const create = async () => {
-    // TODO: global state with redux or something?
     const newDis = {
       title,
       startDate,
       organisation,
       description,
+      repo,
       services: Object.entries(services)
         .filter(([item, checked]) => checked)
         .map(([item]) => item),
@@ -96,7 +95,7 @@ export const CreateDIS = ({ navigation }) => {
 
     const result = await addDISMutation.mutateAsync(newDis)
     console.log(result)
-    navigation.navigate('OpenDIS', { id: result.data.id })
+    navigation.reset('OpenDIS', { id: result.data.id })
   }
 
   return (
@@ -139,7 +138,7 @@ export const CreateDIS = ({ navigation }) => {
           placeholder="Github repo"
           textContentType="URL"
           value={repo}
-          onChangeText={setRepo}
+          onChangeText={(val) => setRepo(val.toLowerCase())}
         />
         <Input
           multiline={true}
@@ -151,6 +150,10 @@ export const CreateDIS = ({ navigation }) => {
           onChangeText={setDescription}
         />
         <ServicePicker onChange={setServices} services={services} />
+        <TechnologyPicker
+          onChange={setTechnologies}
+          technologies={technologies}
+        />
       </ScrollView>
       <Divider />
       <Button onPress={create} size="giant" style={styles.addButton}>

@@ -1,34 +1,39 @@
 import React from 'react'
-import {Linking, ScrollView, View} from 'react-native'
+import { Linking, ScrollView, View } from 'react-native'
 import {
   Button,
   ButtonGroup,
   Card,
+  Divider,
   Icon,
   StyleService,
   Text,
   useStyleSheet,
 } from '@ui-kitten/components'
 import list from '../hooks/dis.json'
-import {ImageOverlay} from '../components/ImageOverlay'
+import { ImageOverlay } from '../components/ImageOverlay'
 import { useDis } from '../hooks/useDis'
-import serviceIcons  from '../data/services.json'
+import serviceIcons from '../data/services.json'
+import { Issues } from '../components/Issues'
+import moment from 'moment'
+import 'moment/locale/sv' 
+moment.locale('sv')
 
-export const DIS = ({navigation, route}) => {
+export const DIS = ({ navigation, route }) => {
   const id = route.params.id
   console.log('finding dis', id)
   const { status, data: dis, error, isFetching } = useDis(id)
 
   if (isFetching) return <Text>Loading...</Text>
+  if (error) return <Text>Error loading dis: {error.message}</Text>
 
   const styles = useStyleSheet(themedStyles)
 
   const apply = () => {
-    navigation.navigate('ApplyDIS', {id})
+    navigation.navigate('ApplyDIS', { id })
   }
 
   const renderOptionItemIcon = (style, icon) => <Icon {...style} name={icon} />
-
 
   const renderOptionItem = (service, index) => (
     <Button
@@ -36,9 +41,10 @@ export const DIS = ({navigation, route}) => {
       style={styles.optionItem}
       appearance="ghost"
       size="small"
-      accessoryLeft={style =>
+      accessoryLeft={(style) =>
         renderOptionItemIcon(style, serviceIcons[service] ?? 'hash')
-      }>
+      }
+    >
       {service}
     </Button>
   )
@@ -48,7 +54,8 @@ export const DIS = ({navigation, route}) => {
       key={index}
       style={styles.detailItem}
       appearance="outline"
-      size="tiny">
+      size="tiny"
+    >
       {detail}
     </Button>
   )
@@ -74,18 +81,20 @@ export const DIS = ({navigation, route}) => {
         style={styles.bookingCard}
         appearance="filled"
         disabled={true}
-        footer={renderBookingFooter}>
-        <Text style={styles.title} category="h6">
+        footer={renderBookingFooter}
+      >
+        <Text style={styles.title} category="h2">
           {dis.title}
         </Text>
-        <Text style={styles.dateLabel} appearance="hint" category="p2">
+        <Text style={styles.dateLabel} category="h6">
           {dis.organisation}
         </Text>
-        <Text style={styles.priceLabel} category="h6">
-          {dis.status}
+        <Text style={styles.priceLabel} category="p2">
+          {dis.status ?? 'Startar'}
         </Text>
-        <Text style={styles.dateLabel} appearance="hint" category="p2">
-          {dis.startDate.toString()}
+        <Text style={styles.dateLabel} category="p2">
+          {moment(dis.startDate).format('YYYY-MM-DD')} (
+          {moment().to(moment(dis.startDate))})
         </Text>
         <Button style={styles.bookButton} onPress={apply}>
           Ansök
@@ -104,23 +113,37 @@ export const DIS = ({navigation, route}) => {
       <Button
         style={styles.description}
         status="control"
-        onPress={() => Linking.openURL(dis.repo)}>
+        onPress={() => Linking.openURL(dis.repo)}
+      >
         {dis.repo}
       </Button>
       <Text style={styles.sectionLabel} category="s1">
         Process
       </Text>
       <ButtonGroup style={styles.buttonGroup} status="info" size="small">
-        <Button accessoryLeft={<Icon name="alert-triangle" />} style={styles.processStep}>
+        <Button
+          accessoryLeft={<Icon name="alert-triangle" />}
+          style={styles.processStep}
+        >
           Annonsera
         </Button>
-        <Button disabled={true} accessoryLeft={<Icon name="star" />} style={styles.processStep}>
+        <Button
+          disabled={true}
+          accessoryLeft={<Icon name="star" />}
+          style={styles.processStep}
+        >
           Tilldela
         </Button>
-        <Button disabled={true} accessoryLeft={<Icon name="briefcase" />} style={styles.processStep}>
+        <Button
+          disabled={true}
+          accessoryLeft={<Icon name="briefcase" />}
+          style={styles.processStep}
+        >
           Startad
         </Button>
       </ButtonGroup>
+      <Divider />
+      <Issues url={dis.repo} />
     </ScrollView>
   )
 }
@@ -199,5 +222,5 @@ const themedStyles = StyleService.create({
   processStep: {
     borderTopEndRadius: 15,
     borderBottomEndRadius: 15,
-  }
+  },
 })

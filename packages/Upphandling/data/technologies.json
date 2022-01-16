@@ -1,0 +1,11 @@
+{
+  "React": "arrowhead-right",
+  "App": "sun-outline",
+  "Frontend": "cube-outline",
+  "Backend": "globe",
+  "UX": "color-palette",
+  "Kubernetes": "person-done",
+  "Java": "person-done",
+  "JavaScript": "person-done",
+  ".NET": "people"
+}

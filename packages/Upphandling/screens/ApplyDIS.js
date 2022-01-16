@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   ImageBackground,
   KeyboardAvoidingView,
@@ -9,6 +9,7 @@ import {
 import {
   Avatar,
   Button,
+  CheckBox,
   Divider,
   Input,
   StyleService,
@@ -19,35 +20,50 @@ import list from '../hooks/dis.json'
 import { useDis } from '../hooks/useDis'
 import { createOffer } from '../api/offers'
 import { useMutation } from 'react-query'
-import { createCompany } from '../api/companies'
+import { createCompany, getCompanyFromId } from '../api/companies'
+import checkOrgnr from 'se-orgnr-validator'
+import { Field } from '../components/Field'
+import { CompanyDetails } from '../components/CompanyDetails'
+import moment from 'moment'
 
-
-export const ApplyDIS = ({navigation, route}) => {
-  const {id} = route.params
-  const {data: dis, isLoading} = useDis(id)
+export const ApplyDIS = ({ navigation, route }) => {
+  const { id } = route.params
+  const { data: dis, isLoading } = useDis(id)
 
   if (isLoading) return <Text>Loading...</Text>
 
-  const [name, setName] = useState()
   const [orgnr, setOrgnr] = useState()
   const [description, setDescription] = useState()
+  const [website, setWebsite] = useState(company?.website)
   const [services, setServices] = useState({})
+  const [technologies, setTechnologies] = useState({})
+  const [company, setCompany] = useState()
+  const [valid, setValid] = useState(false)
 
   const createCompanyMutation = useMutation(createCompany)
 
+  useMemo(async () => {
+    if (!checkOrgnr(orgnr)) return setValid(false)
+    setValid(true)
+    const found = await getCompanyFromId(orgnr)
+    console.log('got copmany', found)
+    setCompany(found)
+  }, [orgnr])
+
   const apply = async () => {
-    const company = {
-      id: orgnr
-    }
-    console.log('mutate company', company)
-    const result = await createCompanyMutation.mutateAsync(company)
+    if (!checkOrgnr(orgnr)) return setValid(false)
+    const result = await createCompanyMutation.mutateAsync({ id: orgnr, description, website })
     console.log('got result', result)
-    setName(result.name)
+    setCompany(result)
   }
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <ScrollView style={styles.form} level="1">
+      <ScrollView
+        level="1"
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+      >
         <ImageBackground
           source={require('../assets/mail-dynamic-gradient.png')}
           style={styles.image}
@@ -60,49 +76,78 @@ export const ApplyDIS = ({navigation, route}) => {
           value={orgnr}
           onChangeText={setOrgnr}
         />
+        {valid && company ? <CompanyDetails company={company} /> : null}
+
+        {dis?.technologies?.map((technology, index) => (
+          <CheckBox
+            key={index}
+            style={styles.checkbox}
+            checked={technologies[technology.id]}
+            onChange={() =>
+              setTechnologies({
+                ...technologies,
+                [technology.id]: !technologies[technology.id],
+              })
+            }
+          >
+            <Text>{technology.name}</Text>
+          </CheckBox>
+        ))}
+        <Divider />
         <Input
           style={styles.input}
-          label="Företagsnamn"
-          placeholder="Ert företagsnamn"
-          value={name}
-          onChangeText={setName}
+          label="Hemsida"
+          placeholder="https://www.example.com"
+          value={website}
+          onChangeText={setWebsite}
         />
-
         <Input
           multiline={true}
           style={styles.input}
-          textStyle={{minHeight: 64}}
+          textStyle={{ minHeight: 64 }}
           label="Beskrivning av ert företag"
           placeholder="Beskrivning"
           value={description}
           onChangeText={setDescription}
         />
-        <Text category="s2" style={styles.info}>
-          Efterfrågade tjänster som ni erbjuder
-        </Text>
+        {dis.services.length ? (
+          <View>
+            <Text category="s2" style={styles.info}>
+              Efterfrågade tjänster som ni erbjuder
+            </Text>
 
-        <View style={styles.toggles}>
-          {dis.services?.map((service, i) => (
-            <Toggle
-              checked={services[service]}
-              style={styles.toggle}
-              key={i}
-              onValuehange={checked =>
-                setServices({...services, [service]: checked})
-              }>
-              {service}
-            </Toggle>
-          ))}
+            <View style={styles.toggles}>
+              {dis.services?.map((service, i) => (
+                <Toggle
+                  checked={services[service]}
+                  style={styles.toggle}
+                  key={i}
+                  onValuehange={(checked) =>
+                    setServices({ ...services, [service]: checked })
+                  }
+                >
+                  {service}
+                </Toggle>
+              ))}
+            </View>
+          </View>
+        ) : null}
+        <Divider />
+        <View style={styles.footer}>
+          <Button
+            onPress={apply}
+            size="giant"
+            disabled={!valid}
+            style={styles.addButton}
+          >
+            {createCompanyMutation.isLoading ? 'Skapar företag...' : 'Ansök'}
+          </Button>
+          <Text category="s2" style={styles.info}>
+            När du ansökt kommer du få ett mail när du godkänts som leverantör
+            senast {moment(dis.startDate).format('YYYY-MM-DD')}
+          </Text>
         </View>
       </ScrollView>
-      <Divider />
-      <Button onPress={apply} size="giant" style={styles.addButton}>
-        {createCompanyMutation.isLoading? 'Skapar företag...' : 'Ansök'}
-      </Button>
-      <Text category="s2" style={styles.info}>
-        När du ansökt kommer du få ett mail när du godkänts som leverantör
-        senast {dis.startDate}
-      </Text>
     </KeyboardAvoidingView>
   )
 }
@@ -149,5 +194,12 @@ const styles = StyleService.create({
     color: '#999',
     marginHorizontal: 16,
     marginVertical: 16,
+  },
+  section: {
+    marginTop: 24,
+  },
+  doneButton: {
+    marginHorizontal: 24,
+    marginTop: 24,
   },
 })

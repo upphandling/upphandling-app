@@ -1,6 +1,7 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, hasMany, model, property} from '@loopback/repository';
+import { Offer } from './offer.model';
 
-@model({settings: {strict: false}})
+@model({settings: {strict: true}})
 export class Company extends Entity {
   @property({
     type: 'string',
@@ -15,6 +16,8 @@ export class Company extends Entity {
     id: true,
   })
   id: string;
+
+  @hasMany(() => Offer, {keyTo: 'companyId'})
 
   @property({
     type: 'object',
@@ -170,6 +173,12 @@ export class Company extends Entity {
     required: false,
   })
   email: string // 'info@iteam.se',
+
+  @property({
+    type: 'string',
+    required: false,
+  })
+  website: string // 'https://www.iteam.se/',
   
   @property({
     type: 'string',
