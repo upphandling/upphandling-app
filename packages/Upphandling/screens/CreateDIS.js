@@ -1,10 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { KeyboardAvoidingView, ScrollView, View } from 'react-native'
 import moment from 'moment'
 
 import {
-  Autocomplete,
-  AutocompleteItem,
   Avatar,
   Button,
   Datepicker,
@@ -14,7 +12,6 @@ import {
   NativeDateService,
   StyleService,
   Text,
-  Toggle,
 } from '@ui-kitten/components'
 import { createDis } from '../api/dis'
 import { useMutation } from 'react-query'
@@ -72,7 +69,7 @@ export const CreateDIS = ({ navigation }) => {
   const [startDate, setStartDate] = useState(defaultDate)
   const [title, setTitle] = useState()
   const [organisation, setOrganisation] = useState()
-  const [repo, setRepo] = useState()
+  const [repo, setRepo] = useState('')
   const [description, setDescription] = useState()
   const [services, setServices] = useState({})
   const [technologies, setTechnologies] = useState({})
@@ -90,6 +87,7 @@ export const CreateDIS = ({ navigation }) => {
       startDate,
       organisation,
       description,
+      repo,
       services: Object.entries(services)
         .filter(([item, checked]) => checked)
         .map(([item]) => item),
@@ -152,7 +150,10 @@ export const CreateDIS = ({ navigation }) => {
           onChangeText={setDescription}
         />
         <ServicePicker onChange={setServices} services={services} />
-        <TechnologyPicker onChange={setTechnologies} technologies={technologies} />
+        <TechnologyPicker
+          onChange={setTechnologies}
+          technologies={technologies}
+        />
       </ScrollView>
       <Divider />
       <Button onPress={create} size="giant" style={styles.addButton}>

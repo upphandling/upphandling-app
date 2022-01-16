@@ -90,7 +90,7 @@ export const ApplyDIS = ({navigation, route}) => {
         <Toggle style={styles.toggle} disabled status="success" checked={company?.vatReg}>Moms registrerad</Toggle>
         <Input style={styles.input} disabled label="VD" placeholder="VD / firmatecknare" value={company?.topDirectorName} />
 
-        {dis?.technologies.map((technology, index) => (
+        {dis?.technologies?.map((technology, index) => (
           <CheckBox key={index} style={styles.checkbox} checked={technologies[technology.id]} onChange={() => setTechnologies({...technologies, [technology.id]: !technologies[technology.id]})}>
             <Text>{technology.name}</Text>
           </CheckBox>
@@ -124,13 +124,15 @@ export const ApplyDIS = ({navigation, route}) => {
         </View>
       </ScrollView>
       <Divider />
-      <Button onPress={apply} size="giant" disabled={!valid} style={styles.addButton}>
-        {createCompanyMutation.isLoading? 'Skapar företag...' : 'Ansök'}
-      </Button>
-      <Text category="s2" style={styles.info}>
-        När du ansökt kommer du få ett mail när du godkänts som leverantör
-        senast {dis.startDate}
-      </Text>
+      <View style={styles.footer}>
+        <Button onPress={apply} size="giant" disabled={!valid} style={styles.addButton}>
+          {createCompanyMutation.isLoading? 'Skapar företag...' : 'Ansök'}
+        </Button>
+        <Text category="s2" style={styles.info}>
+          När du ansökt kommer du få ett mail när du godkänts som leverantör
+          senast {dis.startDate}
+        </Text>
+      </View>
     </KeyboardAvoidingView>
   )
 }
