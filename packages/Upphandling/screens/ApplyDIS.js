@@ -99,7 +99,7 @@ export const ApplyDIS = ({ navigation, route }) => {
           label="Hemsida"
           placeholder="https://www.example.com"
           value={website}
-          onChangeText={setWebsite}
+          onChangeText={(val) => setWebsite(val.toLocaleLowerCase())}
         />
         <Input
           multiline={true}
@@ -121,8 +121,9 @@ export const ApplyDIS = ({ navigation, route }) => {
                 <Toggle
                   checked={services[service]}
                   style={styles.toggle}
+                  status={services[service] ? 'success' : 'primary'}
                   key={i}
-                  onValuehange={(checked) =>
+                  onChange={(checked) =>
                     setServices({ ...services, [service]: checked })
                   }
                 >
@@ -168,14 +169,15 @@ const styles = StyleService.create({
     alignItems: 'center',
   },
   toggles: {
-    flex: 5,
+    justifyContent: 'space-between',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
     flexWrap: 'wrap',
-    display: 'flex',
+    marginHorizontal: 16,
   },
   toggle: {
-    flex: 1,
+    justifyContent: 'flex-start',
+    marginVertical: 16,
+    minWidth: '40%',
   },
   image: {
     flex: 1,
