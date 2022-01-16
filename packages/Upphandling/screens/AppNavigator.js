@@ -1,5 +1,5 @@
 import React from 'react'
-import {NavigationContainer} from '@react-navigation/native'
+import {NavigationContainer, DarkTheme} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
 import {Home} from './Home'
 import {CreateDIS} from './CreateDIS'
@@ -29,7 +29,7 @@ const HomeNavigator = () => (
 )
 
 export const AppNavigator = () => (
-  <NavigationContainer>
+  <NavigationContainer theme={{...DarkTheme, primary: '#fff'}}>
     <HomeNavigator />
   </NavigationContainer>
 )

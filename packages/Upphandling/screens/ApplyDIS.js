@@ -110,7 +110,7 @@ export const ApplyDIS = ({ navigation, route }) => {
           value={description}
           onChangeText={setDescription}
         />
-        {dis.services.length ? (
+        {dis.services?.length ? (
           <View>
             <Text category="s2" style={styles.info}>
               Efterfrågade tjänster som ni erbjuder

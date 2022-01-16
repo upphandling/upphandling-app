@@ -14,8 +14,8 @@ export const FindDIS = ({ navigation }) => {
   return (
     <SafeAreaView>
       <ScrollView>
-        {data.map((dis) => (
-          <DisCard dis={dis} onPress={() => openDIS(dis.id)} />
+        {data.map((dis, i) => (
+          <DisCard key={i} dis={dis} onPress={() => openDIS(dis.id)} />
         ))}
       </ScrollView>
     </SafeAreaView>

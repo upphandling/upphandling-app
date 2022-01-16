@@ -53,9 +53,7 @@ const styles = StyleService.create({
     borderRadius: 16,
   },
   body: {
-    // ellipsis and text-overflow: ellipsis;
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
+    overflow: '',
     maxHeight: 100,
   }
 })
