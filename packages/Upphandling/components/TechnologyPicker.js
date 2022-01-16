@@ -14,8 +14,7 @@ export const TechnologyPicker = ({ technologies, onChange }) => {
 
   const onSelect = (index) => {
     const selected = Object.keys(technologyIcons)[index]
-    technologies[selected] = true
-    onChange(technologies)
+    onChange({ ...technologies, [selected]: true })
     setNewCompetence('')
   }
 
@@ -27,22 +26,6 @@ export const TechnologyPicker = ({ technologies, onChange }) => {
 
   return (
     <>
-      <View style={styles.grid}>
-        {Object.entries(technologies)
-          .filter(([, val]) => val)
-          .map(([key]) => (
-            <Toggle
-              checked={technologies[key]}
-              style={styles.gridItem}
-              onChange={(checked) =>
-                onChange({ ...technologies, [key]: checked })
-              }
-            >
-              {key}
-            </Toggle>
-          ))}
-      </View>
-
       <Autocomplete
         placeholder="Teknikkrav"
         value={newCompetence}
@@ -58,18 +41,35 @@ export const TechnologyPicker = ({ technologies, onChange }) => {
           />
         ))}
       </Autocomplete>
+      <View style={styles.grid}>
+        {Object.entries(technologies)
+          .filter(([, val]) => val)
+          .map(([key]) => (
+            <Toggle
+              checked={technologies[key]}
+              style={styles.gridItem}
+              onChange={(checked) =>
+                onChange({ ...technologies, [key]: checked })
+              }
+            >
+              {key}
+            </Toggle>
+          ))}
+      </View>
     </>
   )
 }
 
 const styles = StyleService.create({
   grid: {
-    display: 'flex',
     justifyContent: 'space-between',
-    marginVertical: 16,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    margin: 16,
   },
   gridItem: {
-    flex: 1,
-    width: '32%',
+    justifyContent: 'flex-start',
+    marginVertical: 16,
+    minWidth: '40%',
   },
 })

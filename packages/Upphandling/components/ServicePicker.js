@@ -14,8 +14,7 @@ export const ServicePicker = ({ services, onChange }) => {
 
   const onSelect = (index) => {
     const selected = Object.keys(serviceIcons)[index]
-    services[selected] = true
-    onChange(services)
+    onChange({ ...services, [selected]: true })
     setNewCompetence('')
   }
 
@@ -27,49 +26,51 @@ export const ServicePicker = ({ services, onChange }) => {
 
   return (
     <>
-      <View style={styles.grid}>
-        {Object.entries(services)
-          .filter(([, val]) => val)
-          .map(([key]) => (
-            <Toggle
-              checked={services[key]}
-              style={styles.gridItem}
-              onChange={(checked) =>
-                onChange({ ...services, [key]: checked })
-              }
-            >
-              {key}
-            </Toggle>
-          ))}
-      </View>
-
-      <Autocomplete
+    <Autocomplete
         placeholder="Kompetenskrav"
         value={newCompetence}
         onSelect={onSelect}
         onChangeText={setNewCompetence}
         onBlur={onBlur}
       >
-        {Object.entries(serviceIcons).map(([title, icon]) => (
+        {Object.entries(serviceIcons).map(([title, icon], i) => (
           <AutocompleteItem
             accessoryLeft={<Icon name={icon} />}
-            key={title}
+            key={i}
             title={title}
           />
         ))}
       </Autocomplete>
+      <View style={styles.grid}>
+        {Object.entries(services)
+          .filter(([, val]) => val)
+          .map(([key], i) => (
+            <Toggle
+              checked={services[key]}
+              key={i}
+              style={styles.gridItem}
+              onChange={(checked) => onChange({ ...services, [key]: checked })}
+            >
+              {key}
+            </Toggle>
+          ))}
+      </View>
+
+      
     </>
   )
 }
 
 const styles = StyleService.create({
   grid: {
-    display: 'flex',
     justifyContent: 'space-between',
-    marginVertical: 16,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    margin: 16,
   },
   gridItem: {
-    flex: 1,
-    width: '32%',
+    justifyContent:'flex-start',
+    marginVertical: 16,
+    minWidth: '40%',
   },
 })

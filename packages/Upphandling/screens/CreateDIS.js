@@ -154,16 +154,16 @@ export const CreateDIS = ({ navigation }) => {
           onChange={setTechnologies}
           technologies={technologies}
         />
+        <Divider />
+        <Button onPress={create} size="giant" style={styles.addButton}>
+          {addDISMutation.isLoading ? 'Skapar...' : 'Skapa'}
+        </Button>
+        <Text category="s2" style={styles.info}>
+          {addDISMutation.isError
+            ? addDISMutation.error.message
+            : `När du har skapat denna DIS kommer du få en länk som du kan publicera`}
+        </Text>
       </ScrollView>
-      <Divider />
-      <Button onPress={create} size="giant" style={styles.addButton}>
-        {addDISMutation.isLoading ? 'Skapar...' : 'Skapa'}
-      </Button>
-      <Text category="s2" style={styles.info}>
-        {addDISMutation.isError
-          ? addDISMutation.error.message
-          : `När du har skapat denna DIS kommer du få en länk som du kan publicera`}
-      </Text>
     </KeyboardAvoidingView>
   )
 }
