@@ -5,3 +5,5 @@ export * from './person.controller';
 export * from './assignment.controller';
 export * from './dis.controller';
 export * from './participation.controller';
+export * from './dis-company.controller';
+export * from './company-participation.controller';

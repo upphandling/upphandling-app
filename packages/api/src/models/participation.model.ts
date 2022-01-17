@@ -1,45 +1,44 @@
-import {Entity, model, property} from '@loopback/repository';
+import { Entity, model, property } from '@loopback/repository'
 
 @model()
 export class Participation extends Entity {
   @property({
     type: 'string',
-    id: true,
     generated: true,
+    id: true,
   })
-  id?: string;
+  id?: string
 
   @property({
     type: 'string',
     required: true,
   })
-  companyId: string;
+  companyId: string
 
   @property({
     type: 'string',
     required: true,
   })
-  disId: string;
+  disId: string
 
   @property({
     type: 'date',
     required: true,
   })
-  requestDate: string;
+  requestDate: string
 
   @property({
     type: 'date',
   })
-  acceptedDate?: string;
+  acceptedDate?: string
 
   @property({
     type: 'date',
   })
-  deniedDate?: string;
-
+  deniedDate?: string
 
   constructor(data?: Partial<Participation>) {
-    super(data);
+    super(data)
   }
 }
 
@@ -47,4 +46,4 @@ export interface ParticipationRelations {
   // describe navigational properties here
 }
 
-export type ParticipationWithRelations = Participation & ParticipationRelations;
+export type ParticipationWithRelations = Participation & ParticipationRelations

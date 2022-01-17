@@ -1,5 +1,6 @@
 import {Entity, hasMany, model, property} from '@loopback/repository';
 import { Offer } from './offer.model';
+import {Participation} from './participation.model';
 
 @model({settings: {strict: true}})
 export class Company extends Entity {
@@ -250,7 +251,10 @@ export class Company extends Entity {
     type: 'string',
     required: false,
   })
-  visitZipCode: string // '41301',
+  visitZipCode: string
+
+  @hasMany(() => Participation)
+  participations: Participation[];
 
   constructor(data?: Partial<Company>) {
     super(data);
