@@ -22,7 +22,7 @@ export const Home = ({navigation}) => {
       <Button onPress={createDIS} size="giant">
         Skapa nytt DIS
       </Button>
-      <Button onPress={findDIS} size="small" appearance="ghost" status="info">
+      <Button onPress={findDIS} size="medium" appearance="ghost" status="warning">
         Hitta upphandlingar
       </Button>
     </SafeAreaView>

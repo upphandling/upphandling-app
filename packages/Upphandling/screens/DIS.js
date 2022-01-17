@@ -16,7 +16,7 @@ import { useDis } from '../hooks/useDis'
 import serviceIcons from '../data/services.json'
 import { Issues } from '../components/Issues'
 import moment from 'moment'
-import 'moment/locale/sv' 
+import 'moment/locale/sv'
 moment.locale('sv')
 
 export const DIS = ({ navigation, route }) => {
@@ -106,17 +106,21 @@ export const DIS = ({ navigation, route }) => {
       <Text style={styles.description} appearance="hint">
         {dis.description}
       </Text>
-
-      <Text style={styles.sectionLabel} category="s1">
-        Källkod
-      </Text>
-      <Button
-        style={styles.description}
-        status="control"
-        onPress={() => Linking.openURL(dis.repo)}
-      >
-        {dis.repo}
-      </Button>
+      {dis.repo && (
+        <>
+          <Text style={styles.sectionLabel} category="s1">
+            Källkod
+          </Text>
+          <Button
+            style={styles.description}
+            status={'warning'}
+            appearance={'outline'}
+            onPress={() => Linking.openURL(dis.repo)}
+          >
+            {dis.repo}
+          </Button>
+        </>
+      )}
       <Text style={styles.sectionLabel} category="s1">
         Process
       </Text>
