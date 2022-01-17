@@ -4,6 +4,7 @@ export const getParticipations = async (disId) => {
   return data
 }
 
-export const createParticipation = (participation) => {
-  return axios.post('https://api.upphandling.app/participations', participation)
+export const createParticipation = async ({disId, companyId}) => {
+  const { data } = await axios.post(`http://localhost:3000/participations`, {disId, companyId})
+  return data
 }

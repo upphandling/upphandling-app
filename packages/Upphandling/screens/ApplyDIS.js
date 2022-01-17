@@ -16,15 +16,13 @@ import {
   Text,
   Toggle,
 } from '@ui-kitten/components'
-import list from '../hooks/dis.json'
 import { useDis } from '../hooks/useDis'
-import { createOffer } from '../api/offers'
 import { useMutation } from 'react-query'
 import { createCompany, getCompanyFromId } from '../api/companies'
 import checkOrgnr from 'se-orgnr-validator'
-import { Field } from '../components/Field'
 import { CompanyDetails } from '../components/CompanyDetails'
 import moment from 'moment'
+import { createParticipation } from '../api/participation'
 
 export const ApplyDIS = ({ navigation, route }) => {
   const { id } = route.params
@@ -39,8 +37,10 @@ export const ApplyDIS = ({ navigation, route }) => {
   const [technologies, setTechnologies] = useState({})
   const [company, setCompany] = useState()
   const [valid, setValid] = useState(false)
+  const [agree, setAgree] = useState(false)
 
   const createCompanyMutation = useMutation(createCompany)
+  const createParticipationMutation = useMutation(createParticipation)
 
   useMemo(async () => {
     if (!checkOrgnr(orgnr)) return setValid(false)
@@ -51,10 +51,12 @@ export const ApplyDIS = ({ navigation, route }) => {
   }, [orgnr])
 
   const apply = async () => {
-    if (!checkOrgnr(orgnr)) return setValid(false)
-    const result = await createCompanyMutation.mutateAsync({ id: orgnr, description, website })
-    console.log('got result', result)
-    setCompany(result)
+    if (!checkOrgnr(orgnr) || !agree) return setValid(false)
+    const company = (await getCompanyFromId(orgnr)) || (await createCompanyMutation.mutateAsync({ id: orgnr, description, website }))
+    const participation = await createParticipationMutation.mutateAsync({disId: id, companyId: company.id})
+
+    console.log('got company and participation', company, participation)
+    setCompany(company)
   }
 
   return (
@@ -135,6 +137,9 @@ export const ApplyDIS = ({ navigation, route }) => {
         ) : null}
         <Divider />
         <View style={styles.footer}>
+          <CheckBox checked={agree} style={styles.input} onChange={(checked) => setAgree(checked)}>
+            <Text>Jag lovar att mina uppgifter stämmer med mina rättsliga uppgifter (ESPN)</Text>
+          </CheckBox>
           <Button
             onPress={apply}
             size="giant"
@@ -185,7 +190,7 @@ const styles = StyleService.create({
     marginTop: -190,
   },
   input: {
-    marginHorizontal: 12,
+    marginHorizontal: 16,
     marginVertical: 8,
   },
   addButton: {
