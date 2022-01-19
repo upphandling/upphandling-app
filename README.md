@@ -13,7 +13,7 @@
 
 ### 🏠 [Homepage](https://upphandling.app)
 
-### 🤖 [API](https://api.upphandling.app/explore)
+### 🤖 [API](https://api.upphandling.app/explorer)
 
 <img src="https://upphandling.app/assets/images/show-dis.png" width="25%"/>
 
