@@ -1,9 +1,12 @@
 import {get, post} from 'axios'
+import { config } from '../lib/Config'
+const { apiOrigin } = config
+
 export const getOffers = async () => {
-  const { data } = await get('https://api.upphandling.app/offers')
+  const { data } = await get(`${apiOrigin}/offers`)
   return data
 }
 
 export const createOffer = (offer) => {
-  return post('https://api.upphandling.app/offers', offer)
+  return post(`${apiOrigin}/offers`, offer)
 }

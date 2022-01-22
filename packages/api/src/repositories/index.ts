@@ -5,3 +5,5 @@ export * from './tender.repository';
 export * from './assignment.repository';
 export * from './dis.repository';
 export * from './participation.repository';
+export * from './device.repository';
+export * from './notification.repository';

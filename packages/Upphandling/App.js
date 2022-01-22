@@ -1,3 +1,5 @@
+'use strict'
+
 import React from 'react'
 import { useColorScheme } from 'react-native'
 import * as eva from '@eva-design/eva'
@@ -7,6 +9,7 @@ import { AppNavigator } from './screens/AppNavigator'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import darkTheme from './theme/dark.json'
 import lightTheme from './theme/light.json'
+import { ServerUpdater } from './components/util/ServerUpdater'
 
 const queryClient = new QueryClient()
 const getUIKittenTheme = (colorScheme) => {
@@ -25,7 +28,9 @@ export default () => {
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={theme}>
         <QueryClientProvider client={queryClient}>
-          <AppNavigator colorScheme={colorScheme} />
+          <ServerUpdater>
+            <AppNavigator colorScheme={colorScheme} />
+          </ServerUpdater>
         </QueryClientProvider>
       </ApplicationProvider>
     </>

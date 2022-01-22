@@ -25,8 +25,8 @@ export const Home = ({ navigation }) => {
   const createDIS = () => {
     navigation.navigate('CreateDIS')
   }
-  const findDIS = (id) => {
-    navigation.navigate('FindDIS', { id })
+  const findDIS = () => {
+    navigation.navigate('FindDIS')
   }
 
   return (
@@ -53,7 +53,7 @@ export const Home = ({ navigation }) => {
           onPress={findDIS}
           size="small"
           appearance="ghost"
-          status="warning"
+          status="info"
           style={styles.button}
         >
           Hitta upphandlingar

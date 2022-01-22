@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  app:
+    container_name: "upphandling-api"
+    image: upphandling.app/api
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    networks:
+      - nodenet
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - .:/home/node/app
+    environment:
+      - DATABASE_URL=postgres://postgres:${pgpass}@upphandling-postgres:5432/postgres
+      - ROARING_KEY=${roaring_key}
+      - ROARING_SECRET=${roaring_secret}
+
+  postgres:
+    container_name: "upphandling-postgres"
+    image: "postgres:alpine"
+    ports:
+      - "5432:5432"
+    networks:
+      - nodenet
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - $PWD/pg-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${pgpass}
+
+networks:
+  nodenet:
+    name: nodenet

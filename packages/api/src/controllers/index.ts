@@ -8,3 +8,6 @@ export * from './participation.controller';
 export * from './dis-company.controller';
 export * from './company-participation.controller';
 export * from './dis-tender.controller';
+export * from './device.controller';
+export * from './device-notification.controller';
+export * from './notification.controller';

@@ -30,6 +30,7 @@
     "migrate": "node ./dist/migrate",
     "preopenapi-spec": "npm run build",
     "openapi-spec": "node ./dist/openapi-spec",
+    "testpush": "node ./dist/test-notification",
     "prestart": "npm run rebuild",
     "start": "node -r source-map-support/register .",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
@@ -48,27 +49,28 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/boot": "^4.0.0",
-    "@loopback/core": "^3.0.0",
-    "@loopback/repository": "^4.0.0",
-    "@loopback/rest": "^11.0.0",
-    "@loopback/rest-explorer": "^4.0.0",
-    "@loopback/service-proxy": "^4.0.0",
+    "@loopback/boot": "^4.0.1",
+    "@loopback/core": "^3.0.1",
+    "@loopback/repository": "^4.0.1",
+    "@loopback/rest": "^11.0.1",
+    "@loopback/rest-explorer": "^4.0.1",
+    "@loopback/service-proxy": "^4.0.1",
     "cross-fetch": "^3.1.4",
+    "firebase-admin": "^10.0.2",
     "loopback-connector-postgresql": "^5.4.0",
     "moment": "^2.29.1",
     "node-fetch": "^3.1.0",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^8.0.0",
-    "@loopback/eslint-config": "^12.0.0",
-    "@loopback/testlab": "^4.0.0",
+    "@loopback/build": "^8.0.1",
+    "@loopback/eslint-config": "^12.0.1",
+    "@loopback/testlab": "^4.0.1",
     "@types/node": "^10.17.60",
     "@types/node-fetch": "^3.0.3",
-    "eslint": "^7.32.0",
+    "eslint": "^8.6.0",
     "nodemon": "^2.0.15",
-    "source-map-support": "^0.5.20",
-    "typescript": "~4.5.2"
+    "source-map-support": "^0.5.21",
+    "typescript": "~4.5.4"
   }
 }
