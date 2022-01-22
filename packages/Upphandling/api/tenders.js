@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 export const getTenders = async () => {
   const { data } = await axios.get('https://api.upphandling.app/tenders')
   return data

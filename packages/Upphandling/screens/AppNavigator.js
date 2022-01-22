@@ -6,6 +6,7 @@ import {CreateDIS} from './CreateDIS'
 import {DIS} from './DIS'
 import {FindDIS} from './FindDIS'
 import {ApplyDIS} from './ApplyDIS'
+import {CreateTender} from './CreateTender'
 
 const {Navigator, Screen} = createStackNavigator()
 
@@ -19,6 +20,7 @@ const HomeNavigator = () => (
     />
     <Screen name="OpenDIS" component={DIS} options={{title: 'Detaljer'}} />
     <Screen name="ApplyDIS" component={ApplyDIS} options={{title: 'Ansök'}} />
+    <Screen name="CreateTender" component={CreateTender} options={{title: 'Skapa specifik upphandling'}} />
 
     <Screen
       name="FindDIS"

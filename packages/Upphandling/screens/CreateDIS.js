@@ -95,7 +95,7 @@ export const CreateDIS = ({ navigation }) => {
 
     const result = await addDISMutation.mutateAsync(newDis)
     console.log(result)
-    navigation.reset('OpenDIS', { id: result.data.id })
+    navigation.navigate('OpenDIS', { id: result.data.id })
   }
 
   return (
