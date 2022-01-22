@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1069645986831",
+    "project_id": "upphandling-pushes",
+    "storage_bucket": "upphandling-pushes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069645986831:android:f86a7021f5f9758cec377a",
+        "android_client_info": {
+          "package_name": "app.upphandling.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069645986831-7j5vs9bappmkgooirhquam83ppus63c2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGXBsoM43cKE9BuGLB0i1RPX4DkuO5Qzg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069645986831-7j5vs9bappmkgooirhquam83ppus63c2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1069645986831-6homun9kfufnuijdo07r1dutn29ouv7v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.upphandling.ios",
+                "app_store_id": "1605951047"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

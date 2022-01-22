@@ -50,6 +50,15 @@ First make sure you are connected to the correct Kubernetes cluster. This comman
 skaffold run
 ```
 
+## Secrets
+
+In the .secrets folder we need to have these files put in place:
+**It should go without saying, but these files may never be committed to the repo.**
+
+```
+GoogleService-Info.plist # Google Service Keys for ios FCM integration
+```
+
 ## Authors
 
 👤 **Christian Landgren**
