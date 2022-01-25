@@ -6,5 +6,6 @@ export const getTenders = async () => {
 }
 
 export const createTender = (tender) => {
+  console.log('creating tender', tender)
   return axios.post('https://api.upphandling.app/tenders', tender)
 }

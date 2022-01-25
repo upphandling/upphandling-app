@@ -61,7 +61,7 @@ export const CreateTender = ({ navigation, route }) => {
   const createTenderMutation = useMutation(createTender)
 
   const create = async () => {
-    createTenderMutation.mutateAsync({ 
+    const tender = createTenderMutation.mutateAsync({ 
       disId: id,
       issues,
       description,
@@ -71,7 +71,7 @@ export const CreateTender = ({ navigation, route }) => {
       evaluationCriteria,
       startDate,
     })
-    setCompany(company)
+    console.log('got tender', tender)
   }
 
   return (

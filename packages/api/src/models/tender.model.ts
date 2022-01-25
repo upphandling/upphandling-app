@@ -28,25 +28,31 @@ export class Tender extends Entity {
   endDate: string
 
   @property({
-    type: 'string',
+    type: 'array',
+    itemType: 'object',
   })
   issues: string
+
   @property({
     type: 'string',
   })
   description: string
+
   @property({
     type: 'string',
   })
   geography: string
+
   @property({
-    type: 'string',
+    type: 'object',
   })
   services: string
+
   @property({
-    type: 'string',
+    type: 'object',
   })
   technologies: string
+
   @property({
     type: 'string',
   })
