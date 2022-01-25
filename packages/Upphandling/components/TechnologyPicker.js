@@ -9,7 +9,7 @@ import {
 import technologyIcons from '../data/technologies.json'
 import { View } from 'react-native'
 
-export const TechnologyPicker = ({ technologies, onChange }) => {
+export const TechnologyPicker = ({ technologies, onChange, style }) => {
   const [newCompetence, setNewCompetence] = useState()
 
   const onSelect = (index) => {
@@ -27,7 +27,8 @@ export const TechnologyPicker = ({ technologies, onChange }) => {
   return (
     <>
       <Autocomplete
-        placeholder="Teknikkrav"
+        placeholder="Ange nödvändig teknikkompetens"
+        style={style}
         value={newCompetence}
         onSelect={onSelect}
         onChangeText={setNewCompetence}

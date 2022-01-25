@@ -17,52 +17,9 @@ import { createDis } from '../api/dis'
 import { useMutation } from 'react-query'
 import { ServicePicker } from '../components/ServicePicker'
 import { TechnologyPicker } from '../components/TechnologyPicker'
+import { dateService } from '../lib/dateService'
 const CalendarIcon = (props) => <Icon {...props} name="calendar" />
 
-const i18n = {
-  dayNames: {
-    short: ['sö', 'må', 'ti', 'on', 'to', 'fre', 'lö'],
-    long: [
-      'söndag',
-      'måndag',
-      'tisdag',
-      'onsdag',
-      'torsdag',
-      'fredag',
-      'lördag',
-    ],
-  },
-  monthNames: {
-    short: [
-      'jan',
-      'feb',
-      'mar',
-      'apr',
-      'maj',
-      'jun',
-      'jul',
-      'aug',
-      'sep',
-      'okt',
-      'nov',
-      'dec',
-    ],
-    long: [
-      'januari',
-      'februari',
-      'mars',
-      'april',
-      'maj',
-      'juni',
-      'juli',
-      'augusti',
-      'september',
-      'oktokber',
-      'november',
-      'december',
-    ],
-  },
-}
 
 export const CreateDIS = ({ navigation }) => {
   const defaultDate = moment().add(4, 'weeks').startOf('isoWeek').toDate()
@@ -74,11 +31,7 @@ export const CreateDIS = ({ navigation }) => {
   const [services, setServices] = useState({})
   const [technologies, setTechnologies] = useState({})
 
-  const dateService = new NativeDateService('se', {
-    format: 'YYYY-MM-DD',
-    startDayOfWeek: 1,
-    i18n,
-  })
+  
   const addDISMutation = useMutation(createDis)
 
   const create = async () => {
@@ -95,7 +48,7 @@ export const CreateDIS = ({ navigation }) => {
 
     const result = await addDISMutation.mutateAsync(newDis)
     console.log(result)
-    navigation.reset('OpenDIS', { id: result.data.id })
+    navigation.navigate('OpenDIS', { id: result.data.id })
   }
 
   return (
