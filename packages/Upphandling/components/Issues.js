@@ -42,11 +42,11 @@ export const Issues = ({ url, selected, onSelectedChange }) => {
       </Text>
     )
 
-  const toggle = (id, checked) => {
+  const toggle = (issue, checked) => {
     if (checked) {
-      onSelectedChange([...selected, id])
+      onSelectedChange([...selected, issue])
     } else {
-      onSelectedChange(selected.filter((s) => s !== id))
+      onSelectedChange(selected.filter((s) => s.id !== issue.id))
     }
   }
 
@@ -54,7 +54,7 @@ export const Issues = ({ url, selected, onSelectedChange }) => {
     <View style={styles.container}>
       {data.map((issue) => (
         <View style={styles.row}>
-          <CheckBox checked={selected.includes(issue.id)} onChange={(checked) => toggle(issue.id, checked) }/>
+          <CheckBox checked={selected.includes(issue)} onChange={(checked) => toggle(issue, checked) }/>
           <View style={styles.issue} key={issue.id}>
             <Text category="h6">
               #{issue.number} {issue.title}

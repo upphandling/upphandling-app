@@ -9,7 +9,7 @@ import {
 import serviceIcons from '../data/services.json'
 import { View } from 'react-native'
 
-export const ServicePicker = ({ services, onChange }) => {
+export const ServicePicker = ({ services, onChange, style }) => {
   const [newCompetence, setNewCompetence] = useState()
 
   const onSelect = (index) => {
@@ -27,9 +27,10 @@ export const ServicePicker = ({ services, onChange }) => {
   return (
     <>
     <Autocomplete
-        placeholder="Kompetenskrav"
+        placeholder="Ange nödvändig kompetens"
         value={newCompetence}
         onSelect={onSelect}
+        style={style}
         onChangeText={setNewCompetence}
         onBlur={onBlur}
       >

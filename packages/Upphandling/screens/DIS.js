@@ -177,8 +177,8 @@ export const DIS = ({ navigation, route }) => {
       >
         <View style={styles.bottomDrawerContent}>
           <Text category="label" style={styles.footerLabel}>{selected.length} ärenden valda. Gå vidare och skapa upphandling.</Text>
-          <Button onPress={() => navigation.navigate('CreateTender', { id })}>
-            Skapa upphandling
+          <Button onPress={() => navigation.navigate('CreateTender', { id, issues: selected })}>
+            Skapa specifik upphandling
           </Button>
         </View>
       </ActionSheet>
