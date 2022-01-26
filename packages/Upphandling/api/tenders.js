@@ -5,7 +5,11 @@ export const getTenders = async () => {
   return data
 }
 
-export const createTender = (tender) => {
-  console.log('creating tender', tender)
-  return axios.post('https://api.upphandling.app/tenders', tender)
+export const createTender = async (tender) => {
+  console.log('creating tender', JSON.stringify(tender, null, 2))
+  const { data } = await axios.post('https://api.upphandling.app/tenders', tender).catch((error) => { 
+    console.log('error', JSON.stringify(error))
+    throw error
+  })
+  return data
 }

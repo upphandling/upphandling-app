@@ -61,14 +61,14 @@ export const CreateTender = ({ navigation, route }) => {
   const createTenderMutation = useMutation(createTender)
 
   const create = async () => {
-    const tender = createTenderMutation.mutateAsync({ 
+    const tender = await createTenderMutation.mutateAsync({ 
       disId: id,
       issues,
       description,
       geography,
-      services,
-      technologies,
-      evaluationCriteria,
+      services: Object.keys(services),
+      technologies: Object.keys(technologies),
+      evaluationCriteria: evaluationCriteria === 1 ? 'Pris' : 'Erfarenhet',
       startDate,
     })
     console.log('got tender', tender)
@@ -109,7 +109,6 @@ export const CreateTender = ({ navigation, route }) => {
           value={geography}
           onChangeText={setGeography}
         />
-        <Text category={'h6'}>Utvärderingskriterier</Text>
         <RadioGroup
           style={styles.input}
           selectedIndex={evaluationCriteria}
@@ -119,7 +118,7 @@ export const CreateTender = ({ navigation, route }) => {
         </RadioGroup>
 
         <Datepicker
-          label="Ansökan gäller till"
+          label="Ansök senast"
           placeholder="Välj slutdatum"
           style={styles.input}
           dateService={dateService}
@@ -177,6 +176,7 @@ const styles = StyleService.create({
   input: {
     marginHorizontal: 16,
     marginVertical: 8,
+    borderColor: '#561266',
   },
   addButton: {
     marginHorizontal: 16,

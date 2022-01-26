@@ -22,12 +22,6 @@ export class Tender extends Entity {
   disId: string
 
   @property({
-    type: 'date',
-    required: true,
-  })
-  endDate: string
-
-  @property({
     type: 'array',
     itemType: 'object',
   })
@@ -44,12 +38,15 @@ export class Tender extends Entity {
   geography: string
 
   @property({
-    type: 'object',
+    type: 'array',
+    itemType: 'string',
+
   })
   services: string
 
   @property({
-    type: 'object',
+    type: 'array',
+    itemType: 'string',
   })
   technologies: string
 
