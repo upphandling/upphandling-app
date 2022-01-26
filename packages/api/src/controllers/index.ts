@@ -7,3 +7,4 @@ export * from './dis.controller';
 export * from './participation.controller';
 export * from './dis-company.controller';
 export * from './company-participation.controller';
+export * from './dis-tender.controller';

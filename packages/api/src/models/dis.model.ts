@@ -1,6 +1,7 @@
 import { Entity, hasMany, model, property } from '@loopback/repository'
 import { Company } from '.'
 import { Participation } from './participation.model'
+import {Tender} from './tender.model';
 
 @model()
 export class Dis extends Entity {
@@ -63,6 +64,9 @@ export class Dis extends Entity {
 
   @hasMany(() => Company, { through: { model: () => Participation } })
   participatingCompanies: Company[]
+
+  @hasMany(() => Tender)
+  tenders: Tender[];
 
   constructor(data?: Partial<Dis>) {
     super(data)
