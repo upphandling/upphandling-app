@@ -9,17 +9,7 @@ import React from 'react'
 import { View } from 'react-native'
 import { useIssues } from '../hooks/useGithub'
 import { ImageOverlay } from './ImageOverlay'
-
-const tag = (label, index) => (
-  <Button
-    key={index}
-    style={styles.detailItem}
-    appearance="outline"
-    size="small"
-  >
-    {label.name}
-  </Button>
-)
+import { Tag } from './Tag'
 
 export const Issues = ({ url, selected, onSelectedChange }) => {
   if (!url) return <Text>No repo</Text>
@@ -63,7 +53,7 @@ export const Issues = ({ url, selected, onSelectedChange }) => {
               {issue.body}
             </Text>
             <View style={styles.tags}>
-              {issue.labels.map((label, index) => tag(label, index))}
+              {issue.labels.map((label, index) => <Tag key={index}>{label.name}</Tag>)}
             </View>
           </View>
         </View>

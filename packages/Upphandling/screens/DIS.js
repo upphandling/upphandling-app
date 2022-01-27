@@ -18,6 +18,7 @@ import { Issues } from '../components/Issues'
 import moment from 'moment'
 import 'moment/locale/sv'
 import ActionSheet from 'react-native-actions-sheet'
+import { Tenders } from '../components/Tenders'
 moment.locale('sv')
 
 const actionSheetRef = React.createRef()
@@ -105,12 +106,21 @@ export const DIS = ({ navigation, route }) => {
             Ansök
           </Button>
         </Card>
+        {dis.description && (
+          <>
+            <Text style={styles.sectionLabel} category="s1">
+              Beskrivning
+            </Text>
+            <Text style={styles.description} appearance="hint">
+              {dis.description}
+            </Text>
+          </>
+        )}
         <Text style={styles.sectionLabel} category="s1">
-          Beskrivning
+          Specifika upphandlingar
         </Text>
-        <Text style={styles.description} appearance="hint">
-          {dis.description}
-        </Text>
+        <Tenders disId={id} navigation={navigation} />
+
         {dis.repo && (
           <>
             <Text style={styles.sectionLabel} category="s1">
@@ -160,7 +170,9 @@ export const DIS = ({ navigation, route }) => {
           selected={selected}
           onSelectedChange={(selected) => {
             setSelected(selected)
-            !selected.length ? actionSheetRef.current.hide() : actionSheetRef.current.setModalVisible()
+            !selected.length
+              ? actionSheetRef.current.hide()
+              : actionSheetRef.current.setModalVisible()
           }}
         />
       </ScrollView>
@@ -176,8 +188,14 @@ export const DIS = ({ navigation, route }) => {
         bottomOffset={350}
       >
         <View style={styles.bottomDrawerContent}>
-          <Text category="label" style={styles.footerLabel}>{selected.length} ärenden valda. Gå vidare och skapa upphandling.</Text>
-          <Button onPress={() => navigation.navigate('CreateTender', { id, issues: selected })}>
+          <Text category="label" style={styles.footerLabel}>
+            {selected.length} ärenden valda. Gå vidare och skapa upphandling.
+          </Text>
+          <Button
+            onPress={() =>
+              navigation.navigate('CreateTender', { id, issues: selected })
+            }
+          >
             Skapa specifik upphandling
           </Button>
         </View>

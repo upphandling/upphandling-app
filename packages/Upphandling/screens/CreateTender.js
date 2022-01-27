@@ -71,15 +71,13 @@ export const CreateTender = ({ navigation, route }) => {
       evaluationCriteria: evaluationCriteria === 1 ? 'Pris' : 'Erfarenhet',
       startDate,
     })
-    console.log('got tender', tender)
+    navigation.navigate('OpenDIS', { id })
   }
 
   return (
     <KeyboardAvoidingView style={styles.container}>
       <ScrollView
-        level="1"
         style={styles.container}
-        contentContainerStyle={styles.contentContainer}
       >
         <Text category={'h6'}>Beskrivning</Text>
         <Input
@@ -167,10 +165,9 @@ const styles = StyleService.create({
 
   issue: {
     borderColor: '#561266',
-    height: 80,
+    maxHeight: 80,
   },
   container: {
-    flex: 1,
     backgroundColor: '$background-basic-color-2',
   },
   input: {

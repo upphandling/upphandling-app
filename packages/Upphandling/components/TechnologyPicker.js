@@ -2,12 +2,20 @@ import React, { useState } from 'react'
 import {
   Autocomplete,
   AutocompleteItem,
+  Button,
+  ButtonGroup,
   Icon,
+  Layout,
   StyleService,
-  Toggle,
+  Text,
 } from '@ui-kitten/components'
 import technologyIcons from '../data/technologies.json'
 import { View } from 'react-native'
+
+const StarIcon = <Icon name="star" />
+const BulbIcon = <Icon name="bulb" />
+const RemoveIcon = <Icon name="close" />
+const AwardIcon = <Icon name="award" />
 
 export const TechnologyPicker = ({ technologies, onChange, style }) => {
   const [newCompetence, setNewCompetence] = useState()
@@ -42,35 +50,59 @@ export const TechnologyPicker = ({ technologies, onChange, style }) => {
           />
         ))}
       </Autocomplete>
-      <View style={styles.grid}>
+      <Layout style={styles.grid}>
         {Object.entries(technologies)
           .filter(([, val]) => val)
           .map(([key]) => (
-            <Toggle
-              checked={technologies[key]}
-              style={styles.gridItem}
-              onChange={(checked) =>
-                onChange({ ...technologies, [key]: checked })
-              }
-            >
-              {key}
-            </Toggle>
+            <View>
+              <Text>{key}</Text>
+              <ButtonGroup style={styles.gridItem} size="small">
+                <Button
+                  accessoryLeft={RemoveIcon}
+                  onPress={() =>
+                    onChange({ ...technologies, [key]: 0 })
+                  }
+                >{RemoveIcon}</Button>
+                <Button
+                  accessoryLeft={BulbIcon}
+                  appearance={technologies[key] === 5 ? 'filled' : 'outline'}
+                  disabled={technologies[key] === 1}
+                  onPress={() => onChange({ ...technologies, [key]: 1 })}
+                >
+                  1 år
+                </Button>
+                <Button
+                  appearance={technologies[key] === 5 ? 'filled' : 'outline'}
+                  disabled={technologies[key] === 3}
+                  onPress={() => onChange({ ...technologies, [key]: 3 })}
+                >
+                  3 år
+                </Button>
+                <Button
+                  accessoryLeft={AwardIcon}
+                  status="danger"
+                  appearance={technologies[key] === 5 ? 'filled' : 'outline'}
+                  disabled={technologies[key] === 5}
+                  onPress={() => onChange({ ...technologies, [key]: 5 })}
+                >
+                  &gt;5 år
+                </Button>
+              </ButtonGroup>
+            </View>
           ))}
-      </View>
+      </Layout>
     </>
   )
 }
 
 const styles = StyleService.create({
   grid: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    margin: 16,
+    flexDirection: 'column',
+    marginHorizontal: 16,
+    flex: 1,
   },
   gridItem: {
-    justifyContent: 'flex-start',
-    marginVertical: 16,
-    minWidth: '40%',
+    marginVertical: 8,
+    height: 40,
   },
 })
