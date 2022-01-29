@@ -46,9 +46,10 @@ const issue = ({ title, number, body }) => (
 export const OpenTender = ({ navigation, route }) => {
   const { tenderId } = route.params
   const { data, isLoading } = useTender(tenderId)
-  if (isLoading) return <Text>Laddar...</Text>
-  const { data: dis } = useDis(data.disId)
+  const { data: dis } = useDis(data?.disId)
   const createOffer = () => navigation.navigate('CreateOffer', { tenderId })
+
+  if (isLoading) return <Text>Laddar...</Text>
 
   const {
     description,
