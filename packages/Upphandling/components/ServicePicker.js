@@ -38,7 +38,7 @@ export const ServicePicker = ({
   const add = () => {
     if (!newCompetence) return
     onChange({ ...services, [newCompetence]: true })
-    setNewCompetence('')
+    onChangeText('')
   }
 
   return (
@@ -65,7 +65,6 @@ export const ServicePicker = ({
         ref={(ref) => (input.current = ref)}
         onChangeText={onChangeText}
         onPressIn={() => input.current.show()}
-        onFocus={() => input.current.show()}
         accessoryRight={(props) => (
           <Icon {...props} onPress={() => add()} name="plus" />
         )}

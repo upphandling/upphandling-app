@@ -52,6 +52,7 @@ const Tender = ({ tender, onPress }) => {
 
 export const Tenders = ({ navigation, tenders }) => {
 
+  if (!tenders) return <Text>Laddar...</Text>
 
   const goToTender = (tender) => {
     navigation.navigate('OpenTender', { tenderId: tender.id })
@@ -59,7 +60,7 @@ export const Tenders = ({ navigation, tenders }) => {
 
   return (
     <ScrollView style={styles.tenders} horizontal={true}>
-      {tenders.map((tender) => (
+      {tenders?.map((tender) => (
         <Tender key={tender.id} tender={tender} onPress={() => goToTender(tender)} />
       ))}
     </ScrollView>

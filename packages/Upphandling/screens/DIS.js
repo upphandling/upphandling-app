@@ -138,31 +138,7 @@ export const DIS = ({ navigation, route }) => {
             </Button>
           </>
         )}
-        <Text style={styles.sectionLabel} category="s1">
-          Process
-        </Text>
-        <ButtonGroup style={styles.buttonGroup} status="info" size="small">
-          <Button
-            accessoryLeft={<Icon name="alert-triangle" />}
-            style={styles.processStep}
-          >
-            Annonsera
-          </Button>
-          <Button
-            disabled={true}
-            accessoryLeft={<Icon name="star" />}
-            style={styles.processStep}
-          >
-            Tilldela
-          </Button>
-          <Button
-            disabled={true}
-            accessoryLeft={<Icon name="briefcase" />}
-            style={styles.processStep}
-          >
-            Startad
-          </Button>
-        </ButtonGroup>
+        
         <Text style={styles.sectionLabel} category="s1">
           Aktiva ärenden. {selected.length} valda.
         </Text>
