@@ -83,7 +83,7 @@ const styles = StyleService.create({
     borderRadius: 16,
   },
   body: {
-    overflow: '',
+    // overflow: '', //ILLEGAL!
     maxHeight: 100,
   },
 })
