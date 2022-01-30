@@ -25,6 +25,7 @@
     "react-native-actions-sheet": "^0.5.8",
     "react-native-gesture-handler": "^2.1.0",
     "react-native-safe-area-context": "^3.3.2",
+    "react-native-skeleton-content": "^1.0.24",
     "react-native-svg": "^12.1.1",
     "react-query": "^3.34.7",
     "se-orgnr-validator": "^1.0.3"

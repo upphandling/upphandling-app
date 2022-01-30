@@ -11,7 +11,9 @@ import {
   Button,
   CheckBox,
   Divider,
+  Icon,
   Input,
+  ListItem,
   StyleService,
   Text,
   Toggle,
@@ -27,6 +29,23 @@ import { useCompany } from '../hooks/useCompanies'
 import { createOffer } from '../api/offers'
 import { getCompanyFromId } from '../api/companies'
 
+const ellipse = (text, maxLength) => {
+  if (text.length > maxLength) {
+    return `${text.substr(0, maxLength - 3)}...`
+  }
+  return text
+}
+
+const Issue = ({ issue: { title, number, body } }) => (
+  <ListItem
+    key={number}
+    style={styles.issue}
+    accessoryLeft={() => <Icon name="flag-outline" style={styles.icon} />}
+    title={`#${number} ${title}`}
+    description={`${ellipse(body, 100)}`}
+  />
+)
+
 export const CreateOffer = ({ navigation, route }) => {
   const { tenderId } = route.params
   const [orgnr, setOrgnr] = useState()
@@ -34,16 +53,14 @@ export const CreateOffer = ({ navigation, route }) => {
   const { data: dis, isLoading: isLoadingDis } = useDis(tender?.disId)
   const [company, setCompany] = useState()
   const [description, setDescription] = useState()
-  const [website, setWebsite] = useState(company?.website)
   const [services, setServices] = useState({})
-  const [technologies, setTechnologies] = useState({})
+  const [technologies, setTechnologies] = useState(tender.technologies)
   const [reference, setReference] = useState()
 
   if (isLoading) return <Text>Loading...</Text>
 
   const [valid, setValid] = useState(false)
   const [agree, setAgree] = useState(false)
-
 
   useMemo(async () => {
     if (!checkOrgnr(orgnr)) {
@@ -55,15 +72,13 @@ export const CreateOffer = ({ navigation, route }) => {
     setCompany(found)
   }, [orgnr])
 
-
   const createOfferMutation = useMutation(createOffer)
 
   const apply = async () => {
     if (!checkOrgnr(orgnr) || !agree) return setValid(false)
-    /*const company = (await getCompanyFromId(orgnr)) || (await createCompanyMutation.mutateAsync({ id: orgnr, description, website }))
+    /*const company = (await getCompanyFromId(orgnr)) || (await createCompanyMutation.mutateAsync({ id: orgnr, description, reference }))
     const participation = await createParticipationMutation.mutateAsync({disId: id, companyId: company.id})
 */
-    setCompany(company)
   }
 
   return (
@@ -78,36 +93,47 @@ export const CreateOffer = ({ navigation, route }) => {
           style={styles.image}
         />
 
-        <Text category='h2' style={styles.title}>{tender.description}</Text>
-        <Text style={styles.info}>{dis?.organisation }</Text>
+        <Text category="h2" style={styles.title}>
+          {tender.description}
+        </Text>
+        <Text category={'h2'}>{dis?.organisation}</Text>
         <Divider />
 
-        <Input
-          style={styles.input}
-          label="Organisationsnummer"
-          placeholder="Ert organisationsnr"
-          value={orgnr}
-          onChangeText={setOrgnr}
-        />
-        {orgnr && company && <CompanyDetails company={company} />}
-
-        {dis?.technologies?.map((technology, index) => (
-          <CheckBox
-            key={index}
-            style={styles.checkbox}
-            checked={technologies[technology.id]}
-            onChange={() =>
-              setTechnologies({
-                ...technologies,
-                [technology.id]: !technologies[technology.id],
-              })
-            }
-          >
-            <Text>{technology.name}</Text>
-          </CheckBox>
-        ))}
+        <ScrollView horizontal={true} style={styles.issues}>
+          {tender.issues.map((issue) => (
+            <Issue issue={issue} />
+          ))}
+        </ScrollView>
         <Divider />
+        <Text category="h6">Vi erbjuder följande kompetenser:</Text>
 
+        <View style={styles.toggles}>
+          {tender.technologies?.map((technology, i) => (
+            <View style={styles.row} key={i}>
+              <Toggle
+                checked={technologies[technology]}
+                style={styles.toggle}
+                status={technologies[technology] ? 'success' : 'primary'}
+                onChange={(checked) =>
+                  setTechnologies({ ...technologies, [technology]: checked })
+                }
+              >
+                {technology}
+              </Toggle>
+              {technologies[technology] && (
+                <Input
+                  value={services[technology]}
+                  style={styles.price}
+                  placeholder={'Timpris'}
+                  accessoryRight={() => <Text style={styles.currency}>SEK</Text>}
+                  onChangeText={(text) =>
+                    setServices({ ...services, [technology]: text })
+                  }
+                />
+              )}
+            </View>
+          ))}
+        </View>
         <Input
           multiline={true}
           style={styles.input}
@@ -118,14 +144,17 @@ export const CreateOffer = ({ navigation, route }) => {
           value={description}
           onChangeText={setDescription}
         />
-        <Text category="s2" style={styles.info}>{description?.length || 0}/1000. Tips: försök att beskriva ert arbetssätt, inte exakt hur ni kommer lösa uppgiften.</Text>
+        <Text category="s2" style={styles.info}>
+          {description?.length || 0}/1000. Tips: försök att beskriva ert
+          arbetssätt, inte exakt hur ni kommer lösa uppgiften.
+        </Text>
 
         <Input
           style={styles.input}
           label="Referens"
           placeholder="https://www.example.com"
-          value={website}
-          onChangeText={(val) => setWebsite(val.toLocaleLowerCase())}
+          value={reference}
+          onChangeText={(val) => setReference(val.toLocaleLowerCase())}
         />
         <Text category="s2" style={styles.info}>
           Referens till liknande arbete som ditt företag har genomfört de
@@ -133,30 +162,15 @@ export const CreateOffer = ({ navigation, route }) => {
           bedömas tillsammans med priset och övriga kriterier.
         </Text>
 
-        {tender.services?.length ? (
-          <View>
-            <Text category="s2" style={styles.info}>
-              Tilldelningskriterier
-            </Text>
+        <Input
+          style={styles.input}
+          label="Organisationsnummer"
+          placeholder="Ert organisationsnr"
+          value={orgnr}
+          onChangeText={setOrgnr}
+        />
+        {orgnr && company && <CompanyDetails company={company} />}
 
-            <View style={styles.toggles}>
-              {tender.services?.map((service, i) => (
-                <Toggle
-                  checked={services[service]}
-                  style={styles.toggle}
-                  status={services[service] ? 'success' : 'primary'}
-                  key={i}
-                  onChange={(checked) =>
-                    setServices({ ...services, [service]: checked })
-                  }
-                >
-                  {service}
-                </Toggle>
-              ))}
-            </View>
-          </View>
-        ) : null}
-        <Divider />
         <View style={styles.footer}>
           <CheckBox
             checked={agree}
@@ -170,11 +184,14 @@ export const CreateOffer = ({ navigation, route }) => {
             size="giant"
             disabled={!valid || !agree}
             style={styles.addButton}
-          >Lämna in anbud</Button>
+          >
+            Lämna in anbud
+          </Button>
           <Text category="s2" style={styles.info}>
             När du anbudstiden är passerad{' '}
-            {moment(tender.startDate).format('YYYY-MM-DD')} ({moment(tender.startDate).calendar()}) kommer du få ett
-            mail med en bekräftelse. Du kan även kontakta oss på{' '}
+            {moment(tender.startDate).format('YYYY-MM-DD')} (
+            {moment(tender.startDate).calendar()}) kommer du få ett mail med en
+            bekräftelse. Du kan även kontakta oss på{' '}
             <Button
               appearance="ghost"
               size="tiny"
@@ -196,29 +213,54 @@ const styles = StyleService.create({
   container: {
     flex: 1,
     backgroundColor: 'background-basic-color-2',
+
   },
   imageContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
-  toggles: {
-    justifyContent: 'space-between',
+  row: {
+    display: 'flex',
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
     marginHorizontal: 16,
+    marginVertical: 16,
+    height: 50,
+  },
+  toggles: {
+  },
+  price: {
+    width: 150
   },
   toggle: {
+    margin: 0,
+    flex: 1,
+    flexGrow: 1,
     justifyContent: 'flex-start',
-    marginVertical: 16,
-    minWidth: '40%',
   },
   image: {
     flex: 1,
     minHeight: 350,
     marginTop: -190,
   },
+  issue: {
+    marginHorizontal: 16,
+    marginVertical: 8,
+    height: 200,
+    width: 300,
+    overflow: 'hidden',
+    padding: 8,
+  },
+  issueBody: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   input: {
+    borderColor: '#eee',
     marginHorizontal: 16,
     marginVertical: 8,
   },
@@ -237,5 +279,10 @@ const styles = StyleService.create({
   doneButton: {
     marginHorizontal: 24,
     marginTop: 24,
+  },
+  icon: {
+    fill: '#fff',
+    width: 34,
+    height: 34,
   },
 })

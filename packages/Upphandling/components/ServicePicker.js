@@ -66,7 +66,7 @@ export const ServicePicker = ({
         onChangeText={onChangeText}
         onPressIn={() => input.current.show()}
         accessoryRight={(props) => (
-          <Icon {...props} onPress={() => add()} name="plus" />
+          newCompetence ? <Icon {...props} onPress={() => add()} name="plus" /> : null
         )}
       >
         {Object.entries(data).map(([title, icon], i) => (

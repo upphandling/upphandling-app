@@ -27,20 +27,20 @@ import {
   Toggle,
 } from '@ui-kitten/components'
 import { useDis } from '../hooks/useDis'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { createTender } from '../api/tenders'
 import { TechnologyPicker } from '../components/TechnologyPicker'
 import { ServicePicker } from '../components/ServicePicker'
 import moment from 'moment'
 import { dateService } from '../lib/dateService'
-import evaluationCriterias from '../data/evaluationCriterias'
+import initialCriterias from '../data/evaluationCriterias'
 import { getCompanyFromId } from '../api/companies'
 
-const Issue = ({item: { title, number, body }}) => (
+const Issue = ({ item: { title, number, body } }) => (
   <ListItem
     key={number}
     style={styles.issue}
-    accessoryLeft={() => <Icon name='flag-outline' style={styles.icon}/>}
+    accessoryLeft={() => <Icon name="flag-outline" style={styles.icon} />}
     title={`#${number} ${title}`}
     description={`${body}`}
   />
@@ -58,31 +58,43 @@ export const CreateTender = ({ navigation, route }) => {
   const [services, setServices] = useState(dis.services)
   const [technologies, setTechnologies] = useState({})
   const [evaluationCriteria, setEvaluationCriteria] = useState('')
-  const [startDate, setStartDate] = useState(moment().add(6,'days').endOf('day').subtract(1, 'minute').toDate())
+  const [evaluationCriterias, setEvaluationCriterias] =
+    useState(initialCriterias)
+  const [startDate, setStartDate] = useState(
+    moment().add(6, 'days').endOf('day').subtract(1, 'minute').toDate()
+  )
 
   if (isLoading) return <Text>Loading...</Text>
 
   const createTenderMutation = useMutation(createTender)
+  const queryClient = useQueryClient()
 
   const create = async () => {
-    const tender = await createTenderMutation.mutateAsync({ 
-      disId: id,
-      issues,
-      description,
-      geography,
-      services: Object.keys(services),
-      technologies: Object.keys(technologies),
-      evaluationCriteria: evaluationCriterias[evaluationCriteria],
-      startDate,
-    })
+    const tender = await createTenderMutation.mutateAsync(
+      {
+        disId: id,
+        issues,
+        description,
+        geography,
+        services: Object.keys(services),
+        technologies: Object.entries(technologies).map(
+          ([key, value]) => `${key} (>${value} år)`
+        ),
+        evaluationCriteria: evaluationCriterias[evaluationCriteria],
+        startDate,
+      },
+      {
+        onSuccess: (data) => {
+          queryClient.setQueryData(['tender', data.id], data)
+        },
+      }
+    )
     navigation.navigate('OpenDIS', { id })
   }
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <ScrollView
-        style={styles.container}
-      >
+      <ScrollView style={styles.container}>
         <Text category={'h6'}>Beskrivning</Text>
         <Input
           multiline={true}
@@ -93,15 +105,25 @@ export const CreateTender = ({ navigation, route }) => {
           value={description}
           onChangeText={setDescription}
         />
+        <Divider />
+
         <Text category={'h6'}>Inkluderade uppgifter</Text>
         <View style={styles.issues}>
-          {issues.map((item, i) => <Issue item={item} key={i} />)}
+          {issues.map((item, i) => (
+            <Issue item={item} key={i} />
+          ))}
         </View>
-        <Text category={'h6'}>Allmänna krav</Text>
+        <Text category={'h6'}>Krav på leverantören</Text>
 
-        <ServicePicker style={styles.input} placeholder="Krav på erbjudna tjänster" onChange={setServices} services={services} />
+        <ServicePicker
+          style={styles.input}
+          placeholder="Krav på erbjudna tjänster"
+          onChange={setServices}
+          services={services}
+        />
         <TechnologyPicker
           style={styles.input}
+          placeholder="Krav på erbjudna kompetenser"
           onChange={setTechnologies}
           technologies={technologies}
         />
@@ -120,21 +142,16 @@ export const CreateTender = ({ navigation, route }) => {
           onSelect={setStartDate}
           accessoryRight={CalendarIcon}
         />
+        <Divider />
         <Text category={'h6'}>Utvärderingskriterier</Text>
         <RadioGroup
           style={styles.input}
           selectedIndex={evaluationCriteria}
-          onChange={index => setEvaluationCriteria(index)}>
-            {evaluationCriterias.map((criteria, i) => (
-              <View key={i} style={styles.row}>
-                <Radio >{criteria}</Radio>
-                <Select style={styles.select}>
-                  <SelectItem title='Mycket viktigt'/>
-                  <SelectItem title='Viktigt'/>
-                  <SelectItem title='Oviktigt'/>
-                </Select>
-              </View>
-            ))}
+          onChange={(index) => setEvaluationCriteria(index)}
+        >
+          {initialCriterias.map((criteria, i) => (
+            <Radio>{criteria}</Radio>
+          ))}
         </RadioGroup>
 
         <Datepicker
@@ -153,7 +170,7 @@ export const CreateTender = ({ navigation, route }) => {
             style={styles.input}
             onChange={(checked) => setAgree(checked)}
           >
-            <Text>Jag accepterar villkoren för upphandlingen</Text>
+            <Text>Jag har mandat att genomföra denna upphandling</Text>
           </CheckBox>
           <Button
             onPress={create}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import {
   Autocomplete,
   AutocompleteItem,
@@ -17,8 +17,10 @@ const BulbIcon = <Icon name="bulb" />
 const RemoveIcon = <Icon name="close" />
 const AwardIcon = <Icon name="award" />
 
-export const TechnologyPicker = ({ technologies, onChange, style }) => {
+export const TechnologyPicker = ({ technologies, placeholder, onChange, style }) => {
   const [newCompetence, setNewCompetence] = useState()
+
+  const input = useRef()
 
   const onSelect = (index) => {
     const selected = Object.keys(technologyIcons)[index]
@@ -26,7 +28,7 @@ export const TechnologyPicker = ({ technologies, onChange, style }) => {
     setNewCompetence('')
   }
 
-  const onBlur = () => {
+  const add = () => {
     if (!newCompetence) return
     onChange({ ...technologies, [newCompetence]: true })
     setNewCompetence('')
@@ -34,22 +36,6 @@ export const TechnologyPicker = ({ technologies, onChange, style }) => {
 
   return (
     <>
-      <Autocomplete
-        placeholder="Ange nödvändig teknikkompetens"
-        style={style}
-        value={newCompetence}
-        onSelect={onSelect}
-        onChangeText={setNewCompetence}
-        onBlur={onBlur}
-      >
-        {Object.entries(technologyIcons).map(([title, icon], i) => (
-          <AutocompleteItem
-            accessoryLeft={<Icon name={icon} />}
-            key={i}
-            title={title}
-          />
-        ))}
-      </Autocomplete>
       <Layout style={styles.grid}>
         {Object.entries(technologies)
           .filter(([, val]) => val)
@@ -91,6 +77,27 @@ export const TechnologyPicker = ({ technologies, onChange, style }) => {
             </View>
           ))}
       </Layout>
+      <Autocomplete
+        placeholder={placeholder}
+        style={style}
+        value={newCompetence}
+        onSelect={onSelect}
+        accessoryRight={(props) => (
+          newCompetence ? <Icon {...props} onPress={() => add()} name="plus" /> : null
+        )}
+
+        ref={(ref) => (input.current = ref)}
+        onPressIn={() => input.current.show()}
+        onChangeText={setNewCompetence}
+      >
+        {Object.entries(technologyIcons).map(([title, icon], i) => (
+          <AutocompleteItem
+            accessoryLeft={<Icon name={icon} />}
+            key={i}
+            title={title}
+          />
+        ))}
+      </Autocomplete>
     </>
   )
 }

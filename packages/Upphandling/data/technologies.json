@@ -1,11 +1,11 @@
 {
   "React": "arrowhead-right",
-  "App": "sun-outline",
+  "Native apputveckling": "sun-outline",
   "Frontend": "cube-outline",
-  "Backend": "globe",
-  "UX": "color-palette",
-  "Kubernetes": "person-done",
-  "Java": "person-done",
-  "JavaScript": "person-done",
-  ".NET": "people"
+  "Backend C#": "globe",
+  "Backend NodeJs": "globe",
+  "Backend Java": "globe",
+  "UX-research": "color-palette",
+  "UX-design": "color-palette",
+  "Kubernetes": "person-done"
 }

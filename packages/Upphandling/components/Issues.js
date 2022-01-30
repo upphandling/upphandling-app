@@ -43,7 +43,7 @@ export const Issues = ({ url, selected, onSelectedChange }) => {
   return (
     <View style={styles.container}>
       {data.map((issue) => (
-        <View style={styles.row}>
+        <View key={issue.id} style={styles.row}>
           <CheckBox checked={selected.includes(issue)} onChange={(checked) => toggle(issue, checked) }/>
           <View style={styles.issue} key={issue.id}>
             <Text category="h6">
