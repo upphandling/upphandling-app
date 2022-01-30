@@ -1,13 +1,15 @@
 {
   "Underhåll": "arrowhead-right",
-  "Ny": "sun-outline",
-  "Utveckling": "cube-outline",
-  "Översättning": "globe",
-  "Design": "color-palette",
+  "Arkitektur": "arrowhead-right",
+  "Webbutveckling": "sun-outline",
+  "Apputveckling": "cube-outline",
+  "Översättningstjänster": "globe",
+  "Designtjänster": "color-palette",
+  "Kommunikation och PR": "color-palette",
   "Produktdesign": "color-palette",
-  "Produktägare": "color-palette",
+  "Ledarskapsutveckling": "color-palette",
+  "Organisationsutveckling": "color-palette",
   "Agil coach": "color-palette",
-  "Strateg": "color-palette",
-  "UX": "person-done",
-  "Team": "people"
+  "Strategirådgivning": "color-palette",
+  "Autonoma team": "people"
 }

@@ -20,6 +20,8 @@ import {
   ListItem,
   Radio,
   RadioGroup,
+  Select,
+  SelectItem,
   StyleService,
   Text,
   Toggle,
@@ -31,8 +33,10 @@ import { TechnologyPicker } from '../components/TechnologyPicker'
 import { ServicePicker } from '../components/ServicePicker'
 import moment from 'moment'
 import { dateService } from '../lib/dateService'
+import evaluationCriterias from '../data/evaluationCriterias'
+import { getCompanyFromId } from '../api/companies'
 
-const issue = ({ title, number, body }) => (
+const Issue = ({item: { title, number, body }}) => (
   <ListItem
     key={number}
     style={styles.issue}
@@ -54,7 +58,7 @@ export const CreateTender = ({ navigation, route }) => {
   const [services, setServices] = useState(dis.services)
   const [technologies, setTechnologies] = useState({})
   const [evaluationCriteria, setEvaluationCriteria] = useState('')
-  const [startDate, setStartDate] = useState(moment().add(6,'days').toDate())
+  const [startDate, setStartDate] = useState(moment().add(6,'days').endOf('day').subtract(1, 'minute').toDate())
 
   if (isLoading) return <Text>Loading...</Text>
 
@@ -68,7 +72,7 @@ export const CreateTender = ({ navigation, route }) => {
       geography,
       services: Object.keys(services),
       technologies: Object.keys(technologies),
-      evaluationCriteria: evaluationCriteria === 1 ? 'Pris' : 'Erfarenhet',
+      evaluationCriteria: evaluationCriterias[evaluationCriteria],
       startDate,
     })
     navigation.navigate('OpenDIS', { id })
@@ -91,11 +95,11 @@ export const CreateTender = ({ navigation, route }) => {
         />
         <Text category={'h6'}>Inkluderade uppgifter</Text>
         <View style={styles.issues}>
-          {issues.map(item => issue(item))}
+          {issues.map((item, i) => <Issue item={item} key={i} />)}
         </View>
         <Text category={'h6'}>Allmänna krav</Text>
 
-        <ServicePicker style={styles.input} onChange={setServices} services={services} />
+        <ServicePicker style={styles.input} placeholder="Krav på erbjudna tjänster" onChange={setServices} services={services} />
         <TechnologyPicker
           style={styles.input}
           onChange={setTechnologies}
@@ -107,12 +111,30 @@ export const CreateTender = ({ navigation, route }) => {
           value={geography}
           onChangeText={setGeography}
         />
+        <Datepicker
+          label="Startdatum"
+          placeholder="Välj slutdatum"
+          style={styles.input}
+          dateService={dateService}
+          date={startDate}
+          onSelect={setStartDate}
+          accessoryRight={CalendarIcon}
+        />
+        <Text category={'h6'}>Utvärderingskriterier</Text>
         <RadioGroup
           style={styles.input}
           selectedIndex={evaluationCriteria}
           onChange={index => setEvaluationCriteria(index)}>
-          <Radio>Visad erfarenhet</Radio>
-          <Radio>Pris</Radio>
+            {evaluationCriterias.map((criteria, i) => (
+              <View key={i} style={styles.row}>
+                <Radio >{criteria}</Radio>
+                <Select style={styles.select}>
+                  <SelectItem title='Mycket viktigt'/>
+                  <SelectItem title='Viktigt'/>
+                  <SelectItem title='Oviktigt'/>
+                </Select>
+              </View>
+            ))}
         </RadioGroup>
 
         <Datepicker
@@ -162,6 +184,13 @@ const styles = StyleService.create({
   issues: {
     marginVertical: 16,
   },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  select: {
+    width: 150,
+  },
 
   issue: {
     borderColor: '#561266',
@@ -174,6 +203,7 @@ const styles = StyleService.create({
     marginHorizontal: 16,
     marginVertical: 8,
     borderColor: '#561266',
+    flex: 5,
   },
   addButton: {
     marginHorizontal: 16,

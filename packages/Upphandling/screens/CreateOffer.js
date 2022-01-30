@@ -18,44 +18,51 @@ import {
 } from '@ui-kitten/components'
 import { useDis } from '../hooks/useDis'
 import { useMutation } from 'react-query'
-import { createCompany, getCompanyFromId } from '../api/companies'
 import checkOrgnr from 'se-orgnr-validator'
 import { CompanyDetails } from '../components/CompanyDetails'
 import moment from 'moment'
 import { createParticipation } from '../api/participation'
+import { useTender } from '../hooks/useTenders'
+import { useCompany } from '../hooks/useCompanies'
+import { createOffer } from '../api/offers'
+import { getCompanyFromId } from '../api/companies'
 
-export const ApplyDIS = ({ navigation, route }) => {
-  const { id } = route.params
-  const { data: dis, isLoading } = useDis(id)
-
-  if (isLoading) return <Text>Loading...</Text>
-
+export const CreateOffer = ({ navigation, route }) => {
+  const { tenderId } = route.params
   const [orgnr, setOrgnr] = useState()
+  const { data: tender, isLoading } = useTender(tenderId)
+  const { data: dis, isLoading: isLoadingDis } = useDis(tender?.disId)
+  const [company, setCompany] = useState()
   const [description, setDescription] = useState()
   const [website, setWebsite] = useState(company?.website)
   const [services, setServices] = useState({})
   const [technologies, setTechnologies] = useState({})
-  const [company, setCompany] = useState()
+  const [reference, setReference] = useState()
+
+  if (isLoading) return <Text>Loading...</Text>
+
   const [valid, setValid] = useState(false)
   const [agree, setAgree] = useState(false)
 
-  const createCompanyMutation = useMutation(createCompany)
-  const createParticipationMutation = useMutation(createParticipation)
 
   useMemo(async () => {
-    if (!checkOrgnr(orgnr)) return setValid(false)
+    if (!checkOrgnr(orgnr)) {
+      setCompany(undefined)
+      return setValid(false)
+    }
     setValid(true)
     const found = await getCompanyFromId(orgnr)
-    console.log('got copmany', found)
     setCompany(found)
   }, [orgnr])
 
+
+  const createOfferMutation = useMutation(createOffer)
+
   const apply = async () => {
     if (!checkOrgnr(orgnr) || !agree) return setValid(false)
-    const company = (await getCompanyFromId(orgnr)) || (await createCompanyMutation.mutateAsync({ id: orgnr, description, website }))
+    /*const company = (await getCompanyFromId(orgnr)) || (await createCompanyMutation.mutateAsync({ id: orgnr, description, website }))
     const participation = await createParticipationMutation.mutateAsync({disId: id, companyId: company.id})
-
-    console.log('got company and participation', company, participation)
+*/
     setCompany(company)
   }
 
@@ -67,9 +74,13 @@ export const ApplyDIS = ({ navigation, route }) => {
         contentContainerStyle={styles.contentContainer}
       >
         <ImageBackground
-          source={require('../assets/mail-dynamic-gradient.png')}
+          source={require('../assets/locker-dynamic-color.png')}
           style={styles.image}
         />
+
+        <Text category='h2' style={styles.title}>{tender.description}</Text>
+        <Text style={styles.info}>{dis?.organisation }</Text>
+        <Divider />
 
         <Input
           style={styles.input}
@@ -78,7 +89,7 @@ export const ApplyDIS = ({ navigation, route }) => {
           value={orgnr}
           onChangeText={setOrgnr}
         />
-        {valid && company ? <CompanyDetails company={company} /> : null}
+        {orgnr && company && <CompanyDetails company={company} />}
 
         {dis?.technologies?.map((technology, index) => (
           <CheckBox
@@ -96,30 +107,40 @@ export const ApplyDIS = ({ navigation, route }) => {
           </CheckBox>
         ))}
         <Divider />
+
+        <Input
+          multiline={true}
+          style={styles.input}
+          textStyle={{ minHeight: 200 }}
+          maxLength={1000}
+          label="Beskrivning av anbud. (Max 1 000 tecken)"
+          placeholder="Detta är en beskrivning av ert anbud."
+          value={description}
+          onChangeText={setDescription}
+        />
+        <Text category="s2" style={styles.info}>{description?.length || 0}/1000. Tips: försök att beskriva ert arbetssätt, inte exakt hur ni kommer lösa uppgiften.</Text>
+
         <Input
           style={styles.input}
-          label="Hemsida"
+          label="Referens"
           placeholder="https://www.example.com"
           value={website}
           onChangeText={(val) => setWebsite(val.toLocaleLowerCase())}
         />
-        <Input
-          multiline={true}
-          style={styles.input}
-          textStyle={{ minHeight: 64 }}
-          label="Beskrivning av ert företag"
-          placeholder="Beskrivning"
-          value={description}
-          onChangeText={setDescription}
-        />
-        {dis.services?.length ? (
+        <Text category="s2" style={styles.info}>
+          Referens till liknande arbete som ditt företag har genomfört de
+          senaste två åren av de personer som ska utföra arbetet. Detta kommer
+          bedömas tillsammans med priset och övriga kriterier.
+        </Text>
+
+        {tender.services?.length ? (
           <View>
             <Text category="s2" style={styles.info}>
-              Efterfrågade tjänster som ni erbjuder
+              Tilldelningskriterier
             </Text>
 
             <View style={styles.toggles}>
-              {dis.services?.map((service, i) => (
+              {tender.services?.map((service, i) => (
                 <Toggle
                   checked={services[service]}
                   style={styles.toggle}
@@ -137,20 +158,28 @@ export const ApplyDIS = ({ navigation, route }) => {
         ) : null}
         <Divider />
         <View style={styles.footer}>
-          <CheckBox checked={agree} style={styles.input} onChange={(checked) => setAgree(checked)}>
-            <Text>Jag lovar att mina uppgifter stämmer med mina rättsliga uppgifter (ESPD)</Text>
+          <CheckBox
+            checked={agree}
+            style={styles.input}
+            onChange={(checked) => setAgree(checked)}
+          >
+            <Text>Jag är behörig firmatecknare för mitt företag</Text>
           </CheckBox>
           <Button
             onPress={apply}
             size="giant"
-            disabled={!valid}
+            disabled={!valid || !agree}
             style={styles.addButton}
-          >
-            {createCompanyMutation.isLoading ? 'Skapar företag...' : 'Ansök'}
-          </Button>
+          >Lämna in anbud</Button>
           <Text category="s2" style={styles.info}>
-            När du ansökt kommer du få ett mail när du godkänts som leverantör
-            senast {moment(dis.startDate).format('YYYY-MM-DD')}
+            När du anbudstiden är passerad{' '}
+            {moment(tender.startDate).format('YYYY-MM-DD')} ({moment(tender.startDate).calendar()}) kommer du få ett
+            mail med en bekräftelse. Du kan även kontakta oss på{' '}
+            <Button
+              appearance="ghost"
+              size="tiny"
+              onPress={() => Linking.openURL('mailto:{dis.email}')}
+            >{`${dis.email}`}</Button>
           </Text>
         </View>
       </ScrollView>
@@ -198,6 +227,7 @@ const styles = StyleService.create({
     marginTop: 24,
   },
   info: {
+    color: '#999',
     marginHorizontal: 16,
     marginVertical: 16,
   },

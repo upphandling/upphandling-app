@@ -19,6 +19,7 @@ import moment from 'moment'
 import 'moment/locale/sv'
 import ActionSheet from 'react-native-actions-sheet'
 import { Tenders } from '../components/Tenders'
+import { useTenders } from '../hooks/useTenders'
 moment.locale('sv')
 
 const actionSheetRef = React.createRef()
@@ -28,6 +29,7 @@ export const DIS = ({ navigation, route }) => {
   console.log('finding dis', id)
   const { status, data: dis, error, isFetching } = useDis(id)
   const [selected, setSelected] = useState([])
+  const { data: tenders } = useTenders(id)
 
   if (isFetching) return <Text>Loading...</Text>
   if (error) return <Text>Error loading dis: {error.message}</Text>
@@ -71,7 +73,7 @@ export const DIS = ({ navigation, route }) => {
         {dis.services?.map(renderOptionItem)}
       </View>
       <ScrollView style={styles.detailsList} horizontal={true}>
-        {dis.tech?.map(renderDetailItem)}
+        {dis.technologies?.map(renderDetailItem)}
       </ScrollView>
     </View>
   )
@@ -119,7 +121,7 @@ export const DIS = ({ navigation, route }) => {
         <Text style={styles.sectionLabel} category="s1">
           Specifika upphandlingar
         </Text>
-        <Tenders disId={id} navigation={navigation} />
+        <Tenders tenders={tenders} navigation={navigation} />
 
         {dis.repo && (
           <>
@@ -225,7 +227,7 @@ const themedStyles = StyleService.create({
   },
   footerLabel: {
     marginBottom: 16,
-    color: 'inverted-text-basic-color',
+    color: '#333',
   },
   priceLabel: {
     marginTop: 8,

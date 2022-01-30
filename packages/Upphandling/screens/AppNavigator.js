@@ -8,6 +8,7 @@ import { FindDIS } from './FindDIS'
 import { ApplyDIS } from './ApplyDIS'
 import { CreateTender } from './CreateTender'
 import { OpenTender } from './OpenTender'
+import { CreateOffer } from './CreateOffer'
 
 const { Navigator, Screen } = createStackNavigator()
 
@@ -34,6 +35,12 @@ const HomeNavigator = () => (
       name="OpenTender"
       component={OpenTender}
       options={{ title: 'Specifik upphandling' }}
+    />
+
+    <Screen
+      name="CreateOffer"
+      component={CreateOffer}
+      options={{ title: 'Lämna anbud' }}
     />
 
     <Screen

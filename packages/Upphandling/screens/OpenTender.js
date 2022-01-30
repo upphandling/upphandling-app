@@ -65,8 +65,8 @@ export const OpenTender = ({ navigation, route }) => {
     <KeyboardAvoidingView style={styles.container}>
       <ScrollView style={styles.container}>
         <Text category='h2' style={styles.title}>{description}</Text>
+        <Text style={styles.info}>{dis?.organisation }</Text>
         <Divider />
-        <Text>{dis.organisation }</Text>
 
         <Field label="Krav på erbjudna tjänster">
           {services.map((s) => (
@@ -133,7 +133,6 @@ const styles = StyleService.create({
     marginTop: 24,
   },
   info: {
-    color: '#999',
     marginHorizontal: 16,
     marginVertical: 16,
   },

@@ -7,9 +7,9 @@ import {
   Text,
 } from '@ui-kitten/components'
 
-export const Tag = ({children}) => (
+export const Tag = ({children, style}) => (
   <Button
-    style={styles.tag}
+    style={[styles.tag, style]}
     appearance="outline"
     size="tiny"
   >

@@ -1,19 +1,13 @@
 import React from 'react'
 import {StyleSheet, View} from 'react-native'
-import {Text} from '@ui-kitten/components'
+import {Card, Text} from '@ui-kitten/components'
 import { Field } from './Field'
 
 export const CompanyDetails = ({company}) => (
-  <View style={styles.container}>
+  <Card style={styles.container} appearance="outline" status={"danger"}>
     <Text style={styles.field} category="h6">
-      Företagsinformation
+      {company?.name}
     </Text>
-    <Field
-      label="Företagsnamn"
-      disabled
-      placeholder="Ert företagsnamn"
-      value={company?.name} />
-
     <Field
       value={company?.phoneNumber}
       disabled
@@ -70,7 +64,7 @@ export const CompanyDetails = ({company}) => (
       label="VD"
       placeholder="VD / firmatecknare"
       value={company?.topDirectorName} />
-  </View>
+  </Card>
 )
 
 

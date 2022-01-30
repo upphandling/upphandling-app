@@ -19,10 +19,10 @@ export const Home = ({navigation}) => {
       <Text category="h1" style={styles.hero}>
         Det lätta sättet att upphandla öppen källkod
       </Text>
-      <Button onPress={createDIS} size="giant">
+      <Button onPress={() => createDIS()} size="giant">
         Skapa nytt DIS
       </Button>
-      <Button onPress={findDIS} size="medium" appearance="ghost" status="warning">
+      <Button onPress={() => findDIS()} size="medium" appearance="ghost" status="warning">
         Hitta upphandlingar
       </Button>
     </SafeAreaView>
