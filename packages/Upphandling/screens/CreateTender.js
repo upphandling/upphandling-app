@@ -23,6 +23,8 @@ import {
   Select,
   SelectItem,
   StyleService,
+  Tab,
+  TabBar,
   Text,
   Toggle,
 } from '@ui-kitten/components'
@@ -35,6 +37,7 @@ import moment from 'moment'
 import { dateService } from '../lib/dateService'
 import initialCriterias from '../data/evaluationCriterias'
 import { getCompanyFromId } from '../api/companies'
+import { ImageOverlay } from '../components/ImageOverlay'
 
 const Issue = ({ item: { title, number, body } }) => (
   <ListItem
@@ -46,14 +49,25 @@ const Issue = ({ item: { title, number, body } }) => (
   />
 )
 
+const renderBookingFooter = (services, technologies) => (
+  <View style={styles.footer}>
+    <View style={styles.optionList}>
+      {services?.map(renderOptionItem)}
+    </View>
+    <ScrollView style={styles.detailsList} horizontal={true}>
+      {technologies?.map(renderDetailItem)}
+    </ScrollView>
+  </View>
+)
+
 const CalendarIcon = (props) => <Icon {...props} name="calendar" />
 
 export const CreateTender = ({ navigation, route }) => {
   const { id, issues } = route.params
   const { data: dis, isLoading } = useDis(id)
   const [agree, setAgree] = useState(false)
-  const [valid, setValid] = useState(false)
   const [description, setDescription] = useState()
+  const [title, setTitle] = useState()
   const [geography, setGeography] = useState(dis.technologies)
   const [services, setServices] = useState(dis.services)
   const [technologies, setTechnologies] = useState({})
@@ -63,6 +77,8 @@ export const CreateTender = ({ navigation, route }) => {
   const [startDate, setStartDate] = useState(
     moment().add(6, 'days').endOf('day').subtract(1, 'minute').toDate()
   )
+
+  const [selectedIndex, setSelectedIndex] = useState(0)
 
   if (isLoading) return <Text>Loading...</Text>
 
@@ -89,104 +105,157 @@ export const CreateTender = ({ navigation, route }) => {
         },
       }
     )
-    navigation.navigate('OpenDIS', { id })
+    navigation.navigate('OpenTender', { tenderId: tender.id })
   }
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <ScrollView style={styles.container}>
-        <Text category={'h6'}>Beskrivning</Text>
-        <Input
-          multiline={true}
-          style={styles.input}
-          textStyle={{ minHeight: 64 }}
-          maxLength={500}
-          placeholder="Beskriv uppdraget i klartext, max 500 tecken."
-          value={description}
-          onChangeText={setDescription}
+       <ImageOverlay
+          style={styles.image}
+          source={require('../assets/notebook-dynamic-gradient.png')}
         />
-        <Divider />
-
-        <Text category={'h6'}>Inkluderade uppgifter</Text>
-        <View style={styles.issues}>
-          {issues.map((item, i) => (
-            <Issue item={item} key={i} />
-          ))}
-        </View>
-        <Text category={'h6'}>Krav på leverantören</Text>
-
-        <ServicePicker
-          style={styles.input}
-          placeholder="Krav på erbjudna tjänster"
-          onChange={setServices}
-          services={services}
-        />
-        <TechnologyPicker
-          style={styles.input}
-          placeholder="Krav på erbjudna kompetenser"
-          onChange={setTechnologies}
-          technologies={technologies}
-        />
-        <Input
-          style={styles.input}
-          placeholder="Geografiska krav"
-          value={geography}
-          onChangeText={setGeography}
-        />
-        <Datepicker
-          label="Startdatum"
-          placeholder="Välj slutdatum"
-          style={styles.input}
-          dateService={dateService}
-          date={startDate}
-          onSelect={setStartDate}
-          accessoryRight={CalendarIcon}
-        />
-        <Divider />
-        <Text category={'h6'}>Utvärderingskriterier</Text>
-        <RadioGroup
-          style={styles.input}
-          selectedIndex={evaluationCriteria}
-          onChange={(index) => setEvaluationCriteria(index)}
+        <Card
+          style={styles.bookingCard}
+          appearance="filled"
+          disabled={true}
+          footer={renderBookingFooter}
         >
-          {initialCriterias.map((criteria, i) => (
-            <Radio key={i}>{criteria}</Radio>
-          ))}
-        </RadioGroup>
-
-        <Datepicker
-          label="Ansök senast"
-          placeholder="Välj slutdatum"
-          style={styles.input}
-          dateService={dateService}
-          date={startDate}
-          onSelect={(nextDate) => setStartDate(nextDate)}
-          accessoryRight={CalendarIcon}
-        />
-        <Divider />
-        <View style={styles.footer}>
-          <CheckBox
-            checked={agree}
-            style={styles.input}
-            onChange={(checked) => setAgree(checked)}
-          >
-            <Text>Jag har mandat att genomföra denna upphandling</Text>
-          </CheckBox>
-          <Button
-            onPress={create}
-            size="giant"
-            disabled={!agree}
-            style={styles.addButton}
-          >
-            {createTenderMutation.isLoading
-              ? 'Skapar upphandling...'
-              : 'Skapa upphandling'}
-          </Button>
-          <Text category="s2" style={styles.info}>
-            När du har skapat din upphandling kommer anslutna leverantörer få en
-            notifiering och kan börja lämna anbud
+          <Text style={styles.title} category="h2">
+            {dis.title}
           </Text>
-        </View>
+          <Text style={styles.dateLabel} category="h6">
+            {dis.organisation}
+          </Text>
+          <Text style={styles.priceLabel} category="p2">
+            {dis.status ?? 'Startar'}
+          </Text>
+          <Text style={styles.dateLabel} category="p2">
+            {moment(dis.startDate).format('YYYY-MM-DD')} (
+            {moment().to(moment(dis.startDate))})
+          </Text>
+        </Card>
+      <TabBar
+        style={styles.tabBar}
+        selectedIndex={selectedIndex}
+        onSelect={(index) => setSelectedIndex(index)}
+      >
+        <Tab title="Beskrivning" />
+        <Tab title="Krav" />
+        <Tab title="Utvärdering" />
+        <Tab title="Skicka" />
+      </TabBar>
+      <ScrollView style={styles.body}>
+        {selectedIndex === 0 && (
+          <>
+            <Input
+              label="Namn på upphandling"
+              placeholder="Namn på upphandling"
+              value={title}
+              onChangeText={(text) => setTitle(text)}
+            />
+            <Input
+              multiline={true}
+              style={styles.input}
+              textStyle={{ minHeight: 264 }}
+              maxLength={500}
+              placeholder="Beskriv uppdraget i klartext, max 500 tecken."
+              value={description}
+              onChangeText={setDescription}
+            />
+            <Divider />
+
+            <View style={styles.issues}>
+              {issues.map((item, i) => (
+                <Issue item={item} key={i} />
+              ))}
+            </View>
+          </>
+        )}
+
+        {selectedIndex === 1 && (
+          <>
+            <ServicePicker
+              style={styles.input}
+              placeholder="Krav på erbjudna tjänster"
+              onChange={setServices}
+              services={services}
+            />
+            <TechnologyPicker
+              style={styles.input}
+              placeholder="Krav på erbjudna kompetenser"
+              onChange={setTechnologies}
+              technologies={technologies}
+            />
+            <Input
+              style={styles.input}
+              placeholder="Geografiska krav"
+              value={geography}
+              onChangeText={setGeography}
+            />
+            <Datepicker
+              label="Startdatum"
+              placeholder="Välj slutdatum"
+              style={styles.input}
+              dateService={dateService}
+              date={startDate}
+              onSelect={setStartDate}
+              accessoryRight={CalendarIcon}
+            />
+
+            <Datepicker
+              label="Ansök senast"
+              placeholder="Välj slutdatum"
+              style={styles.input}
+              dateService={dateService}
+              date={startDate}
+              onSelect={(nextDate) => setStartDate(nextDate)}
+              accessoryRight={CalendarIcon}
+            />
+          </>
+        )}
+
+        {selectedIndex === 2 && (
+          <>
+            <Text category={'h6'}>Utvärderingskriterier</Text>
+            <RadioGroup
+              style={styles.input}
+              selectedIndex={evaluationCriteria}
+              onChange={(index) => setEvaluationCriteria(index)}
+            >
+              {initialCriterias.map((criteria, i) => (
+                <Radio key={i}>{criteria}</Radio>
+              ))}
+            </RadioGroup>
+          </>
+        )}
+        <Divider />
+        {selectedIndex === 3 && (
+          <>
+            <View style={styles.footer}>
+              <CheckBox
+                checked={agree}
+                style={styles.input}
+                onChange={(checked) => setAgree(checked)}
+              >
+                <Text>Jag har mandat att genomföra denna upphandling</Text>
+              </CheckBox>
+              <Button
+                onPress={create}
+                size="giant"
+                disabled={!agree}
+                style={styles.addButton}
+              >
+                {createTenderMutation.isLoading
+                  ? 'Skapar upphandling...'
+                  : 'Skapa upphandling'}
+              </Button>
+              <Text category="s2" style={styles.info}>
+                När du har skapat din upphandling kommer anslutna leverantörer
+                få en notifiering och kan börja lämna anbud
+              </Text>
+            </View>
+          </>
+        )}
       </ScrollView>
     </KeyboardAvoidingView>
   )
@@ -197,6 +266,9 @@ const styles = StyleService.create({
     width: 18,
     height: 18,
     tintColor: '#aaa',
+  },
+  body: {
+    marginTop: 10,
   },
   issues: {
     marginVertical: 16,
@@ -211,10 +283,11 @@ const styles = StyleService.create({
 
   issue: {
     borderColor: '#561266',
-    maxHeight: 80,
   },
   container: {
     backgroundColor: '$background-basic-color-2',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
   },
   input: {
     marginHorizontal: 16,
@@ -230,5 +303,8 @@ const styles = StyleService.create({
     color: '#999',
     marginHorizontal: 16,
     marginVertical: 16,
+  },
+  footer: {
+    bottom: 0,
   },
 })

@@ -40,7 +40,7 @@ export const TechnologyPicker = ({ technologies, placeholder, onChange, style })
         {Object.entries(technologies)
           .filter(([, val]) => val)
           .map(([key]) => (
-            <View>
+            <View key={key}>
               <Text>{key}</Text>
               <ButtonGroup style={styles.gridItem} size="small">
                 <Button
