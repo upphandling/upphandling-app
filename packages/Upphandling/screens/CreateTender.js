@@ -150,7 +150,7 @@ export const CreateTender = ({ navigation, route }) => {
           onChange={(index) => setEvaluationCriteria(index)}
         >
           {initialCriterias.map((criteria, i) => (
-            <Radio>{criteria}</Radio>
+            <Radio key={i}>{criteria}</Radio>
           ))}
         </RadioGroup>
 

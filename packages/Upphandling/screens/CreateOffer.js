@@ -10,6 +10,7 @@ import {
   Avatar,
   Button,
   CheckBox,
+  Datepicker,
   Divider,
   Icon,
   Input,
@@ -28,6 +29,7 @@ import { useTender } from '../hooks/useTenders'
 import { useCompany } from '../hooks/useCompanies'
 import { createOffer } from '../api/offers'
 import { getCompanyFromId } from '../api/companies'
+import { dateService } from '../lib/dateService'
 
 const ellipse = (text, maxLength) => {
   if (text.length > maxLength) {
@@ -35,6 +37,9 @@ const ellipse = (text, maxLength) => {
   }
   return text
 }
+
+const CalendarIcon = (props) => <Icon {...props} name="calendar" />
+
 
 const Issue = ({ issue: { title, number, body } }) => (
   <ListItem
@@ -56,6 +61,7 @@ export const CreateOffer = ({ navigation, route }) => {
   const [services, setServices] = useState({})
   const [technologies, setTechnologies] = useState(tender.technologies)
   const [reference, setReference] = useState()
+  const [startDate, setStartDate] = useState(moment(tender.startDate).add(1, 'day').toDate())
 
   if (isLoading) return <Text>Loading...</Text>
 
@@ -125,7 +131,9 @@ export const CreateOffer = ({ navigation, route }) => {
                   value={services[technology]}
                   style={styles.price}
                   placeholder={'Timpris'}
-                  accessoryRight={() => <Text style={styles.currency}>SEK</Text>}
+                  accessoryRight={() => (
+                    <Text style={styles.currency}>SEK</Text>
+                  )}
                   onChangeText={(text) =>
                     setServices({ ...services, [technology]: text })
                   }
@@ -134,6 +142,15 @@ export const CreateOffer = ({ navigation, route }) => {
             </View>
           ))}
         </View>
+        <Datepicker
+          label="Tidigaste startdatum"
+          placeholder="Välj startdatum"
+          controlStyle={styles.input}
+          dateService={dateService}
+          date={startDate}
+          onSelect={setStartDate}
+          accessoryRight={CalendarIcon}
+        />
         <Input
           multiline={true}
           style={styles.input}
@@ -151,11 +168,13 @@ export const CreateOffer = ({ navigation, route }) => {
 
         <Input
           style={styles.input}
-          label="Referens"
-          placeholder="https://www.example.com"
+          label="Referens (t.ex. kontaktperson eller webadress)"
+          placeholder="https://www.example.com eller Johan Andersson"
           value={reference}
           onChangeText={(val) => setReference(val.toLocaleLowerCase())}
         />
+
+        
         <Text category="s2" style={styles.info}>
           Referens till liknande arbete som ditt företag har genomfört de
           senaste två åren av de personer som ska utföra arbetet. Detta kommer
@@ -213,7 +232,7 @@ const styles = StyleService.create({
   container: {
     flex: 1,
     backgroundColor: 'background-basic-color-2',
-
+    padding: 8,
   },
   imageContainer: {
     flexDirection: 'row',
@@ -225,14 +244,12 @@ const styles = StyleService.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginHorizontal: 16,
     marginVertical: 16,
     height: 50,
   },
-  toggles: {
-  },
+  toggles: {},
   price: {
-    width: 150
+    width: 120,
   },
   toggle: {
     margin: 0,
@@ -246,7 +263,6 @@ const styles = StyleService.create({
     marginTop: -190,
   },
   issue: {
-    marginHorizontal: 16,
     marginVertical: 8,
     height: 200,
     width: 300,
@@ -261,7 +277,6 @@ const styles = StyleService.create({
   },
   input: {
     borderColor: '#eee',
-    marginHorizontal: 16,
     marginVertical: 8,
   },
   addButton: {

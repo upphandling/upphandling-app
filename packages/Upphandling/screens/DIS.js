@@ -30,11 +30,11 @@ export const DIS = ({ navigation, route }) => {
   const { status, data: dis, error, isFetching } = useDis(id)
   const [selected, setSelected] = useState([])
   const { data: tenders } = useTenders(id)
+  const styles = useStyleSheet(themedStyles)
 
   if (isFetching) return <Text>Loading...</Text>
   if (error) return <Text>Error loading dis: {error.message}</Text>
 
-  const styles = useStyleSheet(themedStyles)
 
   const apply = () => {
     navigation.navigate('ApplyDIS', { id })

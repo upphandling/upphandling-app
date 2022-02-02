@@ -1,9 +1,9 @@
-import axios from 'axios'
+import {get, post} from 'axios'
 export const getOffers = async () => {
-  const { data } = await axios.get('https://api.upphandling.app/offers')
+  const { data } = await get('https://api.upphandling.app/offers')
   return data
 }
 
 export const createOffer = (offer) => {
-  return axios.post('https://api.upphandling.app/offers', offer)
+  return post('https://api.upphandling.app/offers', offer)
 }
