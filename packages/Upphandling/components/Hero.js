@@ -38,20 +38,20 @@ const footer = (services, technologies) => (
 )
 
 export const Hero = ({
+  image,
   title,
   organisation,
   status,
   startDate,
   services,
   technologies,
-  onPress
+  onPress,
 }) => {
-
   return (
     <>
       <ImageOverlay
         style={styles.image}
-        source={require('../assets/notebook-dynamic-gradient.png')}
+        source={image || require('../assets/notebook-dynamic-gradient.png')}
       />
       <Card
         style={styles.bookingCard}
@@ -65,16 +65,20 @@ export const Hero = ({
         <Text style={styles.dateLabel} category="h6">
           {organisation}
         </Text>
-        <Text style={styles.priceLabel} category="p2">
-          {status ?? 'Startar'}
+        <Text style={styles.label} category="p2">
+          {status}
         </Text>
-        <Text style={styles.dateLabel} category="p2">
-          {moment(startDate).format('YYYY-MM-DD')} (
-          {moment().to(moment(startDate))})
-        </Text>
-        <Button style={styles.ctaButton} onPress={onPress}>
-          Ansök
-        </Button>
+        {startDate && (
+          <Text style={styles.dateLabel} category="p2">
+            {moment(startDate).format('YYYY-MM-DD')} (
+            {moment().to(moment(startDate))})
+          </Text>
+        )}
+        {onPress && (
+          <Button style={styles.ctaButton} onPress={onPress}>
+            Ansök
+          </Button>
+        )}
       </Card>
     </>
   )
@@ -83,7 +87,7 @@ export const Hero = ({
 const styles = StyleService.create({
   image: {
     marginTop: -130,
-    height: 360,
+    height: 260,
   },
   bookingCard: {
     marginTop: -80,
@@ -91,7 +95,7 @@ const styles = StyleService.create({
     borderRadius: 20,
   },
   title: {
-    width: '65%',
+    width: '80%',
   },
   dateLabel: {
     marginTop: 8,
@@ -100,7 +104,7 @@ const styles = StyleService.create({
     marginBottom: 16,
     color: '#333',
   },
-  priceLabel: {
+  label: {
     marginTop: 8,
   },
   ctaButton: {

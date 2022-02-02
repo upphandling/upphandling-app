@@ -38,6 +38,7 @@ import { dateService } from '../lib/dateService'
 import initialCriterias from '../data/evaluationCriterias'
 import { getCompanyFromId } from '../api/companies'
 import { ImageOverlay } from '../components/ImageOverlay'
+import { Hero } from '../components/Hero'
 
 const Issue = ({ item: { title, number, body } }) => (
   <ListItem
@@ -51,9 +52,7 @@ const Issue = ({ item: { title, number, body } }) => (
 
 const renderBookingFooter = (services, technologies) => (
   <View style={styles.footer}>
-    <View style={styles.optionList}>
-      {services?.map(renderOptionItem)}
-    </View>
+    <View style={styles.optionList}>{services?.map(renderOptionItem)}</View>
     <ScrollView style={styles.detailsList} horizontal={true}>
       {technologies?.map(renderDetailItem)}
     </ScrollView>
@@ -110,46 +109,28 @@ export const CreateTender = ({ navigation, route }) => {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-       <ImageOverlay
-          style={styles.image}
-          source={require('../assets/notebook-dynamic-gradient.png')}
-        />
-        <Card
-          style={styles.bookingCard}
-          appearance="filled"
-          disabled={true}
-          footer={renderBookingFooter}
-        >
-          <Text style={styles.title} category="h2">
-            {dis.title}
-          </Text>
-          <Text style={styles.dateLabel} category="h6">
-            {dis.organisation}
-          </Text>
-          <Text style={styles.priceLabel} category="p2">
-            {dis.status ?? 'Startar'}
-          </Text>
-          <Text style={styles.dateLabel} category="p2">
-            {moment(dis.startDate).format('YYYY-MM-DD')} (
-            {moment().to(moment(dis.startDate))})
-          </Text>
-        </Card>
-      <TabBar
-        style={styles.tabBar}
-        selectedIndex={selectedIndex}
-        onSelect={(index) => setSelectedIndex(index)}
-      >
-        <Tab title="Beskrivning" />
-        <Tab title="Krav" />
-        <Tab title="Utvärdering" />
-        <Tab title="Skicka" />
-      </TabBar>
       <ScrollView style={styles.body}>
+        <Hero
+          title={title || 'Ny upphandling'}
+          organisation={dis.organisation}
+          image={require('../assets/toggle-dynamic-gradient.png')}
+        />
+
+        <TabBar
+          style={styles.tabBar}
+          selectedIndex={selectedIndex}
+          onSelect={(index) => setSelectedIndex(index)}
+        >
+          <Tab title="Beskrivning" />
+          <Tab title="Krav" />
+          <Tab title="Utvärdering" />
+          <Tab title="Skicka" />
+        </TabBar>
         {selectedIndex === 0 && (
           <>
             <Input
-              label="Namn på upphandling"
               placeholder="Namn på upphandling"
+              style={styles.input}
               value={title}
               onChangeText={(text) => setTitle(text)}
             />
@@ -216,7 +197,6 @@ export const CreateTender = ({ navigation, route }) => {
 
         {selectedIndex === 2 && (
           <>
-            <Text category={'h6'}>Utvärderingskriterier</Text>
             <RadioGroup
               style={styles.input}
               selectedIndex={evaluationCriteria}
@@ -226,6 +206,9 @@ export const CreateTender = ({ navigation, route }) => {
                 <Radio key={i}>{criteria}</Radio>
               ))}
             </RadioGroup>
+            <Text style={styles.label}>
+              Välj hur många kriterier du vill använda för utvärdering.
+            </Text>
           </>
         )}
         <Divider />

@@ -75,7 +75,7 @@ export const DIS = ({ navigation, route }) => {
         )}
         
         <Text style={styles.sectionLabel} category="s1">
-          Aktiva ärenden. {selected.length} valda.
+          Aktiva ärenden. {selected.length } valda.
         </Text>
         <Divider />
         <Issues
