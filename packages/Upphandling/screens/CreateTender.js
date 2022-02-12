@@ -5,6 +5,7 @@ import {
   ScrollView,
   View,
 } from 'react-native'
+import { Slider } from '@miblanchard/react-native-slider'
 
 import {
   Avatar,
@@ -61,6 +62,9 @@ const renderBookingFooter = (services, technologies) => (
 
 const CalendarIcon = (props) => <Icon {...props} name="calendar" />
 
+const spread = (array) =>
+  array.reduce((acc, item) => ({ ...acc, [item]: 1 / array.length }), {})
+
 export const CreateTender = ({ navigation, route }) => {
   const { id, issues } = route.params
   const { data: dis, isLoading } = useDis(id)
@@ -71,8 +75,9 @@ export const CreateTender = ({ navigation, route }) => {
   const [services, setServices] = useState(dis.services)
   const [technologies, setTechnologies] = useState({})
   const [evaluationCriteria, setEvaluationCriteria] = useState('')
-  const [evaluationCriterias, setEvaluationCriterias] =
-    useState(initialCriterias)
+  const [evaluationCriterias, setEvaluationCriterias] = useState(
+    spread(initialCriterias)
+  )
   const [startDate, setStartDate] = useState(
     moment().add(6, 'days').endOf('day').subtract(1, 'minute').toDate()
   )
@@ -80,6 +85,33 @@ export const CreateTender = ({ navigation, route }) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
 
   if (isLoading) return <Text>Loading...</Text>
+
+  const sumCriterias = (criterias) =>
+    Object.values(criterias).reduce((sum, criteria) => sum + criteria, 0)
+
+  const saveAndBalanceCriterias = (evaluationCriterias, criteria, value) => {
+    const newEvaluationCriterias = { ...evaluationCriterias, [criteria]: value }
+    const s = sumCriterias(newEvaluationCriterias)
+    const c = value
+    const a = (1-c)/(s-c)
+    console.log('value', {value, criteria, s, c, a})
+
+    const adjustedCriterias = Object.entries(evaluationCriterias).reduce(
+      (result, [key, value]) => ({
+        ...result,
+        [key]: key === criteria ? c : Math.max(0, value * a),
+      }),
+      {}
+    )
+
+    console.log('adjustedCriterias', adjustedCriterias, 'a', a)
+
+    const remainder = sumCriterias(evaluationCriterias) - 1
+
+    /*if (Math.abs(remainder) > 0.1)
+      return saveAndBalanceCriterias(adjustedCriterias, criteria, value)*/
+    setEvaluationCriterias(adjustedCriterias)
+  }
 
   const createTenderMutation = useMutation(createTender)
   const queryClient = useQueryClient()
@@ -197,15 +229,26 @@ export const CreateTender = ({ navigation, route }) => {
 
         {selectedIndex === 2 && (
           <>
-            <RadioGroup
-              style={styles.input}
-              selectedIndex={evaluationCriteria}
-              onChange={(index) => setEvaluationCriteria(index)}
-            >
-              {initialCriterias.map((criteria, i) => (
-                <Radio key={i}>{criteria}</Radio>
+            <View style={styles.input}>
+              {Object.keys(evaluationCriterias).map((criteria, i) => (
+                <View key={i}>
+                  <Text key={i}>
+                    {criteria} {Math.round(evaluationCriterias[criteria] * 100)}
+                    %
+                  </Text>
+                  <Slider
+                    onValueChange={(value) =>
+                      saveAndBalanceCriterias(
+                        evaluationCriterias,
+                        criteria,
+                        value[0]
+                      )
+                    }
+                    value={evaluationCriterias[criteria]}
+                  ></Slider>
+                </View>
               ))}
-            </RadioGroup>
+            </View>
             <Text style={styles.label}>
               Välj hur många kriterier du vill använda för utvärdering.
             </Text>

@@ -17,7 +17,7 @@ export const Home = ({navigation}) => {
         style={styles.image}
       />
       <Text category="h1" style={styles.hero}>
-        Det lätta sättet att upphandla öppen källkod
+        Det enkla sättet att upphandla öppen källkod
       </Text>
       <Button onPress={() => createDIS()} size="giant">
         Skapa nytt DIS
