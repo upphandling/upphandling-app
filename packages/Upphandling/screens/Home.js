@@ -30,9 +30,9 @@ export const Home = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView style={{ flex: 1 }}>
-        <View style={{ flex: 1 }}>
+    <SafeAreaView style={styles.flex}>
+      <ScrollView style={styles.flex}>
+        <View style={styles.flex}>
           <Image
             resizeMethod="resize"
             resizeMode="contain"
@@ -64,6 +64,9 @@ export const Home = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
   hero: {
     padding: 18,
   },

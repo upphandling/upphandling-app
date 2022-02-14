@@ -138,7 +138,7 @@ export const ApplyDIS = ({ navigation, route }) => {
         <Divider />
         <View style={styles.footer}>
           <CheckBox checked={agree} style={styles.input} onChange={(checked) => setAgree(checked)}>
-            <Text>Jag lovar att mina uppgifter stämmer med mina rättsliga uppgifter (ESPN)</Text>
+            <Text>Jag lovar att mina uppgifter stämmer med mina rättsliga uppgifter (ESPD)</Text>
           </CheckBox>
           <Button
             onPress={apply}
@@ -198,7 +198,6 @@ const styles = StyleService.create({
     marginTop: 24,
   },
   info: {
-    color: '#999',
     marginHorizontal: 16,
     marginVertical: 16,
   },

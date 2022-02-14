@@ -33,6 +33,17 @@ const HomeNavigator = () => (
       component={CreateTender}
       options={{ title: 'Skapa specifik upphandling' }}
     />
+    <Screen
+      name="OpenTender"
+      component={OpenTender}
+      options={{ title: 'Specifik upphandling' }}
+    />
+
+    <Screen
+      name="CreateOffer"
+      component={CreateOffer}
+      options={{ title: 'Lämna anbud' }}
+    />
 
     <Screen
       name="FindDIS"

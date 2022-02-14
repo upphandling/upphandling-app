@@ -9,17 +9,7 @@ import React from 'react'
 import { View } from 'react-native'
 import { useIssues } from '../hooks/useGithub'
 import { ImageOverlay } from './ImageOverlay'
-
-const tag = (label, index) => (
-  <Button
-    key={index}
-    style={styles.detailItem}
-    appearance="outline"
-    size="small"
-  >
-    {label.name}
-  </Button>
-)
+import { Tag } from './Tag'
 
 export const Issues = ({ url, selected, onSelectedChange }) => {
   if (!url) return <Text>No repo</Text>
@@ -53,7 +43,7 @@ export const Issues = ({ url, selected, onSelectedChange }) => {
   return (
     <View style={styles.container}>
       {data.map((issue) => (
-        <View style={styles.row}>
+        <View key={issue.id} style={styles.row}>
           <CheckBox checked={selected.includes(issue)} onChange={(checked) => toggle(issue, checked) }/>
           <View style={styles.issue} key={issue.id}>
             <Text category="h6">
@@ -63,7 +53,7 @@ export const Issues = ({ url, selected, onSelectedChange }) => {
               {issue.body}
             </Text>
             <View style={styles.tags}>
-              {issue.labels.map((label, index) => tag(label, index))}
+              {issue.labels.map((label, index) => <Tag key={index}>{label.name}</Tag>)}
             </View>
           </View>
         </View>
@@ -93,7 +83,6 @@ const styles = StyleService.create({
     borderRadius: 16,
   },
   body: {
-    overflow: '',
     maxHeight: 100,
   },
 })
