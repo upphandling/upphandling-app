@@ -1,5 +1,9 @@
 import React from 'react'
-import { NavigationContainer, DarkTheme } from '@react-navigation/native'
+import {
+  NavigationContainer,
+  DarkTheme,
+  DefaultTheme,
+} from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { Home } from './Home'
 import { CreateDIS } from './CreateDIS'
@@ -7,8 +11,6 @@ import { DIS } from './DIS'
 import { FindDIS } from './FindDIS'
 import { ApplyDIS } from './ApplyDIS'
 import { CreateTender } from './CreateTender'
-import { OpenTender } from './OpenTender'
-import { CreateOffer } from './CreateOffer'
 
 const { Navigator, Screen } = createStackNavigator()
 
@@ -51,8 +53,19 @@ const HomeNavigator = () => (
   </Navigator>
 )
 
-export const AppNavigator = () => (
-  <NavigationContainer theme={DarkTheme}>
-    <HomeNavigator />
-  </NavigationContainer>
-)
+const getNavigatorTheme = (colorScheme) => {
+  if (colorScheme === 'dark') {
+    return { ...DarkTheme, primary: '#fff' }
+  } else {
+    return { ...DefaultTheme, primary: '#111' }
+  }
+}
+
+export const AppNavigator = ({ colorScheme }) => {
+  const theme = getNavigatorTheme(colorScheme)
+  return (
+    <NavigationContainer theme={theme}>
+      <HomeNavigator />
+    </NavigationContainer>
+  )
+}
