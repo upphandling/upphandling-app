@@ -94,7 +94,8 @@ export const CreateTender = ({ navigation, route }) => {
     const s = sumCriterias(newEvaluationCriterias)
     const c = value
     const a = (1-c)/(s-c)
-    console.log('value', {value, criteria, s, c, a})
+
+    if (s-c === 0) return setEvaluationCriterias(newEvaluationCriterias)
 
     const adjustedCriterias = Object.entries(evaluationCriterias).reduce(
       (result, [key, value]) => ({
@@ -103,13 +104,6 @@ export const CreateTender = ({ navigation, route }) => {
       }),
       {}
     )
-
-    console.log('adjustedCriterias', adjustedCriterias, 'a', a)
-
-    const remainder = sumCriterias(evaluationCriterias) - 1
-
-    /*if (Math.abs(remainder) > 0.1)
-      return saveAndBalanceCriterias(adjustedCriterias, criteria, value)*/
     setEvaluationCriterias(adjustedCriterias)
   }
 
