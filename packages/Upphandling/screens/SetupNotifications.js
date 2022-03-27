@@ -20,7 +20,7 @@ const SetupNotificationsComponent = ({ navigation, eva }) => {
   const theme = useTheme()
   const addDeviceMutation = useMutation(createDevice)
   const skipRegistering = () => {
-    navigation.navigate('Home')
+    navigation.replace('Home')
   }
 
   const registerDevice = async () => {
@@ -40,7 +40,7 @@ const SetupNotificationsComponent = ({ navigation, eva }) => {
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView
         contentContainerStyle={{
-          backgroundColor: theme['background-basic-color-1'],
+          backgroundColor: theme['background-basic-color-2'],
           flexGrow: 1,
           justifyContent: 'center',
         }}
@@ -111,7 +111,7 @@ export const SetupNotifications = withStyles(
     container: {
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: theme['background-basic-color-1'],
+      backgroundColor: theme['background-basic-color-2'],
     },
     image: {
       width: 100,
