@@ -51,11 +51,7 @@ const HomeNavigator = ({ initialRoute }) => {
       {initialRoute === 'Loading' && (
         <Screen name="Loading" component={Loading} options={{ title: '' }} />
       )}
-      <Screen
-        name="Home"
-        component={Home}
-        options={options({ title: 'Upphandling.app' })}
-      />
+      <Screen name="Home" component={Home} options={options({ title: '' })} />
       <Screen
         name="CreateDIS"
         component={CreateDIS}
@@ -92,9 +88,17 @@ const HomeNavigator = ({ initialRoute }) => {
 
 const getNavigatorTheme = (colorScheme) => {
   if (colorScheme === 'dark') {
-    return { ...DarkTheme, primary: '#fff' }
+    return { ...DarkTheme }
   } else {
-    return { ...DefaultTheme, primary: '#111' }
+    return {
+      ...DefaultTheme,
+      colors: {
+        primary: '#111',
+        text: '#12211B',
+        background: '#F5FAF8',
+        border: '#91C5B0',
+      },
+    }
   }
 }
 

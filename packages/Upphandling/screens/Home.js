@@ -36,8 +36,8 @@ export const Home = ({ navigation }) => {
           <Image
             resizeMethod="resize"
             resizeMode="contain"
-            source={require('../assets/thumb-up-dynamic-color.png')}
-            style={{ ...styles.image, height: Math.floor(height / 2) }}
+            source={require('../assets/large-logo.png')}
+            style={{ ...styles.image, ...styles[`image${size}`] }}
           />
         </View>
         <Text
@@ -53,7 +53,7 @@ export const Home = ({ navigation }) => {
           onPress={findDIS}
           size="small"
           appearance="ghost"
-          status="info"
+          status="basic"
           style={styles.button}
         >
           Hitta upphandlingar
@@ -66,18 +66,22 @@ export const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   hero: {
     padding: 18,
+    textAlign: 'center',
   },
   heroLarge: {
-    marginTop: -46,
-    fontSize: 50,
+    marginTop: 46,
+    marginBottom: 46,
+    fontSize: 38,
   },
   heroMedium: {
-    marginTop: -30,
-    fontSize: 34,
+    marginTop: 30,
+    marginBottom: 30,
+    fontSize: 32,
   },
   heroSmall: {
-    marginTop: -34,
-    fontSize: 28,
+    marginTop: 20,
+    marginBottom: 20,
+    fontSize: 26,
   },
   container: {
     flex: 1,
@@ -93,5 +97,14 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     marginBottom: 10,
+  },
+  imageLarge: {
+    height: 360,
+  },
+  imageMedium: {
+    height: 260,
+  },
+  imageSmall: {
+    height: 180,
   },
 })

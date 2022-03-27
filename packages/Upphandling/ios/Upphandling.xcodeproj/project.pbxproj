@@ -31,7 +31,7 @@
 		00E356EE1AD99517003FC87E /* UpphandlingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UpphandlingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* UpphandlingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UpphandlingTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* Upphandling.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Upphandling.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Happy Lou.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Happy Lou.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Upphandling/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Upphandling/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Upphandling/Images.xcassets; sourceTree = "<group>"; };
@@ -147,7 +147,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* Upphandling.app */,
+				13B07F961A680F5B00A75B9A /* Happy Lou.app */,
 				00E356EE1AD99517003FC87E /* UpphandlingTests.xctest */,
 			);
 			name = Products;
@@ -195,7 +195,7 @@
 			);
 			name = Upphandling;
 			productName = Upphandling;
-			productReference = 13B07F961A680F5B00A75B9A /* Upphandling.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Happy Lou.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -482,7 +482,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = app.upphandling.ios;
-				PRODUCT_NAME = Upphandling;
+				PRODUCT_NAME = "Happy Lou";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -509,7 +509,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = app.upphandling.ios;
-				PRODUCT_NAME = Upphandling;
+				PRODUCT_NAME = "Happy Lou";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

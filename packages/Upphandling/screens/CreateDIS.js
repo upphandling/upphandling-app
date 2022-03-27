@@ -20,7 +20,6 @@ import { TechnologyPicker } from '../components/TechnologyPicker'
 import { dateService } from '../lib/dateService'
 const CalendarIcon = (props) => <Icon {...props} name="calendar" />
 
-
 export const CreateDIS = ({ navigation }) => {
   const defaultDate = moment().add(4, 'weeks').startOf('isoWeek').toDate()
   const [startDate, setStartDate] = useState(defaultDate)
@@ -31,7 +30,6 @@ export const CreateDIS = ({ navigation }) => {
   const [services, setServices] = useState({})
   const [technologies, setTechnologies] = useState({})
 
-  
   const addDISMutation = useMutation(createDis)
 
   const create = async () => {
@@ -54,12 +52,6 @@ export const CreateDIS = ({ navigation }) => {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <ScrollView style={styles.form} level="1">
-        <View style={styles.imageContainer}>
-          <Avatar
-            source={require('../assets/notebook-dynamic-gradient.png')}
-            style={styles.image}
-          />
-        </View>
         <Input
           style={styles.input}
           label="Rubrik"
@@ -87,8 +79,8 @@ export const CreateDIS = ({ navigation }) => {
         />
         <Input
           style={styles.input}
-          label="Github/Bitbucket repo"
-          placeholder="Github repo"
+          label="Adress till publikt repo (github/gitlab/...)"
+          placeholder="https://"
           textContentType="URL"
           value={repo}
           onChangeText={(val) => setRepo(val.toLowerCase())}
@@ -102,10 +94,21 @@ export const CreateDIS = ({ navigation }) => {
           value={description}
           onChangeText={setDescription}
         />
-        <ServicePicker onChange={setServices} services={services} />
+
+        <Divider />
+
+        <Text category="h5" style={styles.info}>
+          Kompetenser
+        </Text>
+        <ServicePicker
+          onChange={setServices}
+          services={services}
+          style={styles.picker}
+        />
         <TechnologyPicker
           onChange={setTechnologies}
           technologies={technologies}
+          style={styles.picker}
         />
         <Divider />
         <Button onPress={create} size="giant" style={styles.addButton}>
@@ -130,26 +133,19 @@ const styles = StyleService.create({
     flex: 1,
     backgroundColor: 'background-basic-color-2',
   },
-  imageContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginTop: -200,
-  },
-  image: {
-    flex: 1,
-    minHeight: 350,
+  picker: {
+    marginHorizontal: 12,
   },
   input: {
     marginHorizontal: 12,
     marginVertical: 8,
   },
   addButton: {
-    marginHorizontal: 16,
+    marginHorizontal: 12,
     marginTop: 16,
   },
   info: {
-    marginHorizontal: 16,
+    marginHorizontal: 12,
     marginVertical: 16,
   },
   grid: {

@@ -1,10 +1,10 @@
 import React from 'react'
-import { Button, Icon } from '@ui-kitten/components'
-import { StyleSheet } from 'react-native'
+import { Button, Icon, useTheme, withStyles } from '@ui-kitten/components'
 import { useNotifications } from '../hooks/useNotifications'
 
-export const NotificationIcon = ({ navigation }) => {
+const NotificationIconComp = ({ eva, navigation }) => {
   const { status, data, error, isFetching } = useNotifications()
+  const theme = useTheme()
   let unreadCount = 0
   if (!isFetching && data) {
     const unread = data.filter((notif) => {
@@ -13,20 +13,29 @@ export const NotificationIcon = ({ navigation }) => {
     unreadCount = unread.length
   }
   const icon = !!unreadCount ? 'bell' : 'bell-outline'
-  const color = !!unreadCount ? 'red' : 'blue'
+  const color = !!unreadCount
+    ? theme['color-danger-800']
+    : theme['color-primary-500']
   return (
     <Button
       onPress={() => navigation.navigate('Notifications')}
       appearance="ghost"
       title="Notifications"
-      style={styles.icon}
+      style={eva.style.icon}
     >
-      <Icon style={styles.icon} fill={color} name={icon} />
+      <Icon style={eva.style.icon} fill={color} name={icon} />
     </Button>
   )
 }
 
-const styles = StyleSheet.create({
-  button: { width: 64, height: 64, marginRight: 8 },
-  icon: { width: 64, height: 64 },
-})
+export const NotificationIcon = withStyles(NotificationIconComp, (theme) => ({
+  button: {
+    width: 64,
+    height: 64,
+    marginRight: 8,
+  },
+  icon: {
+    width: 64,
+    height: 64,
+  },
+}))
