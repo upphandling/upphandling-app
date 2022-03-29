@@ -17,17 +17,11 @@ const Component = ({
     <ListItem
       title={title}
       description={`${moment().to(moment(createdAt))} - ${description}`}
-      onPress={(args) => {
-        console.log(args)
-        onPressRow(args)
-      }}
+      onPress={onPressRow}
       style={read ? eva.style.listItemRead : eva.style.listItemUnread}
       accessoryLeft={
         <Button
-          onPress={(args) => {
-            console.log(args)
-            onPressIcon(args)
-          }}
+          onPress={onPressIcon}
           appearance="ghost"
           status={read ? 'basic' : 'primary'}
         >

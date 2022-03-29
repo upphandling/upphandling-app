@@ -10,12 +10,12 @@ import { ApplyDIS } from './ApplyDIS'
 import { CreateDIS } from './CreateDIS'
 import { CreateOffer } from './CreateOffer'
 import { CreateTender } from './CreateTender'
-import { DIS } from './DIS'
 import { FindDIS } from './FindDIS'
 import { FixNotifications } from './FixNotifications'
 import { Home } from './Home'
 import { Loading } from './Loading'
 import { Notifications } from './Notifications'
+import { OpenDIS } from './OpenDIS'
 import { OpenTender } from './OpenTender'
 import { SetupNotifications } from './SetupNotifications'
 import { NotificationIcon } from '../components/NotificationIcon'
@@ -71,7 +71,7 @@ const HomeNavigator = ({ initialRoute }) => {
       />
       <Screen
         name="OpenDIS"
-        component={DIS}
+        component={OpenDIS}
         options={options({ title: translate('AppNavigator.DISTitle') })}
       />
       <Screen

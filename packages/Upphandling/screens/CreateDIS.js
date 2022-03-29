@@ -45,7 +45,6 @@ const CreateDISComponent = ({ eva, navigation }) => {
     }
 
     const result = await addDISMutation.mutateAsync(newDis)
-    console.log(result)
     navigation.navigate('OpenDIS', { id: result.data.id })
   }
 

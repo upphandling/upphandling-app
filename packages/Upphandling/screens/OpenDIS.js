@@ -26,7 +26,6 @@ const actionSheetRef = React.createRef()
 
 export const DIS = ({ navigation, route }) => {
   const id = route.params.id
-  console.log('finding dis', id)
   const { status, data: dis, error, isFetching } = useDis(id)
   const [selected, setSelected] = useState([])
   const { data: tenders } = useTenders(id)

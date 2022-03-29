@@ -13,7 +13,6 @@ export const getTender = async (tenderId) => {
 }
 
 export const createTender = async (tender) => {
-  console.log('creating tender', JSON.stringify(tender, null, 2))
   const { data } = await post(
     `${apiOrigin}/dis/${tender.disId}/tenders`,
     tender
