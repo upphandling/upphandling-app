@@ -72,8 +72,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   heroLarge: {
-    marginTop: 46,
-    marginBottom: 46,
+    marginTop: 38,
+    marginBottom: 38,
     fontSize: 38,
   },
   heroMedium: {
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   imageLarge: {
-    height: 360,
+    height: 320,
   },
   imageMedium: {
     height: 260,

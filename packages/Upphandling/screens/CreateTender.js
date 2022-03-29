@@ -8,21 +8,13 @@ import {
 import { Slider } from '@miblanchard/react-native-slider'
 
 import {
-  Avatar,
   Button,
-  Card,
   CheckBox,
   Datepicker,
   Divider,
   Icon,
   Input,
-  Layout,
-  List,
   ListItem,
-  Radio,
-  RadioGroup,
-  Select,
-  SelectItem,
   StyleService,
   Tab,
   TabBar,
@@ -37,27 +29,15 @@ import { ServicePicker } from '../components/ServicePicker'
 import moment from 'moment'
 import { dateService } from '../lib/dateService'
 import initialCriterias from '../data/evaluationCriterias'
-import { getCompanyFromId } from '../api/companies'
-import { ImageOverlay } from '../components/ImageOverlay'
 import { Hero } from '../components/Hero'
 
 const Issue = ({ item: { title, number, body } }) => (
   <ListItem
     key={number}
-    style={styles.issue}
     accessoryLeft={() => <Icon name="flag-outline" style={styles.icon} />}
     title={`#${number} ${title}`}
     description={`${body}`}
   />
-)
-
-const renderBookingFooter = (services, technologies) => (
-  <View style={styles.footer}>
-    <View style={styles.optionList}>{services?.map(renderOptionItem)}</View>
-    <ScrollView style={styles.detailsList} horizontal={true}>
-      {technologies?.map(renderDetailItem)}
-    </ScrollView>
-  </View>
 )
 
 const CalendarIcon = (props) => <Icon {...props} name="calendar" />
@@ -93,9 +73,9 @@ export const CreateTender = ({ navigation, route }) => {
     const newEvaluationCriterias = { ...evaluationCriterias, [criteria]: value }
     const s = sumCriterias(newEvaluationCriterias)
     const c = value
-    const a = (1-c)/(s-c)
+    const a = (1 - c) / (s - c)
 
-    if (s-c === 0) return setEvaluationCriterias(newEvaluationCriterias)
+    if (s - c === 0) return setEvaluationCriterias(newEvaluationCriterias)
 
     const adjustedCriterias = Object.entries(evaluationCriterias).reduce(
       (result, [key, value]) => ({
@@ -300,10 +280,6 @@ const styles = StyleService.create({
   select: {
     width: 150,
   },
-
-  issue: {
-    borderColor: '#561266',
-  },
   container: {
     backgroundColor: '$background-basic-color-2',
     justifyContent: 'space-between',
@@ -312,7 +288,6 @@ const styles = StyleService.create({
   input: {
     marginHorizontal: 16,
     marginVertical: 8,
-    borderColor: '#561266',
     flex: 5,
   },
   addButton: {

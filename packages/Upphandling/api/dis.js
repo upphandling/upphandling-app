@@ -1,4 +1,4 @@
-import {get, post} from 'axios'
+import { get, post } from 'axios'
 import { config } from '../lib/Config'
 const { apiOrigin } = config
 

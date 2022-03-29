@@ -1,8 +1,8 @@
-import {get, post} from 'axios'
+import { get, post } from 'axios'
 import { config } from '../lib/Config'
 const { apiOrigin } = config
 
-export const getTenders = async () => {
+export const getTenders = async (disId) => {
   const { data } = await get(`${apiOrigin}/dis/${disId}/tenders`)
   return data
 }
@@ -12,10 +12,12 @@ export const getTender = async (tenderId) => {
   return data
 }
 
-
 export const createTender = async (tender) => {
   console.log('creating tender', JSON.stringify(tender, null, 2))
-  const { data } = await post(`${apiOrigin}/tenders`, tender).catch((error) => { 
+  const { data } = await post(
+    `${apiOrigin}/dis/${tender.disId}/tenders`,
+    tender
+  ).catch((error) => {
     console.log('error', JSON.stringify(error))
     throw error
   })

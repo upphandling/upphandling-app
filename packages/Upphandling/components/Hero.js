@@ -6,13 +6,7 @@ import moment from 'moment'
 import 'moment/locale/sv'
 moment.locale('sv')
 
-import {
-  Button,
-  Card,
-  StyleService,
-  Text,
-  useStyleSheet,
-} from '@ui-kitten/components'
+import { Button, Card, Icon, StyleService, Text } from '@ui-kitten/components'
 
 const tagIcon = (style, icon) => <Icon {...style} name={icon} />
 
