@@ -37,7 +37,7 @@ export class AssignmentController {
         'application/json': {
           schema: getModelSchemaRef(Assignment, {
             title: 'NewAssignment',
-            exclude: ['id'],
+            exclude: ['id', 'createdAt'],
           }),
         },
       },

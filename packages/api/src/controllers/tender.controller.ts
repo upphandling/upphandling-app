@@ -37,7 +37,7 @@ export class TenderController {
         'application/json': {
           schema: getModelSchemaRef(Tender, {
             title: 'NewTender',
-            exclude: ['id'],
+            exclude: ['id', 'createdAt'],
           }),
         },
       },

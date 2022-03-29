@@ -38,7 +38,8 @@ export class CompanyController {
       content: {
         'application/json': {
           schema: getModelSchemaRef(Company, {
-            title: 'NewCompany'
+            title: 'NewCompany',
+            exclude: ['id', 'createdAt'],
           }),
         },
       },

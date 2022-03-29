@@ -37,7 +37,7 @@ export class OfferController {
         'application/json': {
           schema: getModelSchemaRef(Offer, {
             title: 'NewOffer',
-            exclude: ['id'],
+            exclude: ['id', 'createdAt'],
           }),
         },
       },

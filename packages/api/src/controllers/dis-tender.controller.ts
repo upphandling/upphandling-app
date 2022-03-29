@@ -60,8 +60,7 @@ export class DisTenderController {
         'application/json': {
           schema: getModelSchemaRef(Tender, {
             title: 'NewTenderInDis',
-            exclude: ['id'],
-            optional: ['disId']
+            exclude: ['id', 'createdAt'],
           }),
         },
       },

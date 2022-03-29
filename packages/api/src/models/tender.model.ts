@@ -53,7 +53,14 @@ export class Tender extends Entity {
   @property({
     type: 'string',
   })
-  evaluationCriteria: string
+  evaluationCriteria: string;
+
+  @property({
+    type: 'date',
+    required: true,
+    default: () => new Date(),
+  })
+  createdAt: string;
 
   constructor(data?: Partial<Tender>) {
     super(data)

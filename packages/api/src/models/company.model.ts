@@ -251,7 +251,14 @@ export class Company extends Entity {
     type: 'string',
     required: false,
   })
-  visitZipCode: string
+  visitZipCode: string;
+
+  @property({
+    type: 'date',
+    required: true,
+    default: () => new Date(),
+  })
+  createdAt: string;
 
   @hasMany(() => Participation)
   participations: Participation[];

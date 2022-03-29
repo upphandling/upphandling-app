@@ -15,6 +15,12 @@ export class Person extends Entity {
   })
   id?: string;
 
+  @property({
+    type: 'date',
+    required: true,
+    default: () => new Date(),
+  })
+  createdAt: string;
 
   constructor(data?: Partial<Person>) {
     super(data);

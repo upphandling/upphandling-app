@@ -35,7 +35,14 @@ export class Participation extends Entity {
   @property({
     type: 'date',
   })
-  deniedDate?: string
+  deniedDate?: string;
+
+  @property({
+    type: 'date',
+    required: true,
+    default: () => new Date(),
+  })
+  createdAt: string;
 
   constructor(data?: Partial<Participation>) {
     super(data)

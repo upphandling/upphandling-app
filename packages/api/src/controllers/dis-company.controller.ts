@@ -61,7 +61,7 @@ export class DisCompanyController {
         'application/json': {
           schema: getModelSchemaRef(Company, {
             title: 'NewCompanyInDis',
-            exclude: ['id'],
+            exclude: ['id', 'createdAt'],
           }),
         },
       },

@@ -8,7 +8,7 @@ export class Dis extends Entity {
   @property({
     type: 'string',
     id: true,
-    required: false,
+    defaultFn: 'uuidv4',
   })
   id?: string
 
@@ -62,8 +62,15 @@ export class Dis extends Entity {
   })
   services?: string[]
 
-  @hasMany(() => Company, { through: { model: () => Participation } })
-  participatingCompanies: Company[]
+  @property({
+    type: 'date',
+    required: true,
+    default: () => new Date(),
+  })
+  createdAt: string;
+
+  @hasMany(() => Company, {through: {model: () => Participation}})
+  participatingCompanies: Company[];
 
   @hasMany(() => Tender)
   tenders: Tender[];

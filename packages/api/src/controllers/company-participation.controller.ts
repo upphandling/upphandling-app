@@ -60,8 +60,8 @@ export class CompanyParticipationController {
         'application/json': {
           schema: getModelSchemaRef(Participation, {
             title: 'NewParticipationInCompany',
-            exclude: ['id'],
-            optional: ['companyId']
+            exclude: ['id', 'createdAt'],
+            optional: ['companyId'],
           }),
         },
       },
