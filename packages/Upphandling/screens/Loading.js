@@ -1,16 +1,5 @@
 import React from 'react'
-import {
-  Button,
-  Card,
-  Icon,
-  Layout,
-  List,
-  Spinner,
-  StyleService,
-  Text,
-  useStyleSheet,
-  withStyles,
-} from '@ui-kitten/components'
+import { Layout, Spinner, withStyles } from '@ui-kitten/components'
 
 const LoadingComp = ({ eva }) => {
   return (

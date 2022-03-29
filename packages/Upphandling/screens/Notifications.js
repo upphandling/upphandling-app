@@ -21,6 +21,7 @@ const NotificationsComp = ({ eva, navigation }) => {
     return <Text style={eva.style.msg}>Inga notiser att visa</Text>
 
   const performAction = (action, actionId) => {
+    console.log('performAction', action, actionId)
     navigation.navigate(action, { id: actionId })
   }
 

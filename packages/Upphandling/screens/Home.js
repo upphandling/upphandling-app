@@ -48,7 +48,7 @@ export const Home = ({ navigation }) => {
           {translate('Home.title')}
         </Text>
         <Button onPress={createDIS} size="giant" style={styles.button}>
-          Skapa nytt DIS
+          {translate('Home.create_dps_button')}
         </Button>
         <Button
           onPress={findDIS}
@@ -57,7 +57,7 @@ export const Home = ({ navigation }) => {
           status="basic"
           style={styles.button}
         >
-          Hitta upphandlingar
+          {translate('Home.find_dps_button')}
         </Button>
       </ScrollView>
     </SafeAreaView>

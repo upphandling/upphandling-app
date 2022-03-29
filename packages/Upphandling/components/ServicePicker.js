@@ -31,7 +31,7 @@ export const ServicePicker = ({
     setData(
       Object.entries(serviceIcons)
         .filter(([title]) => title.toLowerCase().includes(query.toLowerCase()))
-        .reduce((result, [title, icon]) => ({...result, [title]: icon }), {})
+        .reduce((result, [title, icon]) => ({ ...result, [title]: icon }), {})
     )
   }
 
@@ -65,9 +65,11 @@ export const ServicePicker = ({
         ref={(ref) => (input.current = ref)}
         onChangeText={onChangeText}
         onPressIn={() => input.current.show()}
-        accessoryRight={(props) => (
-          newCompetence ? <Icon {...props} onPress={() => add()} name="plus" /> : null
-        )}
+        accessoryRight={(props) =>
+          newCompetence ? (
+            <Icon {...props} onPress={() => add()} name="plus" />
+          ) : null
+        }
       >
         {Object.entries(data).map(([title, icon], i) => (
           <AutocompleteItem
@@ -86,7 +88,7 @@ const styles = StyleService.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    margin: 16,
+    marginHorizontal: 16,
   },
   gridItem: {
     justifyContent: 'flex-start',

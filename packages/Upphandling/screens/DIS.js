@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Linking, ScrollView, View } from 'react-native'
+import { Linking, SafeAreaView, ScrollView, View } from 'react-native'
 import {
   Button,
   ButtonGroup,
@@ -18,6 +18,8 @@ import ActionSheet from 'react-native-actions-sheet'
 import { Tenders } from '../components/Tenders'
 import { useTenders } from '../hooks/useTenders'
 import { Hero } from '../components/Hero'
+import { translate } from '../lib/translate'
+import { Loading } from './Loading'
 moment.locale('sv')
 
 const actionSheetRef = React.createRef()
@@ -30,23 +32,27 @@ export const DIS = ({ navigation, route }) => {
   const { data: tenders } = useTenders(id)
   const styles = useStyleSheet(themedStyles)
 
-  if (isFetching) return <Text>Loading...</Text>
-  if (error) return <Text>Error loading dis: {error.message}</Text>
-
+  if (isFetching) return <Loading />
+  if (error)
+    return (
+      <Text>
+        {translate('DIS.error_loading')} {error?.message}
+      </Text>
+    )
 
   const apply = () => {
     navigation.navigate('ApplyDIS', { id })
   }
 
   return (
-    <>
+    <SafeAreaView>
       <ScrollView style={styles.container}>
-        <Hero {...dis} onPress={apply}/>
-        
+        <Hero {...dis} onPress={apply} />
+
         {dis.description && (
           <>
             <Text style={styles.sectionLabel} category="s1">
-              Beskrivning
+              {translate('DIS.description_label')}
             </Text>
             <Text style={styles.description} appearance="hint">
               {dis.description}
@@ -54,14 +60,14 @@ export const DIS = ({ navigation, route }) => {
           </>
         )}
         <Text style={styles.sectionLabel} category="s1">
-          Specifika upphandlingar
+          {translate('DIS.specific_dps_label')}
         </Text>
         <Tenders tenders={tenders} navigation={navigation} />
 
         {dis.repo && (
           <>
             <Text style={styles.sectionLabel} category="s1">
-              Källkod
+              {translate('DIS.source_code_label')}
             </Text>
             <Button
               style={styles.description}
@@ -73,9 +79,11 @@ export const DIS = ({ navigation, route }) => {
             </Button>
           </>
         )}
-        
+
         <Text style={styles.sectionLabel} category="s1">
-          Aktiva ärenden. {selected.length } valda.
+          {translate('DIS.active_tenders_selected', {
+            selection_count: selected.length,
+          })}
         </Text>
         <Divider />
         <Issues
@@ -102,18 +110,20 @@ export const DIS = ({ navigation, route }) => {
       >
         <View style={styles.bottomDrawerContent}>
           <Text category="label" style={styles.label}>
-            {selected.length} ärenden valda. Gå vidare och skapa upphandling.
+            {translate('DIS.active_tenders_selected_bottom', {
+              selection_count: selected.length,
+            })}
           </Text>
           <Button
             onPress={() =>
               navigation.navigate('CreateTender', { id, issues: selected })
             }
           >
-            Skapa specifik upphandling
+            {translate('DIS.create_tender_button')}
           </Button>
         </View>
       </ActionSheet>
-    </>
+    </SafeAreaView>
   )
 }
 

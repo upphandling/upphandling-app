@@ -1,16 +1,13 @@
 import React, { useState } from 'react'
 import { ScrollView, View } from 'react-native'
-import {
-  Button,
-  StyleService,
-  Text,
-} from '@ui-kitten/components'
+import { Button, Card, StyleService, Text } from '@ui-kitten/components'
 import { useTenders } from '../hooks/useTenders'
 import { ImageOverlay } from './ImageOverlay'
 import moment from 'moment'
 import { Tag } from './Tag'
 import evaluationCriterias from '../data/evaluationCriterias'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { Loading } from '../screens/Loading'
 
 const Tender = ({ tender, onPress }) => {
   const {
@@ -25,43 +22,66 @@ const Tender = ({ tender, onPress }) => {
   } = tender
 
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      activeOpacity={0.8}
-      style={styles.tender}
-    >
-      <View style={styles.tenderHeader}>
-        <Text category={'h6'}>{description}</Text>
-        <Text category={'c1'}>
-          {moment(startDate).calendar()}
-        </Text>
-      </View>
-      <View style={styles.tenderBody}>
-        <Text category={'c1'}>{geography}</Text>
-      </View>
-      <ScrollView horizontal={true}>
-        {services.map(s => <Tag key={s}>{s}</Tag>)}
-        {technologies.map(s => <Tag key={s}>{s}</Tag>)}
-        <Tag style={styles.tag}>
-          {evaluationCriterias[evaluationCriteria]}
-        </Tag>
-      </ScrollView>
-    </TouchableOpacity>
+    <Card>
+      <TouchableOpacity onPress={onPress} style={styles.tender}>
+        <View style={styles.tenderHeader}>
+          <Text category={'h6'}>{description}</Text>
+          <Text category={'c1'}>{moment(startDate).calendar()}</Text>
+        </View>
+        <View style={styles.tenderBody}>
+          <Text category={'c1'}>{geography}</Text>
+        </View>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          style={styles.competences}
+          nestedScrollEnabled={true}
+        >
+          {services.map((s) => (
+            <Tag style={styles.tag} key={s}>
+              {s}
+            </Tag>
+          ))}
+          {technologies.map((s) => (
+            <Tag style={styles.tag} key={s}>
+              {s}
+            </Tag>
+          ))}
+          <Tag style={styles.tag}>
+            {evaluationCriterias[evaluationCriteria]}
+          </Tag>
+        </ScrollView>
+      </TouchableOpacity>
+    </Card>
   )
 }
 
 export const Tenders = ({ navigation, tenders }) => {
-
-  if (!tenders) return <Text>Laddar...</Text>
+  if (!tenders)
+    return (
+      <Card style={{ height: 100, alignItems: 'center' }}>
+        <Loading />
+      </Card>
+    )
 
   const goToTender = (tender) => {
     navigation.navigate('OpenTender', { tenderId: tender.id })
   }
 
   return (
-    <ScrollView style={styles.tenders} horizontal={true}>
+    <ScrollView
+      style={styles.tenders}
+      horizontal={true}
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}
+    >
       {tenders?.map((tender) => (
-        <Tender key={tender.id} tender={tender} onPress={() => goToTender(tender)} />
+        <Tender
+          key={tender.id}
+          tender={tender}
+          onPress={() => goToTender(tender)}
+        />
       ))}
     </ScrollView>
   )
@@ -90,7 +110,6 @@ const styles = StyleService.create({
   tender: {
     flex: 1,
     width: 300,
-    backgroundColor: 'rgba(53,34,171,0.4)',
     borderRadius: 16,
     height: '100%',
     padding: 16,
@@ -106,11 +125,15 @@ const styles = StyleService.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  competences: {
+    paddingVertical: 2,
+  },
   icon: {
     width: 20,
     height: 20,
   },
   tag: {
-    marginRight: 4
-  }
+    marginRight: 4,
+    marginBottom: 1,
+  },
 })

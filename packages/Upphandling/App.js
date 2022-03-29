@@ -27,7 +27,11 @@ export default () => {
   const theme = getUIKittenTheme(colorScheme)
   return (
     <>
-      <LanguageProvider cache={true} data={translations}>
+      <LanguageProvider
+        cache={true}
+        data={translations}
+        initialLanguageCode="sv"
+      >
         <IconRegistry icons={EvaIconsPack} />
         <ApplicationProvider {...eva} theme={theme}>
           <QueryClientProvider client={queryClient}>

@@ -30,6 +30,8 @@ import moment from 'moment'
 import { dateService } from '../lib/dateService'
 import initialCriterias from '../data/evaluationCriterias'
 import { Hero } from '../components/Hero'
+import { Loading } from '../screens/Loading'
+import { translate } from '../lib/translate'
 
 const Issue = ({ item: { title, number, body } }) => (
   <ListItem
@@ -64,7 +66,7 @@ export const CreateTender = ({ navigation, route }) => {
 
   const [selectedIndex, setSelectedIndex] = useState(0)
 
-  if (isLoading) return <Text>Loading...</Text>
+  if (isLoading) return <Loading />
 
   const sumCriterias = (criterias) =>
     Object.values(criterias).reduce((sum, criteria) => sum + criteria, 0)
@@ -117,7 +119,7 @@ export const CreateTender = ({ navigation, route }) => {
     <KeyboardAvoidingView style={styles.container}>
       <ScrollView style={styles.body}>
         <Hero
-          title={title || 'Ny upphandling'}
+          title={title || translate('CreateTender.fallback_title')}
           organisation={dis.organisation}
           image={require('../assets/toggle-dynamic-gradient.png')}
         />
@@ -127,15 +129,16 @@ export const CreateTender = ({ navigation, route }) => {
           selectedIndex={selectedIndex}
           onSelect={(index) => setSelectedIndex(index)}
         >
-          <Tab title="Beskrivning" />
-          <Tab title="Krav" />
-          <Tab title="Utvärdering" />
-          <Tab title="Skicka" />
+          <Tab title={translate('CreateTender.tab_description')} />
+          <Tab title={translate('CreateTender.tab_competence_criterias')} />
+          <Tab title={translate('CreateTender.tab_evaluation_criterias')} />
+          <Tab title={translate('CreateTender.tab_submit')} />
         </TabBar>
         {selectedIndex === 0 && (
           <>
             <Input
-              placeholder="Namn på upphandling"
+              label={translate('CreateTender.name_label')}
+              placeholder={translate('CreateTender.name_placeholder')}
               style={styles.input}
               value={title}
               onChangeText={(text) => setTitle(text)}
@@ -145,7 +148,8 @@ export const CreateTender = ({ navigation, route }) => {
               style={styles.input}
               textStyle={{ minHeight: 264 }}
               maxLength={500}
-              placeholder="Beskriv uppdraget i klartext, max 500 tecken."
+              label={translate('CreateTender.description_label')}
+              placeholder={translate('CreateTender.description_placeholder')}
               value={description}
               onChangeText={setDescription}
             />
@@ -161,27 +165,34 @@ export const CreateTender = ({ navigation, route }) => {
 
         {selectedIndex === 1 && (
           <>
+            <Text category="label" style={styles.small}>
+              {translate('CreateTender.competenses_services_heading')}
+            </Text>
             <ServicePicker
               style={styles.input}
-              placeholder="Krav på erbjudna tjänster"
+              placeholder={translate('CreateTender.services_placeholder')}
               onChange={setServices}
               services={services}
             />
+            <Text category="label" style={styles.small}>
+              {translate('CreateTender.competenses_tech_heading')}
+            </Text>
             <TechnologyPicker
               style={styles.input}
-              placeholder="Krav på erbjudna kompetenser"
+              placeholder={translate('CreateTender.technologies_placeholder')}
               onChange={setTechnologies}
               technologies={technologies}
             />
             <Input
               style={styles.input}
-              placeholder="Geografiska krav"
+              label={translate('CreateTender.geography_label')}
+              placeholder={translate('CreateTender.geography_placeholder')}
               value={geography}
               onChangeText={setGeography}
             />
             <Datepicker
-              label="Startdatum"
-              placeholder="Välj slutdatum"
+              label={translate('CreateTender.start_date_label')}
+              placeholder={translate('CreateTender.start_date_placeholder')}
               style={styles.input}
               dateService={dateService}
               date={startDate}
@@ -190,8 +201,8 @@ export const CreateTender = ({ navigation, route }) => {
             />
 
             <Datepicker
-              label="Ansök senast"
-              placeholder="Välj slutdatum"
+              label={translate('CreateTender.end_date_label')}
+              placeholder={translate('CreateTender.end_date_placeholder')}
               style={styles.input}
               dateService={dateService}
               date={startDate}
@@ -224,7 +235,7 @@ export const CreateTender = ({ navigation, route }) => {
               ))}
             </View>
             <Text style={styles.label}>
-              Välj hur många kriterier du vill använda för utvärdering.
+              {translate('CreateTender.evaluation_criteria_helper')}
             </Text>
           </>
         )}
@@ -237,7 +248,7 @@ export const CreateTender = ({ navigation, route }) => {
                 style={styles.input}
                 onChange={(checked) => setAgree(checked)}
               >
-                <Text>Jag har mandat att genomföra denna upphandling</Text>
+                <Text>{translate('CreateTender.i_swear_i_have_rights')}</Text>
               </CheckBox>
               <Button
                 onPress={create}
@@ -246,12 +257,11 @@ export const CreateTender = ({ navigation, route }) => {
                 style={styles.addButton}
               >
                 {createTenderMutation.isLoading
-                  ? 'Skapar upphandling...'
-                  : 'Skapa upphandling'}
+                  ? translate('CreateTender.creating_tender')
+                  : translate('CreateTender.create_tender_button')}
               </Button>
               <Text category="s2" style={styles.info}>
-                När du har skapat din upphandling kommer anslutna leverantörer
-                få en notifiering och kan börja lämna anbud
+                {translate('CreateTender.once_created_info')}
               </Text>
             </View>
           </>
@@ -284,6 +294,12 @@ const styles = StyleService.create({
     backgroundColor: '$background-basic-color-2',
     justifyContent: 'space-between',
     flexDirection: 'column',
+  },
+  small: {
+    marginHorizontal: 16,
+    fontWeight: 'bold',
+    fontSize: 12,
+    color: '#777',
   },
   input: {
     marginHorizontal: 16,

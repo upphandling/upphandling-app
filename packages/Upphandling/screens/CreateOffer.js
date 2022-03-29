@@ -30,6 +30,7 @@ import { useCompany } from '../hooks/useCompanies'
 import { createOffer } from '../api/offers'
 import { getCompanyFromId } from '../api/companies'
 import { dateService } from '../lib/dateService'
+import { translate } from '../lib/translate'
 
 const ellipse = (text, maxLength) => {
   if (text.length > maxLength) {
@@ -40,7 +41,7 @@ const ellipse = (text, maxLength) => {
 
 const CalendarIcon = (props) => <Icon {...props} name="calendar" />
 
-
+const DESCRIPTION_CHARACTER_LIMIT = 1000
 const Issue = ({ issue: { title, number, body } }) => (
   <ListItem
     key={number}
@@ -61,7 +62,9 @@ export const CreateOffer = ({ navigation, route }) => {
   const [services, setServices] = useState({})
   const [technologies, setTechnologies] = useState(tender.technologies)
   const [reference, setReference] = useState()
-  const [startDate, setStartDate] = useState(moment(tender.startDate).add(1, 'day').toDate())
+  const [startDate, setStartDate] = useState(
+    moment(tender.startDate).add(1, 'day').toDate()
+  )
 
   if (isLoading) return <Text>Loading...</Text>
 
@@ -111,7 +114,9 @@ export const CreateOffer = ({ navigation, route }) => {
           ))}
         </ScrollView>
         <Divider />
-        <Text category="h6">Vi erbjuder följande kompetenser:</Text>
+        <Text category="h6">
+          {translate('CreateOffer.competence_offering_headline')}
+        </Text>
 
         <View style={styles.toggles}>
           {tender.technologies?.map((technology, i) => (
@@ -130,7 +135,7 @@ export const CreateOffer = ({ navigation, route }) => {
                 <Input
                   value={services[technology]}
                   style={styles.price}
-                  placeholder={'Timpris'}
+                  placeholder={translate('CreateOffer.hourly_rate')}
                   accessoryRight={() => (
                     <Text style={styles.currency}>SEK</Text>
                   )}
@@ -143,8 +148,8 @@ export const CreateOffer = ({ navigation, route }) => {
           ))}
         </View>
         <Datepicker
-          label="Tidigaste startdatum"
-          placeholder="Välj startdatum"
+          label={translate('CreateOffer.start_date_label')}
+          placeholder={translate('CreateOffer.start_date_placeholder')}
           controlStyle={styles.input}
           dateService={dateService}
           date={startDate}
@@ -156,35 +161,36 @@ export const CreateOffer = ({ navigation, route }) => {
           style={styles.input}
           textStyle={{ minHeight: 200 }}
           maxLength={1000}
-          label="Beskrivning av anbud. (Max 1 000 tecken)"
-          placeholder="Detta är en beskrivning av ert anbud."
+          label={translate('CreateOffer.description_label', {
+            character_limit: DESCRIPTION_CHARACTER_LIMIT,
+          })}
+          placeholder={translate('CreateOffer.description_placeholder')}
           value={description}
           onChangeText={setDescription}
         />
         <Text category="s2" style={styles.info}>
-          {description?.length || 0}/1000. Tips: försök att beskriva ert
-          arbetssätt, inte exakt hur ni kommer lösa uppgiften.
+          {translate('CreateOffer.description_advice', {
+            characters_used: description?.length || 0,
+            character_limit: DESCRIPTION_CHARACTER_LIMIT,
+          })}
         </Text>
 
         <Input
           style={styles.input}
-          label="Referens (t.ex. kontaktperson eller webadress)"
-          placeholder="https://www.example.com eller Johan Andersson"
+          label={translate('CreateOffer.reference_label')}
+          placeholder={translate('CreateOffer.reference_placeholder')}
           value={reference}
           onChangeText={(val) => setReference(val.toLocaleLowerCase())}
         />
 
-        
         <Text category="s2" style={styles.info}>
-          Referens till liknande arbete som ditt företag har genomfört de
-          senaste två åren av de personer som ska utföra arbetet. Detta kommer
-          bedömas tillsammans med priset och övriga kriterier.
+          {translate('CreateOffer.reference_advice')}
         </Text>
 
         <Input
           style={styles.input}
-          label="Organisationsnummer"
-          placeholder="Ert organisationsnr"
+          label={translate('CreateOffer.organisation_id_label')}
+          placeholder={translate('CreateOffer.organisation_id_placeholder')}
           value={orgnr}
           onChangeText={setOrgnr}
         />
@@ -196,7 +202,7 @@ export const CreateOffer = ({ navigation, route }) => {
             style={styles.input}
             onChange={(checked) => setAgree(checked)}
           >
-            <Text>Jag är behörig firmatecknare för mitt företag</Text>
+            <Text>{translate('CreateOffer.i_swear_i_have_rights')}</Text>
           </CheckBox>
           <Button
             onPress={apply}
@@ -204,19 +210,24 @@ export const CreateOffer = ({ navigation, route }) => {
             disabled={!valid || !agree}
             style={styles.addButton}
           >
-            Lämna in anbud
+            {translate('CreateOffer.submit_offer_button')}
           </Button>
           <Text category="s2" style={styles.info}>
-            När du anbudstiden är passerad{' '}
-            {moment(tender.startDate).format('YYYY-MM-DD')} (
-            {moment(tender.startDate).calendar()}) kommer du få ett mail med en
-            bekräftelse. Du kan även kontakta oss på{' '}
-            <Button
-              appearance="ghost"
-              size="tiny"
-              onPress={() => Linking.openURL('mailto:{dis.email}')}
-            >{`${dis.email}`}</Button>
+            {translate('CreateOffer.once_offer_time_has_passed', {
+              start_date: moment(tender.startDate).format('YYYY-MM-DD'),
+              start_date_ago: moment(tender.startDate).calendar(),
+            })}
           </Text>
+          {!!dis.email && dis.email != 'undefined' && (
+            <Text category={'s2'} style={styles.info}>
+              {translate('CreateOffer.you_can_reach_us_on')}
+              <Button
+                appearance="ghost"
+                size="tiny"
+                onPress={() => Linking.openURL('mailto:{dis.email}')}
+              >{`${dis.email}`}</Button>
+            </Text>
+          )}
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

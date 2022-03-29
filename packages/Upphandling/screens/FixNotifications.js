@@ -9,6 +9,7 @@ import {
   useTheme,
   withStyles,
 } from '@ui-kitten/components'
+import { translate } from '../lib/translate'
 
 const FixNotificationsComponent = ({ navigation, eva }) => {
   const theme = useTheme()
@@ -33,10 +34,10 @@ const FixNotificationsComponent = ({ navigation, eva }) => {
             </View>
             <View style={eva.style.headerTextContainer}>
               <Text style={{ textAlign: 'center', marginBottom: 16 }}>
-                Notiser är inaktiverade
+                {translate('FixNotifications.text')}
               </Text>
               <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>
-                Vänligen aktivera pushnotiser i din enhets notisinställningar.
+                {translate('FixNotifications.cta_text')}
               </Text>
             </View>
             <View style={eva.style.footerContainer}>
@@ -49,7 +50,7 @@ const FixNotificationsComponent = ({ navigation, eva }) => {
                 status="basic"
                 appearance="ghost"
               >
-                Senare
+                {translate('FixNotifications.later_button')}
               </Button>
             </View>
           </Card>

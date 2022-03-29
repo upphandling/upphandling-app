@@ -23,6 +23,7 @@ import checkOrgnr from 'se-orgnr-validator'
 import { CompanyDetails } from '../components/CompanyDetails'
 import moment from 'moment'
 import { createParticipation } from '../api/participation'
+import { translate } from '../lib/translate'
 
 export const ApplyDIS = ({ navigation, route }) => {
   const { id } = route.params
@@ -52,8 +53,17 @@ export const ApplyDIS = ({ navigation, route }) => {
 
   const apply = async () => {
     if (!checkOrgnr(orgnr) || !agree) return setValid(false)
-    const company = (await getCompanyFromId(orgnr)) || (await createCompanyMutation.mutateAsync({ id: orgnr, description, website }))
-    const participation = await createParticipationMutation.mutateAsync({disId: id, companyId: company.id})
+    const company =
+      (await getCompanyFromId(orgnr)) ||
+      (await createCompanyMutation.mutateAsync({
+        id: orgnr,
+        description,
+        website,
+      }))
+    const participation = await createParticipationMutation.mutateAsync({
+      disId: id,
+      companyId: company.id,
+    })
 
     console.log('got company and participation', company, participation)
     setCompany(company)
@@ -73,8 +83,8 @@ export const ApplyDIS = ({ navigation, route }) => {
 
         <Input
           style={styles.input}
-          label="Organisationsnummer"
-          placeholder="Ert organisationsnr"
+          label={translate('ApplyDIS.organisation_id_label')}
+          placeholder={translate('ApplyDIS.organisation_id_placeholder')}
           value={orgnr}
           onChangeText={setOrgnr}
         />
@@ -96,13 +106,15 @@ export const ApplyDIS = ({ navigation, route }) => {
           </CheckBox>
         ))}
         <Divider />
+        {/* TODO: I don't think we need website here since it's part of CompanyDetails */}
         <Input
           style={styles.input}
-          label="Hemsida"
-          placeholder="https://www.example.com"
+          label={translate('ApplyDIS.company_website_label')}
+          placeholder={translate('ApplyDIS.company_website_placeholder')}
           value={website}
           onChangeText={(val) => setWebsite(val.toLocaleLowerCase())}
         />
+        {/* TODO: I don't think we need description here since it should be a part of CompanyDetails */}
         <Input
           multiline={true}
           style={styles.input}
@@ -115,7 +127,7 @@ export const ApplyDIS = ({ navigation, route }) => {
         {dis.services?.length ? (
           <View>
             <Text category="s2" style={styles.info}>
-              Efterfrågade tjänster som ni erbjuder
+              {translate('ApplyDIS.company_services_offered_headline')}
             </Text>
 
             <View style={styles.toggles}>
@@ -137,8 +149,12 @@ export const ApplyDIS = ({ navigation, route }) => {
         ) : null}
         <Divider />
         <View style={styles.footer}>
-          <CheckBox checked={agree} style={styles.input} onChange={(checked) => setAgree(checked)}>
-            <Text>Jag lovar att mina uppgifter stämmer med mina rättsliga uppgifter (ESPD)</Text>
+          <CheckBox
+            checked={agree}
+            style={styles.input}
+            onChange={(checked) => setAgree(checked)}
+          >
+            <Text>{translate('ApplyDIS.i_wow_espd_correct')}</Text>
           </CheckBox>
           <Button
             onPress={apply}
@@ -149,8 +165,9 @@ export const ApplyDIS = ({ navigation, route }) => {
             {createCompanyMutation.isLoading ? 'Skapar företag...' : 'Ansök'}
           </Button>
           <Text category="s2" style={styles.info}>
-            När du ansökt kommer du få ett mail när du godkänts som leverantör
-            senast {moment(dis.startDate).format('YYYY-MM-DD')}
+            {translate('ApplyDIS.once_applied_email', {
+              date: moment(dis.startDate).format('YYYY-MM-DD'),
+            })}
           </Text>
         </View>
       </ScrollView>

@@ -14,6 +14,7 @@ import { requestPermissions } from '../lib/NotifService'
 import { createDevice } from '../api/device'
 import { useMutation } from 'react-query'
 import Storage from '../lib/Storage'
+import { translate } from '../lib/translate'
 
 const SetupNotificationsComponent = ({ navigation, eva }) => {
   const [notificationStatus, setNotificationStatus] = useState('primary')
@@ -26,7 +27,6 @@ const SetupNotificationsComponent = ({ navigation, eva }) => {
   const registerDevice = async () => {
     requestPermissions(addDeviceMutation)
       .then(async (token) => {
-        console.log('got token', token)
         Storage.setItem(Storage.keys.NOTIFICATION_REGISTERED, true)
         await addDeviceMutation.mutateAsync({ pushToken: token })
         navigation.replace('Home')
@@ -59,11 +59,10 @@ const SetupNotificationsComponent = ({ navigation, eva }) => {
             </View>
             <View style={eva.style.headerTextContainer}>
               <Text style={{ textAlign: 'center', marginBottom: 16 }}>
-                För att få uppdateringar vid nya publicerade upphandlingar och
-                processer du är delaktig i.
+                {translate('SetupNotifications.text')}
               </Text>
               <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>
-                Vänligen aktivera pushnotiser.
+                {translate('SetupNotifications.cta_text')}
               </Text>
             </View>
             <View style={eva.style.footerContainer}>
@@ -73,7 +72,7 @@ const SetupNotificationsComponent = ({ navigation, eva }) => {
                 size="small"
                 status="basic"
               >
-                Senare
+                {translate('SetupNotifications.defer_button')}
               </Button>
               <Button
                 onPress={() => {
@@ -82,7 +81,7 @@ const SetupNotificationsComponent = ({ navigation, eva }) => {
                 style={eva.style.footerControl}
                 size="small"
               >
-                Jag gör det nu!
+                {translate('SetupNotifications.cta_button')}
               </Button>
             </View>
           </Card>

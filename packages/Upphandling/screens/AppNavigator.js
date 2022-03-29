@@ -29,6 +29,7 @@ const { Navigator, Screen } = createStackNavigator()
 const options = (specificOptions) => {
   return ({ navigation }) => {
     const defaultOptions = {
+      headerBackTitleVisible: false,
       headerRight: () => <NotificationIcon navigation={navigation} />,
     }
     return { ...defaultOptions, ...specificOptions }
@@ -41,59 +42,72 @@ const HomeNavigator = ({ initialRoute }) => {
         <Screen
           name="SetupNotifications"
           component={SetupNotifications}
-          options={{ title: 'Aktivera pushnotiser' }}
+          options={{ title: translate('AppNavigator.SetupNotificationsTitle') }}
         />
       )}
       {initialRoute === 'FixNotifications' && (
         <Screen
           name="FixNotifications"
           component={FixNotifications}
-          options={{ title: 'Laga pushnotiser' }}
+          options={{ title: translate('AppNavigator.FixNotificationsTitle') }}
         />
       )}
       {initialRoute === 'Loading' && (
-        <Screen name="Loading" component={Loading} options={{ title: '' }} />
+        <Screen
+          name="Loading"
+          component={Loading}
+          options={{ title: translate('AppNavigator.LoadingTitle') }}
+        />
       )}
-      <Screen name="Home" component={Home} options={options({ title: '' })} />
+      <Screen
+        name="Home"
+        component={Home}
+        options={options({ title: translate('AppNavigator.HomeTitle') })}
+      />
       <Screen
         name="CreateDIS"
         component={CreateDIS}
-        options={options({ title: 'Skapa nytt DIS' })}
+        options={options({ title: translate('AppNavigator.CreateDISTitle') })}
       />
       <Screen
         name="OpenDIS"
         component={DIS}
-        options={options({ title: 'Detaljer' })}
+        options={options({ title: translate('AppNavigator.DISTitle') })}
       />
       <Screen
         name="ApplyDIS"
         component={ApplyDIS}
-        options={options({ title: 'Ansök' })}
+        options={options({ title: translate('AppNavigator.ApplyDISTitle') })}
       />
       <Screen
         name="CreateTender"
         component={CreateTender}
-        options={options({ title: 'Skapa specifik upphandling' })}
+        options={options({
+          title: translate('AppNavigator.CreateTenderTitle'),
+        })}
       />
       <Screen
         name="OpenTender"
         component={OpenTender}
-        options={options({ title: 'Specifik upphandling' })}
+        options={options({ title: translate('AppNavigator.OpenTenderTitle') })}
       />
       <Screen
         name="CreateOffer"
         component={CreateOffer}
-        options={options({ title: 'Lämna anbud' })}
+        options={options({ title: translate('AppNavigator.CreateOfferTitle') })}
       />
       <Screen
         name="FindDIS"
         component={FindDIS}
-        options={options({ title: 'Hitta upphandling' })}
+        options={options({ title: translate('AppNavigator.FindDISTitle') })}
       />
       <Screen
         name="Notifications"
         component={Notifications}
-        options={{ title: 'Dina notiser' }}
+        options={options({
+          title: translate('AppNavigator.NotificationsTitle'),
+          headerRight: undefined,
+        })}
       />
     </Navigator>
   )

@@ -7,6 +7,7 @@ import 'moment/locale/sv'
 moment.locale('sv')
 
 import { Button, Card, Icon, StyleService, Text } from '@ui-kitten/components'
+import { translate } from '../lib/translate'
 
 const tagIcon = (style, icon) => <Icon {...style} name={icon} />
 
@@ -53,7 +54,7 @@ export const Hero = ({
         disabled={true}
         footer={() => footer(services, technologies)}
       >
-        <Text style={styles.title} category="h2">
+        <Text style={styles.title} category="h4">
           {title}
         </Text>
         <Text style={styles.dateLabel} category="h6">
@@ -64,13 +65,12 @@ export const Hero = ({
         </Text>
         {startDate && (
           <Text style={styles.dateLabel} category="p2">
-            {moment(startDate).format('YYYY-MM-DD')} (
-            {moment().to(moment(startDate))})
+            {moment(startDate).format('YYYY-MM-DD')}
           </Text>
         )}
         {onPress && (
           <Button style={styles.ctaButton} onPress={onPress}>
-            Ansök
+            {translate('Hero.apply_button')}
           </Button>
         )}
       </Card>

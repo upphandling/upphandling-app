@@ -1,37 +1,21 @@
-import React, { useMemo, useState } from 'react'
-import {
-  ImageBackground,
-  KeyboardAvoidingView,
-  ScrollView,
-  View,
-} from 'react-native'
+import React from 'react'
+import { KeyboardAvoidingView, ScrollView, View } from 'react-native'
 
 import {
-  Avatar,
   Button,
-  Card,
-  CheckBox,
-  Datepicker,
   Divider,
   Icon,
-  Input,
-  Layout,
-  List,
   ListItem,
-  Radio,
-  RadioGroup,
   StyleService,
   Text,
-  Toggle,
 } from '@ui-kitten/components'
 import { useDis } from '../hooks/useDis'
-import { TechnologyPicker } from '../components/TechnologyPicker'
-import { ServicePicker } from '../components/ServicePicker'
 import moment from 'moment'
 import { useTender } from '../hooks/useTenders'
 import { Tag } from '../components/Tag'
 import { Field } from '../components/Field'
-const CalendarIcon = (props) => <Icon {...props} name="calendar" />
+import { translate } from '../lib/translate'
+import { Loading } from '../screens/Loading'
 
 const issue = ({ title, number, body }) => (
   <ListItem
@@ -49,7 +33,7 @@ export const OpenTender = ({ navigation, route }) => {
   const { data: dis } = useDis(data?.disId)
   const createOffer = () => navigation.navigate('CreateOffer', { tenderId })
 
-  if (isLoading) return <Text>Laddar...</Text>
+  if (isLoading) return <Loading />
 
   const {
     description,
@@ -64,37 +48,45 @@ export const OpenTender = ({ navigation, route }) => {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <ScrollView style={styles.container}>
-        <Text category='h2' style={styles.title}>{description}</Text>
-        <Text style={styles.info}>{dis?.organisation }</Text>
+        <Text category="h2" style={styles.title}>
+          {description}
+        </Text>
+        <Text style={styles.info}>{dis?.organisation}</Text>
         <Divider />
 
-        <Field label="Krav på erbjudna tjänster">
+        <Field label={translate('OpenTender.service_criterias_label')}>
           {services.map((s) => (
             <Tag key={s}>{s}</Tag>
           ))}
         </Field>
 
-        <Field label="Tekniska krav">
+        <Field label={translate('OpenTender.technology_criterias_label')}>
           {technologies.map((s) => (
             <Tag key={s}>{s}</Tag>
           ))}
         </Field>
-        <Field label="Geografiskt område" value={geography} />
-        <Field label="Utvärderingskriterier" value={evaluationCriteria} />
         <Field
-          label="Startdatum"
+          label={translate('OpenTender.geography_criteria_label')}
+          value={geography}
+        />
+        <Field
+          label={translate('OpenTender.evaluation_criterias_label')}
+          value={evaluationCriteria}
+        />
+        <Field
+          label={translate('OpenTender.start_date')}
           value={moment(startDate).format('YYYY-MM-DD')}
         />
         <Divider />
-        <Field label='Krav / Uppgifter' />
+        <Field label={translate('OpenTender.issues')} />
         <View style={styles.issues}>{issues.map((item) => issue(item))}</View>
 
         <View style={styles.footer}>
           <Button onPress={createOffer} size="giant" style={styles.addButton}>
-            Lämna anbud
+            {translate('OpenTender.submit_offer')}
           </Button>
           <Text category="s2" style={styles.info}>
-            För att lämna anbud måste du vara godkänt företag i denna DIS.
+            {translate('OpenTender.offer_submittal_info')}
           </Text>
         </View>
       </ScrollView>
@@ -117,16 +109,10 @@ const styles = StyleService.create({
   },
 
   issue: {
-    borderColor: '#561266',
     maxHeight: 80,
   },
   container: {
     backgroundColor: '$background-basic-color-2',
-  },
-  input: {
-    marginHorizontal: 16,
-    marginVertical: 8,
-    borderColor: '#561266',
   },
   addButton: {
     marginHorizontal: 16,

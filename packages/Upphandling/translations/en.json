@@ -1,5 +1,11 @@
 {
   "Home": {
-    "title": "EN Det lätta sättet att upphandla öppen källkod"
+    "title": "Det lätta sättet att upphandla öppen källkod"
+  },
+  "SetupNotifications": {
+    "text": "För att få uppdateringar vid nya publicerade upphandlingar och processer du är delaktig i.",
+    "cta_text": "Vänligen aktivera pushnotiser.",
+    "defer_button": "Senare",
+    "cta_button": "Jag gör det nu!"
   }
 }
