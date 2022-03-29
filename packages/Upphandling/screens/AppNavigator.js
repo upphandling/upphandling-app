@@ -23,6 +23,7 @@ import { useNotificationPermissionsStatus } from '../hooks/useNotificationPermis
 import messaging from '@react-native-firebase/messaging'
 import Toast from 'react-native-toast-message'
 import { CacheInvalidator } from '../components/util/CacheInvalidator'
+import { translate } from '../lib/translate'
 const { Navigator, Screen } = createStackNavigator()
 
 const options = (specificOptions) => {

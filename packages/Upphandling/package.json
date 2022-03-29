@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "check-i18n": "npm run i18n -- --check",
+    "i18n": "sync-i18n --files '**/translations/*.json' --primary en --languages ar de pl so sv --space 2",
     "ios": "react-native run-ios",
-    "start": "react-native start",
-    "test": "jest",
     "lint": "eslint .",
-    "pod": "npx pod-install"
+    "pod": "npx pod-install",
+    "start": "react-native start",
+    "test": "jest"
   },
   "dependencies": {
     "@eva-design/eva": "^2.1.0",
@@ -22,6 +24,7 @@
     "@ui-kitten/eva-icons": "5.1.1",
     "@ui-kitten/metro-config": "5.1.1",
     "axios": "^0.24.0",
+    "i18n-js": "^3.8.0",
     "moment": "^2.29.1",
     "octokit": "^1.7.1",
     "react": "17.0.2",
@@ -29,6 +32,7 @@
     "react-native-actions-sheet": "^0.5.8",
     "react-native-device-info": "^8.4.8",
     "react-native-gesture-handler": "^2.1.0",
+    "react-native-localize": "^2.2.1",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-skeleton-content": "^1.0.24",
     "react-native-svg": "^12.1.1",

@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import { Button, Text } from '@ui-kitten/components'
 import { ScrollView } from 'react-native-gesture-handler'
+import { translate } from '../lib/translate'
 
 const getSize = (height) => {
   if (height > 800) {
@@ -44,7 +45,7 @@ export const Home = ({ navigation }) => {
           category="h1"
           style={{ ...styles.hero, ...styles[`hero${size}`] }}
         >
-          Det lätta sättet att upphandla öppen källkod
+          {translate('Home.title')}
         </Text>
         <Button onPress={createDIS} size="giant" style={styles.button}>
           Skapa nytt DIS

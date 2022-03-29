@@ -10,6 +10,8 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import darkTheme from './theme/dark.json'
 import lightTheme from './theme/light.json'
 import { ServerUpdater } from './components/util/ServerUpdater'
+import { translations } from './lib/translate'
+import { LanguageProvider } from './contexts/LanguageContext'
 
 const queryClient = new QueryClient()
 const getUIKittenTheme = (colorScheme) => {
@@ -25,14 +27,16 @@ export default () => {
   const theme = getUIKittenTheme(colorScheme)
   return (
     <>
-      <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={theme}>
-        <QueryClientProvider client={queryClient}>
-          <ServerUpdater>
-            <AppNavigator colorScheme={colorScheme} />
-          </ServerUpdater>
-        </QueryClientProvider>
-      </ApplicationProvider>
+      <LanguageProvider cache={true} data={translations}>
+        <IconRegistry icons={EvaIconsPack} />
+        <ApplicationProvider {...eva} theme={theme}>
+          <QueryClientProvider client={queryClient}>
+            <ServerUpdater>
+              <AppNavigator colorScheme={colorScheme} />
+            </ServerUpdater>
+          </QueryClientProvider>
+        </ApplicationProvider>
+      </LanguageProvider>
     </>
   )
 }

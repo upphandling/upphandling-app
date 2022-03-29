@@ -344,6 +344,8 @@ PODS:
     - RNFBApp
   - RNGestureHandler (2.1.0):
     - React-Core
+  - RNLocalize (2.2.1):
+    - React-Core
   - RNSVG (12.1.1):
     - React
   - Yoga (1.14.0)
@@ -386,6 +388,7 @@ DEPENDENCIES:
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNLocalize (from `../node_modules/react-native-localize`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -473,6 +476,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/messaging"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNLocalize:
+    :path: "../node_modules/react-native-localize"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   Yoga:
@@ -524,6 +529,7 @@ SPEC CHECKSUMS:
   RNFBApp: 7777c22386149f3845f1b0ca74e3d69a574559c5
   RNFBMessaging: 94fdb127cfa77647ebc85fb53ea6efaec40d344e
   RNGestureHandler: e5c7cab5f214503dcefd6b2b0cefb050e1f51c4a
+  RNLocalize: cbcb55d0e19c78086ea4eea20e03fe8000bbbced
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
 
