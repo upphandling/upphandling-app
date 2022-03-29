@@ -5,7 +5,7 @@ import {
   repository,
   Where,
 } from '@loopback/repository';
-  import {
+import {
   del,
   get,
   getModelSchemaRef,
@@ -15,17 +15,13 @@ import {
   post,
   requestBody,
 } from '@loopback/rest';
-import {
-Dis,
-Participation,
-Company,
-} from '../models';
+import {Dis, Participation, Company} from '../models';
 import {DisRepository} from '../repositories';
 
 export class DisCompanyController {
   constructor(
     @repository(DisRepository) protected disRepository: DisRepository,
-  ) { }
+  ) {}
 
   @get('/dis/{id}/companies', {
     responses: {
@@ -65,7 +61,8 @@ export class DisCompanyController {
           }),
         },
       },
-    }) company: Omit<Company, 'id'>,
+    })
+    company: Omit<Company, 'id'>,
   ): Promise<Company> {
     return this.disRepository.participatingCompanies(id).create(company);
   }
@@ -88,7 +85,8 @@ export class DisCompanyController {
       },
     })
     company: Partial<Company>,
-    @param.query.object('where', getWhereSchemaFor(Company)) where?: Where<Company>,
+    @param.query.object('where', getWhereSchemaFor(Company))
+    where?: Where<Company>,
   ): Promise<Count> {
     return this.disRepository.participatingCompanies(id).patch(company, where);
   }
@@ -103,7 +101,8 @@ export class DisCompanyController {
   })
   async delete(
     @param.path.string('id') id: string,
-    @param.query.object('where', getWhereSchemaFor(Company)) where?: Where<Company>,
+    @param.query.object('where', getWhereSchemaFor(Company))
+    where?: Where<Company>,
   ): Promise<Count> {
     return this.disRepository.participatingCompanies(id).delete(where);
   }

@@ -1,6 +1,6 @@
-import { Entity, hasMany, model, property } from '@loopback/repository'
-import { Company } from '.'
-import { Participation } from './participation.model'
+import {Entity, hasMany, model, property} from '@loopback/repository';
+import {Company} from '.';
+import {Participation} from './participation.model';
 import {Tender} from './tender.model';
 
 @model()
@@ -10,57 +10,57 @@ export class Dis extends Entity {
     id: true,
     defaultFn: 'uuidv4',
   })
-  id?: string
+  id?: string;
 
   @property({
     type: 'string',
     required: true,
   })
-  title: string
+  title: string;
 
   @property({
     type: 'date',
     required: true,
   })
-  startDate: string
+  startDate: string;
 
   @property({
     type: 'string',
     required: true,
   })
-  organisation: string
+  organisation: string;
 
   @property({
     type: 'string',
   })
-  description?: string
+  description?: string;
 
   @property({
     type: 'string',
   })
-  status?: string
+  status?: string;
 
   @property({
     type: 'string',
   })
-  repo?: string
+  repo?: string;
 
   @property({
     type: 'number',
   })
-  stars?: number
+  stars?: number;
 
   @property({
     type: 'array',
     itemType: 'string',
   })
-  tech?: string[]
+  tech?: string[];
 
   @property({
     type: 'array',
     itemType: 'string',
   })
-  services?: string[]
+  services?: string[];
 
   @property({
     type: 'date',
@@ -76,7 +76,7 @@ export class Dis extends Entity {
   tenders: Tender[];
 
   constructor(data?: Partial<Dis>) {
-    super(data)
+    super(data);
   }
 }
 
@@ -84,4 +84,4 @@ export interface DisRelations {
   // describe navigational properties here
 }
 
-export type DisWithRelations = Dis & DisRelations
+export type DisWithRelations = Dis & DisRelations;

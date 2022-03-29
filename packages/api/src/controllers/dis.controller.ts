@@ -5,7 +5,7 @@ import {
   FilterExcludingWhere,
   repository,
   Where,
-} from "@loopback/repository";
+} from '@loopback/repository';
 import {
   post,
   param,
@@ -16,45 +16,45 @@ import {
   del,
   requestBody,
   response,
-} from "@loopback/rest";
-import { Dis } from "../models";
-import { DisRepository } from "../repositories";
+} from '@loopback/rest';
+import {Dis} from '../models';
+import {DisRepository} from '../repositories';
 
 export class DisController {
   constructor(
     @repository(DisRepository)
-    public disRepository: DisRepository
+    public disRepository: DisRepository,
   ) {}
 
-  @post("/dis")
+  @post('/dis')
   @response(200, {
-    description: "Dis model instance",
-    content: { "application/json": { schema: getModelSchemaRef(Dis) } },
+    description: 'Dis model instance',
+    content: {'application/json': {schema: getModelSchemaRef(Dis)}},
   })
   async create(
     @requestBody({
       content: {
-        "application/json": {
+        'application/json': {
           schema: getModelSchemaRef(Dis, {
-            title: "NewDis",
-            exclude: ["id"],
+            title: 'NewDis',
+            exclude: ['id', 'createdAt'],
           }),
         },
       },
     })
-    dis: Omit<Dis, "id">
+    dis: Omit<Dis, 'id'>,
   ): Promise<Dis> {
     return this.disRepository.create(dis);
   }
 
-  @get("/dis")
+  @get('/dis')
   @response(200, {
-    description: "Array of Dis model instances",
+    description: 'Array of Dis model instances',
     content: {
-      "application/json": {
+      'application/json': {
         schema: {
-          type: "array",
-          items: getModelSchemaRef(Dis, { includeRelations: true }),
+          type: 'array',
+          items: getModelSchemaRef(Dis, {includeRelations: true}),
         },
       },
     },
@@ -63,56 +63,56 @@ export class DisController {
     return this.disRepository.find(filter);
   }
 
-  @get("/dis/{id}")
+  @get('/dis/{id}')
   @response(200, {
-    description: "Dis model instance",
+    description: 'Dis model instance',
     content: {
-      "application/json": {
-        schema: getModelSchemaRef(Dis, { includeRelations: true }),
+      'application/json': {
+        schema: getModelSchemaRef(Dis, {includeRelations: true}),
       },
     },
   })
   async findById(
-    @param.path.string("id") id: string,
-    @param.filter(Dis, { exclude: "where" }) filter?: FilterExcludingWhere<Dis>
+    @param.path.string('id') id: string,
+    @param.filter(Dis, {exclude: 'where'}) filter?: FilterExcludingWhere<Dis>,
   ): Promise<Dis> {
     return this.disRepository.findById(id, filter);
   }
 
-  @patch("/dis/{id}")
+  @patch('/dis/{id}')
   @response(204, {
-    description: "Dis PATCH success",
+    description: 'Dis PATCH success',
   })
   async updateById(
-    @param.path.string("id") id: string,
+    @param.path.string('id') id: string,
     @requestBody({
       content: {
-        "application/json": {
-          schema: getModelSchemaRef(Dis, { partial: true }),
+        'application/json': {
+          schema: getModelSchemaRef(Dis, {partial: true}),
         },
       },
     })
-    dis: Dis
+    dis: Dis,
   ): Promise<void> {
     await this.disRepository.updateById(id, dis);
   }
 
-  @put("/dis/{id}")
+  @put('/dis/{id}')
   @response(204, {
-    description: "Dis PUT success",
+    description: 'Dis PUT success',
   })
   async replaceById(
-    @param.path.string("id") id: string,
-    @requestBody() dis: Dis
+    @param.path.string('id') id: string,
+    @requestBody() dis: Dis,
   ): Promise<void> {
     await this.disRepository.replaceById(id, dis);
   }
 
-  @del("/dis/{id}")
+  @del('/dis/{id}')
   @response(204, {
-    description: "Dis DELETE success",
+    description: 'Dis DELETE success',
   })
-  async deleteById(@param.path.string("id") id: string): Promise<void> {
+  async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.disRepository.deleteById(id);
   }
 }

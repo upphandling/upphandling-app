@@ -1,15 +1,15 @@
-import * as admin from 'firebase-admin'
-import { AndroidConfig } from 'firebase-admin/lib/messaging/messaging-api'
+import * as admin from 'firebase-admin';
+import {AndroidConfig} from 'firebase-admin/lib/messaging/messaging-api';
 
-var serviceAccount = require('./../../src/upphandling-pushes-firebase-adminsdk-70bmw-19f37db92b.json')
+var serviceAccount = require('./../../src/upphandling-pushes-firebase-adminsdk-70bmw-19f37db92b.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-})
+});
 
 const androidConfig: AndroidConfig = {
   priority: 'high',
-}
+};
 
 export enum AppAction {
   Home = 'Home',
@@ -37,8 +37,8 @@ export class FCM {
       },
       android: androidConfig,
       token: to,
-    }
-    return admin.messaging().send(message)
+    };
+    return admin.messaging().send(message);
   }
 
   public static async sendMessage(
@@ -46,7 +46,7 @@ export class FCM {
     title: string,
     action: string,
     description?: string,
-    actionId?: string
+    actionId?: string,
   ) {
     const message = {
       notification: {
@@ -65,7 +65,7 @@ export class FCM {
       },
       android: androidConfig,
       token: to,
-    }
-    return admin.messaging().send(message)
+    };
+    return admin.messaging().send(message);
   }
 }

@@ -15,16 +15,13 @@ import {
   post,
   requestBody,
 } from '@loopback/rest';
-import {
-  Dis,
-  Tender,
-} from '../models';
+import {Dis, Tender} from '../models';
 import {DisRepository} from '../repositories';
 
 export class DisTenderController {
   constructor(
     @repository(DisRepository) protected disRepository: DisRepository,
-  ) { }
+  ) {}
 
   @get('/dis/{id}/tenders', {
     responses: {
@@ -48,7 +45,7 @@ export class DisTenderController {
   @post('/dis/{id}/tenders', {
     responses: {
       '200': {
-        description: 'Dis model instance',
+        description: 'Tender model instance',
         content: {'application/json': {schema: getModelSchemaRef(Tender)}},
       },
     },
@@ -64,7 +61,8 @@ export class DisTenderController {
           }),
         },
       },
-    }) tender: Omit<Tender, 'id'>,
+    })
+    tender: Omit<Tender, 'id'>,
   ): Promise<Tender> {
     return this.disRepository.tenders(id).create(tender);
   }
@@ -87,7 +85,8 @@ export class DisTenderController {
       },
     })
     tender: Partial<Tender>,
-    @param.query.object('where', getWhereSchemaFor(Tender)) where?: Where<Tender>,
+    @param.query.object('where', getWhereSchemaFor(Tender))
+    where?: Where<Tender>,
   ): Promise<Count> {
     return this.disRepository.tenders(id).patch(tender, where);
   }
@@ -102,7 +101,8 @@ export class DisTenderController {
   })
   async delete(
     @param.path.string('id') id: string,
-    @param.query.object('where', getWhereSchemaFor(Tender)) where?: Where<Tender>,
+    @param.query.object('where', getWhereSchemaFor(Tender))
+    where?: Where<Tender>,
   ): Promise<Count> {
     return this.disRepository.tenders(id).delete(where);
   }

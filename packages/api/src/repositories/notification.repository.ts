@@ -8,9 +8,7 @@ export class NotificationRepository extends DefaultCrudRepository<
   typeof Notification.prototype.id,
   NotificationRelations
 > {
-  constructor(
-    @inject('datasources.db') dataSource: DbDataSource,
-  ) {
+  constructor(@inject('datasources.db') dataSource: DbDataSource) {
     super(Notification, dataSource);
   }
 }

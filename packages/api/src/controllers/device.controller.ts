@@ -25,9 +25,9 @@ import {NotificationRepository} from '../repositories';
 export class DeviceController {
   constructor(
     @repository(DeviceRepository)
-    public deviceRepository : DeviceRepository,
+    public deviceRepository: DeviceRepository,
     @repository(NotificationRepository)
-    public notificationRepository : NotificationRepository,
+    public notificationRepository: NotificationRepository,
   ) {}
 
   @post('/devices')
@@ -41,7 +41,7 @@ export class DeviceController {
         'application/json': {
           schema: getModelSchemaRef(Device, {
             title: 'NewDevice',
-            exclude: ['createdAt', 'lastSeen']
+            exclude: ['createdAt', 'lastSeen'],
           }),
         },
       },
@@ -49,17 +49,17 @@ export class DeviceController {
     device: Device,
   ): Promise<Device> {
     try {
-      device.lastSeen = new Date().toString()
-      await this.deviceRepository.updateById(device.deviceId, device)
-      return this.deviceRepository.findById(device.deviceId)
+      device.lastSeen = new Date().toString();
+      await this.deviceRepository.updateById(device.deviceId, device);
+      return this.deviceRepository.findById(device.deviceId);
     } catch (error) {
-      if(error.code==='ENTITY_NOT_FOUND') {
-        return this.deviceRepository.create(device)
+      if (error.code === 'ENTITY_NOT_FOUND') {
+        return this.deviceRepository.create(device);
       } else {
-        console.log(error)
-        throw error
+        console.log(error);
+        throw error;
       }
-    }    
+    }
   }
 
   @get('/devices/count')
@@ -67,9 +67,7 @@ export class DeviceController {
     description: 'Device model count',
     content: {'application/json': {schema: CountSchema}},
   })
-  async count(
-    @param.where(Device) where?: Where<Device>,
-  ): Promise<Count> {
+  async count(@param.where(Device) where?: Where<Device>): Promise<Count> {
     return this.deviceRepository.count(where);
   }
 
@@ -85,9 +83,7 @@ export class DeviceController {
       },
     },
   })
-  async find(
-    @param.filter(Device) filter?: Filter<Device>,
-  ): Promise<Device[]> {
+  async find(@param.filter(Device) filter?: Filter<Device>): Promise<Device[]> {
     return this.deviceRepository.find(filter);
   }
 
@@ -121,7 +117,8 @@ export class DeviceController {
   })
   async findById(
     @param.path.string('id') id: string,
-    @param.filter(Device, {exclude: 'where'}) filter?: FilterExcludingWhere<Device>
+    @param.filter(Device, {exclude: 'where'})
+    filter?: FilterExcludingWhere<Device>,
   ): Promise<Device> {
     return this.deviceRepository.findById(id, filter);
   }

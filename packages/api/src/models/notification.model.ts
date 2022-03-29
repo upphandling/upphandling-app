@@ -49,7 +49,6 @@ export class Notification extends Entity {
   })
   createdAt: string;
 
-
   constructor(data?: Partial<Notification>) {
     super(data);
   }

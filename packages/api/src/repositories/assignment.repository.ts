@@ -8,9 +8,7 @@ export class AssignmentRepository extends DefaultCrudRepository<
   typeof Assignment.prototype.id,
   AssignmentRelations
 > {
-  constructor(
-    @inject('datasources.db') dataSource: DbDataSource,
-  ) {
+  constructor(@inject('datasources.db') dataSource: DbDataSource) {
     super(Assignment, dataSource);
   }
 }

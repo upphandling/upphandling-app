@@ -8,9 +8,7 @@ export class ParticipationRepository extends DefaultCrudRepository<
   typeof Participation.prototype.id,
   ParticipationRelations
 > {
-  constructor(
-    @inject('datasources.db') dataSource: DbDataSource,
-  ) {
+  constructor(@inject('datasources.db') dataSource: DbDataSource) {
     super(Participation, dataSource);
   }
 }

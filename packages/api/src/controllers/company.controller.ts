@@ -5,7 +5,7 @@ import {
   FilterExcludingWhere,
   repository,
   Where,
-} from '@loopback/repository'
+} from '@loopback/repository';
 import {
   post,
   param,
@@ -16,22 +16,22 @@ import {
   del,
   requestBody,
   response,
-} from '@loopback/rest'
-import { Company } from '../models'
-import { CompanyRepository } from '../repositories'
-import moment from 'moment'
-import { Roaring } from '../lib/roaring'
+} from '@loopback/rest';
+import {Company} from '../models';
+import {CompanyRepository} from '../repositories';
+import moment from 'moment';
+import {Roaring} from '../lib/roaring';
 
 export class CompanyController {
   constructor(
     @repository(CompanyRepository)
-    public companyRepository: CompanyRepository
+    public companyRepository: CompanyRepository,
   ) {}
 
   @post('/companies')
   @response(200, {
     description: 'Company model instance',
-    content: { 'application/json': { schema: getModelSchemaRef(Company) } },
+    content: {'application/json': {schema: getModelSchemaRef(Company)}},
   })
   async create(
     @requestBody({
@@ -44,21 +44,25 @@ export class CompanyController {
         },
       },
     })
-    company: Company
+    company: Company,
   ): Promise<Company> {
-    console.log('got copmany', company)
-    const latestCompanyRecord = await Roaring.lookupCompany(company.id)
-    if (latestCompanyRecord){
-      company.id = latestCompanyRecord.companyId
-      company.name = latestCompanyRecord.companyName
-      delete latestCompanyRecord.companyId
-      delete latestCompanyRecord.companyName
-      company = {...company, ...latestCompanyRecord}
-      company.statusDateFrom = moment(latestCompanyRecord.statusDateFrom).toDate()
-      company.companyRegistrationDate = moment(latestCompanyRecord.companyRegistrationDate).toDate()
-      company.changeDate = moment(latestCompanyRecord.changeDate).toDate()
+    console.log('got copmany', company);
+    const latestCompanyRecord = await Roaring.lookupCompany(company.id);
+    if (latestCompanyRecord) {
+      company.id = latestCompanyRecord.companyId;
+      company.name = latestCompanyRecord.companyName;
+      delete latestCompanyRecord.companyId;
+      delete latestCompanyRecord.companyName;
+      company = {...company, ...latestCompanyRecord};
+      company.statusDateFrom = moment(
+        latestCompanyRecord.statusDateFrom,
+      ).toDate();
+      company.companyRegistrationDate = moment(
+        latestCompanyRecord.companyRegistrationDate,
+      ).toDate();
+      company.changeDate = moment(latestCompanyRecord.changeDate).toDate();
     }
-/*      {
+    /*      {
             "address": "Västerbrogatan 8",
             "changeDate": "2018-02-21",
             "coAddress": "c/o Advokatbyrån Eriksson & Bengtsson",
@@ -138,9 +142,8 @@ export class CompanyController {
             "zipCode": "50330"
           } */
 
-    return this.companyRepository.create(company)
+    return this.companyRepository.create(company);
   }
-
 
   @get('/companies')
   @response(200, {
@@ -149,15 +152,15 @@ export class CompanyController {
       'application/json': {
         schema: {
           type: 'array',
-          items: getModelSchemaRef(Company, { includeRelations: true }),
+          items: getModelSchemaRef(Company, {includeRelations: true}),
         },
       },
     },
   })
   async find(
-    @param.filter(Company) filter?: Filter<Company>
+    @param.filter(Company) filter?: Filter<Company>,
   ): Promise<Company[]> {
-    return this.companyRepository.find(filter)
+    return this.companyRepository.find(filter);
   }
 
   @get('/companies/{id}')
@@ -165,16 +168,16 @@ export class CompanyController {
     description: 'Company model instance',
     content: {
       'application/json': {
-        schema: getModelSchemaRef(Company, { includeRelations: true }),
+        schema: getModelSchemaRef(Company, {includeRelations: true}),
       },
     },
   })
   async findById(
     @param.path.string('id') id: string,
-    @param.filter(Company, { exclude: 'where' })
-    filter?: FilterExcludingWhere<Company>
+    @param.filter(Company, {exclude: 'where'})
+    filter?: FilterExcludingWhere<Company>,
   ): Promise<Company> {
-    return this.companyRepository.findById(id, filter)
+    return this.companyRepository.findById(id, filter);
   }
 
   @put('/companies/{id}')
@@ -183,9 +186,9 @@ export class CompanyController {
   })
   async replaceById(
     @param.path.string('id') id: string,
-    @requestBody() company: Company
+    @requestBody() company: Company,
   ): Promise<void> {
-    await this.companyRepository.replaceById(id, company)
+    await this.companyRepository.replaceById(id, company);
   }
 
   @del('/companies/{id}')
@@ -193,6 +196,6 @@ export class CompanyController {
     description: 'Company DELETE success',
   })
   async deleteById(@param.path.string('id') id: string): Promise<void> {
-    await this.companyRepository.deleteById(id)
+    await this.companyRepository.deleteById(id);
   }
 }

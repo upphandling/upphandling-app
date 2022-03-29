@@ -5,7 +5,7 @@ import {
   FilterExcludingWhere,
   repository,
   Where,
-} from '@loopback/repository'
+} from '@loopback/repository';
 import {
   post,
   param,
@@ -16,20 +16,20 @@ import {
   del,
   requestBody,
   response,
-} from '@loopback/rest'
-import { Tender } from '../models'
-import { TenderRepository } from '../repositories'
+} from '@loopback/rest';
+import {Tender} from '../models';
+import {TenderRepository} from '../repositories';
 
 export class TenderController {
   constructor(
     @repository(TenderRepository)
-    public tenderRepository: TenderRepository
+    public tenderRepository: TenderRepository,
   ) {}
 
   @post('/tenders')
   @response(200, {
     description: 'Tender model instance',
-    content: { 'application/json': { schema: getModelSchemaRef(Tender) } },
+    content: {'application/json': {schema: getModelSchemaRef(Tender)}},
   })
   async create(
     @requestBody({
@@ -42,19 +42,19 @@ export class TenderController {
         },
       },
     })
-    tender: Omit<Tender, 'id'>
+    tender: Omit<Tender, 'id'>,
   ): Promise<Tender> {
-    console.log('creating tender', tender)
-    return this.tenderRepository.create(tender)
+    console.log('creating tender', tender);
+    return this.tenderRepository.create(tender);
   }
 
   @get('/tenders/count')
   @response(200, {
     description: 'Tender model count',
-    content: { 'application/json': { schema: CountSchema } },
+    content: {'application/json': {schema: CountSchema}},
   })
   async count(@param.where(Tender) where?: Where<Tender>): Promise<Count> {
-    return this.tenderRepository.count(where)
+    return this.tenderRepository.count(where);
   }
 
   @get('/tenders')
@@ -64,32 +64,32 @@ export class TenderController {
       'application/json': {
         schema: {
           type: 'array',
-          items: getModelSchemaRef(Tender, { includeRelations: true }),
+          items: getModelSchemaRef(Tender, {includeRelations: true}),
         },
       },
     },
   })
   async find(@param.filter(Tender) filter?: Filter<Tender>): Promise<Tender[]> {
-    return this.tenderRepository.find(filter)
+    return this.tenderRepository.find(filter);
   }
 
   @patch('/tenders')
   @response(200, {
     description: 'Tender PATCH success count',
-    content: { 'application/json': { schema: CountSchema } },
+    content: {'application/json': {schema: CountSchema}},
   })
   async updateAll(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Tender, { partial: true }),
+          schema: getModelSchemaRef(Tender, {partial: true}),
         },
       },
     })
     tender: Tender,
-    @param.where(Tender) where?: Where<Tender>
+    @param.where(Tender) where?: Where<Tender>,
   ): Promise<Count> {
-    return this.tenderRepository.updateAll(tender, where)
+    return this.tenderRepository.updateAll(tender, where);
   }
 
   @get('/tenders/{id}')
@@ -97,16 +97,16 @@ export class TenderController {
     description: 'Tender model instance',
     content: {
       'application/json': {
-        schema: getModelSchemaRef(Tender, { includeRelations: true }),
+        schema: getModelSchemaRef(Tender, {includeRelations: true}),
       },
     },
   })
   async findById(
     @param.path.string('id') id: string,
-    @param.filter(Tender, { exclude: 'where' })
-    filter?: FilterExcludingWhere<Tender>
+    @param.filter(Tender, {exclude: 'where'})
+    filter?: FilterExcludingWhere<Tender>,
   ): Promise<Tender> {
-    return this.tenderRepository.findById(id, filter)
+    return this.tenderRepository.findById(id, filter);
   }
 
   @patch('/tenders/{id}')
@@ -118,13 +118,13 @@ export class TenderController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Tender, { partial: true }),
+          schema: getModelSchemaRef(Tender, {partial: true}),
         },
       },
     })
-    tender: Tender
+    tender: Tender,
   ): Promise<void> {
-    await this.tenderRepository.updateById(id, tender)
+    await this.tenderRepository.updateById(id, tender);
   }
 
   @put('/tenders/{id}')
@@ -133,9 +133,9 @@ export class TenderController {
   })
   async replaceById(
     @param.path.string('id') id: string,
-    @requestBody() tender: Tender
+    @requestBody() tender: Tender,
   ): Promise<void> {
-    await this.tenderRepository.replaceById(id, tender)
+    await this.tenderRepository.replaceById(id, tender);
   }
 
   @del('/tenders/{id}')
@@ -143,6 +143,6 @@ export class TenderController {
     description: 'Tender DELETE success',
   })
   async deleteById(@param.path.string('id') id: string): Promise<void> {
-    await this.tenderRepository.deleteById(id)
+    await this.tenderRepository.deleteById(id);
   }
 }
