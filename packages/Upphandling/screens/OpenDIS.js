@@ -24,7 +24,7 @@ moment.locale('sv')
 
 const actionSheetRef = React.createRef()
 
-export const DIS = ({ navigation, route }) => {
+export const OpenDIS = ({ navigation, route }) => {
   const id = route.params.id
   const { status, data: dis, error, isFetching } = useDis(id)
   const [selected, setSelected] = useState([])
