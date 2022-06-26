@@ -1,11 +1,25 @@
 import * as admin from 'firebase-admin';
+
 import {AndroidConfig} from 'firebase-admin/lib/messaging/messaging-api';
 
-var serviceAccount = require('./../../src/upphandling-pushes-firebase-adminsdk-70bmw-19f37db92b.json');
+import {serviceAccount} from './service-account'
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
+try {
+  admin.initializeApp(serviceAccount as admin.ServiceAccount);
+} catch (e) {
+  console.error(`Firebase Config is not correctly set.
+  Make sure the following ENV variables are set:
+  - FCM_PROJECT_ID
+  - FCM_PRIVATE_KEY_ID
+  - FCM_PRIVATE_KEY
+  - FCM_CLIENT_EMAIL
+  - FCM_CLIENT_ID
+  - FCM_CLIENT_C509_CERT_URL
+  ---
+  Error: ${e}`);
+  process.exit(1);
+}
+
 
 const androidConfig: AndroidConfig = {
   priority: 'high',

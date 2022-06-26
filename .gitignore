@@ -4,3 +4,4 @@ secret*.yaml
 pg-data
 .secrets
 *.tsbuildinfo
+.env
