@@ -23,7 +23,7 @@ import {AssignmentRepository} from '../repositories';
 export class AssignmentController {
   constructor(
     @repository(AssignmentRepository)
-    public assignmentRepository : AssignmentRepository,
+    public assignmentRepository: AssignmentRepository,
   ) {}
 
   @post('/assignments')
@@ -37,7 +37,7 @@ export class AssignmentController {
         'application/json': {
           schema: getModelSchemaRef(Assignment, {
             title: 'NewAssignment',
-            exclude: ['id'],
+            exclude: ['id', 'createdAt'],
           }),
         },
       },
@@ -106,7 +106,8 @@ export class AssignmentController {
   })
   async findById(
     @param.path.string('id') id: string,
-    @param.filter(Assignment, {exclude: 'where'}) filter?: FilterExcludingWhere<Assignment>
+    @param.filter(Assignment, {exclude: 'where'})
+    filter?: FilterExcludingWhere<Assignment>,
   ): Promise<Assignment> {
     return this.assignmentRepository.findById(id, filter);
   }

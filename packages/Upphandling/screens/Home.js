@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import { Button, Text } from '@ui-kitten/components'
 import { ScrollView } from 'react-native-gesture-handler'
+import { translate } from '../lib/translate'
 
 const getSize = (height) => {
   if (height > 800) {
@@ -25,38 +26,38 @@ export const Home = ({ navigation }) => {
   const createDIS = () => {
     navigation.navigate('CreateDIS')
   }
-  const findDIS = (id) => {
-    navigation.navigate('FindDIS', { id })
+  const findDIS = () => {
+    navigation.navigate('FindDIS')
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView style={{ flex: 1 }}>
-        <View style={{ flex: 1 }}>
+    <SafeAreaView style={styles.flex}>
+      <ScrollView style={styles.flex}>
+        <View style={styles.flex}>
           <Image
             resizeMethod="resize"
             resizeMode="contain"
-            source={require('../assets/thumb-up-dynamic-color.png')}
-            style={{ ...styles.image, height: Math.floor(height / 2) }}
+            source={require('../assets/large-logo.png')}
+            style={{ ...styles.image, ...styles[`image${size}`] }}
           />
         </View>
         <Text
           category="h1"
           style={{ ...styles.hero, ...styles[`hero${size}`] }}
         >
-          Det lätta sättet att upphandla öppen källkod
+          {translate('Home.title')}
         </Text>
         <Button onPress={createDIS} size="giant" style={styles.button}>
-          Skapa nytt DIS
+          {translate('Home.create_dps_button')}
         </Button>
         <Button
           onPress={findDIS}
           size="small"
           appearance="ghost"
-          status="warning"
+          status="basic"
           style={styles.button}
         >
-          Hitta upphandlingar
+          {translate('Home.find_dps_button')}
         </Button>
       </ScrollView>
     </SafeAreaView>
@@ -64,20 +65,27 @@ export const Home = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
   hero: {
     padding: 18,
+    textAlign: 'center',
   },
   heroLarge: {
-    marginTop: -46,
-    fontSize: 50,
+    marginTop: 38,
+    marginBottom: 38,
+    fontSize: 38,
   },
   heroMedium: {
-    marginTop: -30,
-    fontSize: 34,
+    marginTop: 30,
+    marginBottom: 30,
+    fontSize: 32,
   },
   heroSmall: {
-    marginTop: -34,
-    fontSize: 28,
+    marginTop: 20,
+    marginBottom: 20,
+    fontSize: 26,
   },
   container: {
     flex: 1,
@@ -93,5 +101,14 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     marginBottom: 10,
+  },
+  imageLarge: {
+    height: 320,
+  },
+  imageMedium: {
+    height: 260,
+  },
+  imageSmall: {
+    height: 180,
   },
 })

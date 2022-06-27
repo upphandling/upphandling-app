@@ -26,6 +26,12 @@ export class Assignment extends Entity {
   })
   tenderId?: string;
 
+  @property({
+    type: 'date',
+    required: true,
+    default: () => new Date(),
+  })
+  createdAt: string;
 
   constructor(data?: Partial<Assignment>) {
     super(data);

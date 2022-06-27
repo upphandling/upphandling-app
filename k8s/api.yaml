@@ -5,7 +5,7 @@ metadata:
   namespace: dis
 spec:
   ports:
-  - port: 3000
+    - port: 3000
   type: LoadBalancer
   selector:
     app: api
@@ -25,35 +25,63 @@ spec:
         app: api
     spec:
       containers:
-      - name: api
-        image: api
-        ports:
-        - containerPort: 3000
-        resources: {}
-        env:
-          - name: PGHOST
-            value: postgresql-postgresql-ha-pgpool
-          - name: PGUSER
-            value: postgres
-          - name: PGDATABASE
-            value: postgres
-          - name: PGPASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: postgresql-postgresql-ha-postgresql
-                key: postgresql-password
-          - name: ROARING_KEY
-            valueFrom:
-              secretKeyRef:
-                name: roaring
-                key: key
-          - name: ROARING_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: roaring
-                key: secret        
-          - name: DATABASE_URL
-            value: "postgres://$(PGUSER):$(PGPASSWORD)@$(PGHOST)/$(PGDATABASE)"
+        - name: api
+          image: api
+          ports:
+            - containerPort: 3000
+          resources: {}
+          env:
+            - name: PGHOST
+              value: postgresql-postgresql-ha-pgpool
+            - name: PGUSER
+              value: postgres
+            - name: PGDATABASE
+              value: postgres
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-postgresql-ha-postgresql
+                  key: postgresql-password
+            - name: ROARING_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: roaring
+                  key: key
+            - name: ROARING_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: roaring
+                  key: secret
+            - name: FCM_PROJECT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: fcm
+                  key: project_id
+            - name: FCM_PRIVATE_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: fcm
+                  key: private_key_id
+            - name: FCM_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: fcm
+                  key: private_key
+            - name: FCM_CLIENT_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: fcm
+                  key: client_email
+            - name: FCM_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: fcm
+                  key: client_id
+            - name: FCM_CLIENT_C509_CERT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: fcm
+                  key: client_c509_cert_url
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -62,26 +90,26 @@ metadata:
   name: api
   namespace: dis
   annotations:
-    kubernetes.io/ingress.class: "public"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
-    nginx.ingress.kubernetes.io/http2-push-preload: "true"
-    nginx.ingress.kubernetes.io/proxy-body-size: "500m"
-    nginx.ingress.kubernetes.io/proxy-pass-headers: "Location"
+    # kubernetes.io/ingress.class: "public"
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+    # nginx.ingress.kubernetes.io/http2-push-preload: "true"
+    # nginx.ingress.kubernetes.io/proxy-body-size: "500m"
+    # nginx.ingress.kubernetes.io/proxy-pass-headers: "Location"
 
 spec:
   tls:
-  - hosts:
-    - api.upphandling.app
-    secretName: api-secret-tls
+    - hosts:
+        - api.upphandling.app
+      secretName: api-secret-tls
   rules:
-  - host: api.upphandling.app
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: api
-            port:
-              number: 3000
+    - host: api.upphandling.app
+      http:
+        paths:
+          - pathType: Prefix
+            path: '/'
+            backend:
+              service:
+                name: api
+                port:
+                  number: 3000

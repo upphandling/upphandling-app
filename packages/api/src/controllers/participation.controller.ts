@@ -23,13 +23,15 @@ import {ParticipationRepository} from '../repositories';
 export class ParticipationController {
   constructor(
     @repository(ParticipationRepository)
-    public participationRepository : ParticipationRepository,
+    public participationRepository: ParticipationRepository,
   ) {}
 
   @post('/participations')
   @response(200, {
     description: 'Participation model instance',
-    content: {'application/json': {schema: getModelSchemaRef(Participation)}},
+    content: {
+      'application/json': {schema: getModelSchemaRef(Participation)},
+    },
   })
   async create(
     @requestBody({
@@ -37,7 +39,7 @@ export class ParticipationController {
         'application/json': {
           schema: getModelSchemaRef(Participation, {
             title: 'NewParticipation',
-            exclude: ['id'],
+            exclude: ['id', 'createdAt'],
           }),
         },
       },
@@ -106,7 +108,8 @@ export class ParticipationController {
   })
   async findById(
     @param.path.string('id') id: string,
-    @param.filter(Participation, {exclude: 'where'}) filter?: FilterExcludingWhere<Participation>
+    @param.filter(Participation, {exclude: 'where'})
+    filter?: FilterExcludingWhere<Participation>,
   ): Promise<Participation> {
     return this.participationRepository.findById(id, filter);
   }

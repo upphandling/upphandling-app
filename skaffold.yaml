@@ -4,14 +4,14 @@ metadata:
   name: dis
 build:
   artifacts:
-  - image: api
-    context: packages/api
-    docker:
-      dockerfile: Dockerfile
+    - image: api
+      context: packages/api
+      docker:
+        dockerfile: Dockerfile
 deploy:
   kubectl:
     manifests:
-    - k8s/api.yaml
+      - k8s/api.yaml
   helm:
     releases:
       - name: postgresql
@@ -20,15 +20,14 @@ deploy:
         remoteChart: postgresql-ha
         repo: https://charts.bitnami.com/bitnami
         namespace: dis
-      - name: consul
-        remoteChart: consul
-        repo: https://helm.releases.hashicorp.com
-        namespace: dis
-
-      - name: vault
-        remoteChart: vault
-        namespace: dis
-        repo: https://helm.releases.hashicorp.com
-        setValues:
-          server.ha.enabled: true
-          server.ha.replicas: 3
+      # - name: consul
+      #   remoteChart: consul
+      #   repo: https://helm.releases.hashicorp.com
+      #   namespace: dis
+      # - name: vault
+      #   remoteChart: vault
+      #   namespace: dis
+      #   repo: https://helm.releases.hashicorp.com
+      #   setValues:
+      #     server.ha.enabled: true
+      #     server.ha.replicas: 3

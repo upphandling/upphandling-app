@@ -8,9 +8,7 @@ export class OfferRepository extends DefaultCrudRepository<
   typeof Offer.prototype.id,
   OfferRelations
 > {
-  constructor(
-    @inject('datasources.db') dataSource: DbDataSource,
-  ) {
+  constructor(@inject('datasources.db') dataSource: DbDataSource) {
     super(Offer, dataSource);
   }
 }

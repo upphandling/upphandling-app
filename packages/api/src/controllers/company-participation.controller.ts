@@ -15,16 +15,14 @@ import {
   post,
   requestBody,
 } from '@loopback/rest';
-import {
-  Company,
-  Participation,
-} from '../models';
+import {Company, Participation} from '../models';
 import {CompanyRepository} from '../repositories';
 
 export class CompanyParticipationController {
   constructor(
-    @repository(CompanyRepository) protected companyRepository: CompanyRepository,
-  ) { }
+    @repository(CompanyRepository)
+    protected companyRepository: CompanyRepository,
+  ) {}
 
   @get('/companies/{id}/participations', {
     responses: {
@@ -49,7 +47,9 @@ export class CompanyParticipationController {
     responses: {
       '200': {
         description: 'Company model instance',
-        content: {'application/json': {schema: getModelSchemaRef(Participation)}},
+        content: {
+          'application/json': {schema: getModelSchemaRef(Participation)},
+        },
       },
     },
   })
@@ -60,12 +60,13 @@ export class CompanyParticipationController {
         'application/json': {
           schema: getModelSchemaRef(Participation, {
             title: 'NewParticipationInCompany',
-            exclude: ['id'],
-            optional: ['companyId']
+            exclude: ['id', 'createdAt'],
+            optional: ['companyId'],
           }),
         },
       },
-    }) participation: Omit<Participation, 'id'>,
+    })
+    participation: Omit<Participation, 'id'>,
   ): Promise<Participation> {
     return this.companyRepository.participations(id).create(participation);
   }
@@ -88,9 +89,12 @@ export class CompanyParticipationController {
       },
     })
     participation: Partial<Participation>,
-    @param.query.object('where', getWhereSchemaFor(Participation)) where?: Where<Participation>,
+    @param.query.object('where', getWhereSchemaFor(Participation))
+    where?: Where<Participation>,
   ): Promise<Count> {
-    return this.companyRepository.participations(id).patch(participation, where);
+    return this.companyRepository
+      .participations(id)
+      .patch(participation, where);
   }
 
   @del('/companies/{id}/participations', {
@@ -103,7 +107,8 @@ export class CompanyParticipationController {
   })
   async delete(
     @param.path.string('id') id: string,
-    @param.query.object('where', getWhereSchemaFor(Participation)) where?: Where<Participation>,
+    @param.query.object('where', getWhereSchemaFor(Participation))
+    where?: Where<Participation>,
   ): Promise<Count> {
     return this.companyRepository.participations(id).delete(where);
   }

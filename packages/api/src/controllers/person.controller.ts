@@ -23,7 +23,7 @@ import {PersonRepository} from '../repositories';
 export class PersonController {
   constructor(
     @repository(PersonRepository)
-    public personRepository : PersonRepository,
+    public personRepository: PersonRepository,
   ) {}
 
   @post('/users')
@@ -37,7 +37,7 @@ export class PersonController {
         'application/json': {
           schema: getModelSchemaRef(Person, {
             title: 'NewPerson',
-            exclude: ['id'],
+            exclude: ['id', 'createdAt'],
           }),
         },
       },
@@ -52,9 +52,7 @@ export class PersonController {
     description: 'Person model count',
     content: {'application/json': {schema: CountSchema}},
   })
-  async count(
-    @param.where(Person) where?: Where<Person>,
-  ): Promise<Count> {
+  async count(@param.where(Person) where?: Where<Person>): Promise<Count> {
     return this.personRepository.count(where);
   }
 
@@ -70,9 +68,7 @@ export class PersonController {
       },
     },
   })
-  async find(
-    @param.filter(Person) filter?: Filter<Person>,
-  ): Promise<Person[]> {
+  async find(@param.filter(Person) filter?: Filter<Person>): Promise<Person[]> {
     return this.personRepository.find(filter);
   }
 
@@ -106,7 +102,8 @@ export class PersonController {
   })
   async findById(
     @param.path.string('id') id: string,
-    @param.filter(Person, {exclude: 'where'}) filter?: FilterExcludingWhere<Person>
+    @param.filter(Person, {exclude: 'where'})
+    filter?: FilterExcludingWhere<Person>,
   ): Promise<Person> {
     return this.personRepository.findById(id, filter);
   }

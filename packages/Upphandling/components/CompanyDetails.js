@@ -1,90 +1,86 @@
 import React from 'react'
-import {StyleSheet, View} from 'react-native'
-import {Text} from '@ui-kitten/components'
+import { StyleSheet, View } from 'react-native'
+import { Card, Text } from '@ui-kitten/components'
 import { Field } from './Field'
 
-export const CompanyDetails = ({company}) => (
-  <View style={styles.container}>
+export const CompanyDetails = ({ company }) => (
+  <Card style={styles.container} appearance="outline" status={'danger'}>
     <Text style={styles.field} category="h6">
-      Företagsinformation
+      {company?.name}
     </Text>
-    <Field
-      style={styles.field}
-      label="Företagsnamn"
-      disabled
-      placeholder="Ert företagsnamn"
-      value={company?.name} />
-
     <Field
       value={company?.phoneNumber}
       disabled
-      style={styles.field}
-      label="Telefonnummer"
-      placeholder="Telefonnummer" />
+      label={translate('CompanyDetails.phonenumber_label')}
+      placeholder={translate('CompanyDetails.phonenumber_placeholder')}
+    />
     <Field
       value={company?.email}
       disabled
-      style={styles.field}
-      label="E-post"
-      placeholder="E-post" />
+      label={translate('CompanyDetails.email_label')}
+      placeholder={translate('CompanyDetails.email_placeholder')}
+    />
     <Field
       value={company?.address}
       disabled
-      style={styles.field}
-      label="Adress"
-      placeholder="Adress" />
+      label={translate('CompanyDetails.adress_label')}
+      placeholder={translate('CompanyDetails.adress_placeholder')}
+    />
     <Field
       value={company?.zipCode + ' ' + company?.town}
       disabled
-      style={styles.field}
-      label="Postnummer"
-      placeholder="Postnummer" />
+      label={translate('CompanyDetails.zip_code_label')}
+      placeholder={translate('CompanyDetails.zip_code_placeholder')}
+    />
     {company.country ? (
       <Field
         value={company?.country}
         disabled
-        style={styles.field}
-        label="Land"
-        placeholder="Land" />
+        label={translate('CompanyDetails.country_label')}
+        placeholder={translate('CompanyDetails.country_placeholder')}
+      />
     ) : null}
     <Field
       value={company?.industryText}
       disabled
-      style={styles.field}
-      label="Verksamhet"
-      placeholder="Programvaruleverantör etc" />
+      label={translate('CompanyDetails.field_of_business_label')}
+      placeholder={translate('CompanyDetails.field_of_business_placeholder')}
+    />
     <Field
       value={company?.legalGroupText}
       disabled
-      style={styles.field}
-      label="Typ av organisation"
-      placeholder="Aktiebolag/Handelsbolag etc" />
+      label={translate('CompanyDetails.organisation_type_label')}
+      placeholder={translate('CompanyDetails.organisation_type_placeholder')}
+    />
     <Field
       value={company?.website}
-      style={styles.field}
-      label="Hemsida"
-      placeholder="Hemsida" />
+      label={translate('CompanyDetails.company_website_label')}
+      placeholder={translate('CompanyDetails.company_website_placeholder')}
+    />
     <Field
       value={company?.numberEmployeesInterval}
       disabled
-      style={styles.field}
-      label="Antal anställda"
-      placeholder="Antal anställda" />
+      label={translate('CompanyDetails.number_of_employees_label')}
+      placeholder={translate('CompanyDetails.number_of_employees_placeholder')}
+    />
     <Field
-      style={styles.field}
       disabled
       status="success"
-      label="Moms registrerad"
-      value={company?.vatReg ? `Ja (${company?.vatRegDate})` : 'Nej'} />
+      label={translate('CompanyDetails.vat_registered_label')}
+      value={
+        company?.vatReg
+          ? `${translate('generic.yes')} (${company?.vatRegDate})`
+          : translate('generic.no')
+      }
+    />
     <Field
-      style={styles.field}
       disabled
-      label="VD"
-      placeholder="VD / firmatecknare"
-      value={company?.topDirectorName} />
-  </View>
+      label={translate('CompanyDetails.top_director_label')}
+      placeholder={translate('CompanyDetails.top_director_placeholder')}
+      value={company?.topDirectorName}
+    />
+  </Card>
 )
-
 
 const styles = StyleSheet.create({
   container: {
@@ -97,5 +93,4 @@ const styles = StyleSheet.create({
   field: {
     padding: 16,
   },
-
 })

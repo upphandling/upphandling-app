@@ -1,27 +1,26 @@
-import React, { useEffect, useState } from 'react'
-import { KeyboardAvoidingView, ScrollView, View } from 'react-native'
+import React, { useState } from 'react'
+import { KeyboardAvoidingView, ScrollView } from 'react-native'
 import moment from 'moment'
 
 import {
-  Avatar,
   Button,
   Datepicker,
   Divider,
   Icon,
   Input,
-  NativeDateService,
   StyleService,
   Text,
+  withStyles,
 } from '@ui-kitten/components'
 import { createDis } from '../api/dis'
 import { useMutation } from 'react-query'
 import { ServicePicker } from '../components/ServicePicker'
 import { TechnologyPicker } from '../components/TechnologyPicker'
 import { dateService } from '../lib/dateService'
+import { translate } from '../lib/translate'
 const CalendarIcon = (props) => <Icon {...props} name="calendar" />
 
-
-export const CreateDIS = ({ navigation }) => {
+const CreateDISComponent = ({ eva, navigation }) => {
   const defaultDate = moment().add(4, 'weeks').startOf('isoWeek').toDate()
   const [startDate, setStartDate] = useState(defaultDate)
   const [title, setTitle] = useState()
@@ -31,7 +30,6 @@ export const CreateDIS = ({ navigation }) => {
   const [services, setServices] = useState({})
   const [technologies, setTechnologies] = useState({})
 
-  
   const addDISMutation = useMutation(createDis)
 
   const create = async () => {
@@ -47,110 +45,115 @@ export const CreateDIS = ({ navigation }) => {
     }
 
     const result = await addDISMutation.mutateAsync(newDis)
-    console.log(result)
     navigation.navigate('OpenDIS', { id: result.data.id })
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
-      <ScrollView style={styles.form} level="1">
-        <View style={styles.imageContainer}>
-          <Avatar
-            source={require('../assets/notebook-dynamic-gradient.png')}
-            style={styles.image}
-          />
-        </View>
+    <KeyboardAvoidingView style={eva.style.container}>
+      <ScrollView style={eva.style.form} level="1">
+        <Text category="h6" style={eva.style.info}>
+          {translate('CreateDIS.general_section_headline')}
+        </Text>
+
         <Input
-          style={styles.input}
-          label="Rubrik"
-          placeholder="Rubrik på upphandlingen"
+          style={eva.style.input}
+          label={translate('CreateDIS.headline_label')}
+          placeholder={translate('CreateDIS.headline_placeholder')}
           value={title}
           onChangeText={setTitle}
         />
 
         <Input
-          style={styles.input}
-          label="Upphandlande organisation"
-          placeholder="Namn på din organisation"
+          style={eva.style.input}
+          label={translate('CreateDIS.organisation_label')}
+          placeholder={translate('CreateDIS.organisation_placeholder')}
           value={organisation}
           onChangeText={setOrganisation}
         />
 
         <Datepicker
-          label="Senaste ansökningsdatum"
-          placeholder="Välj slutdatum"
-          style={styles.input}
+          label={translate('CreateDIS.startdate_label')}
+          placeholder={translate('CreateDIS.startdate_placeholder')}
+          style={eva.style.input}
           dateService={dateService}
           date={startDate}
           onSelect={(nextDate) => setStartDate(nextDate)}
           accessoryRight={CalendarIcon}
         />
         <Input
-          style={styles.input}
-          label="Github/Bitbucket repo"
-          placeholder="Github repo"
+          style={eva.style.input}
+          label={translate('CreateDIS.repository_label')}
+          placeholder={translate('CreateDIS.repository_placeholder')}
           textContentType="URL"
           value={repo}
           onChangeText={(val) => setRepo(val.toLowerCase())}
         />
         <Input
           multiline={true}
-          style={styles.input}
+          style={eva.style.input}
           textStyle={{ minHeight: 64 }}
-          label="Beskrivning"
-          placeholder="Beskrivning"
+          label={translate('CreateDIS.description_label')}
+          placeholder={translate('CreateDIS.description_placeholder')}
           value={description}
           onChangeText={setDescription}
         />
-        <ServicePicker onChange={setServices} services={services} />
+
+        <Divider />
+
+        <Text category="h6" style={eva.style.info}>
+          {translate('CreateDIS.competenses_section_headline')}
+        </Text>
+        <Text style={eva.style.small}>
+          {translate('CreateDIS.competenses_services')}
+        </Text>
+        <ServicePicker
+          onChange={setServices}
+          services={services}
+          style={eva.style.picker}
+        />
+        <Text style={eva.style.small}>
+          {translate('CreateDIS.competenses_tech')}
+        </Text>
         <TechnologyPicker
           onChange={setTechnologies}
           technologies={technologies}
+          style={eva.style.picker}
         />
         <Divider />
-        <Button onPress={create} size="giant" style={styles.addButton}>
-          {addDISMutation.isLoading ? 'Skapar...' : 'Skapa'}
+        <Button onPress={create} size="giant" style={eva.style.addButton}>
+          {addDISMutation.isLoading
+            ? translate('CreateDIS.creating_in_progress')
+            : translate('CreateDIS.create_button')}
         </Button>
-        <Text category="s2" style={styles.info}>
+        <Text category="s2" style={eva.style.info}>
           {addDISMutation.isError
             ? addDISMutation.error.message
-            : `När du har skapat denna DIS kommer du få en länk som du kan publicera`}
+            : translate('CreateDIS.once_created_info')}
         </Text>
       </ScrollView>
     </KeyboardAvoidingView>
   )
 }
-
-const styles = StyleService.create({
+export const CreateDIS = withStyles(CreateDISComponent, (theme) => ({
   form: {
     flex: 1,
-    paddingHorizontal: 4,
+    paddingHorizontal: 16,
   },
   container: {
     flex: 1,
-    backgroundColor: 'background-basic-color-2',
   },
-  imageContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginTop: -200,
-  },
-  image: {
-    flex: 1,
-    minHeight: 350,
-  },
+  picker: {},
   input: {
-    marginHorizontal: 12,
     marginVertical: 8,
   },
   addButton: {
-    marginHorizontal: 16,
     marginTop: 16,
   },
   info: {
-    marginHorizontal: 16,
     marginVertical: 16,
+  },
+  small: {
+    marginVertical: 6,
   },
   grid: {
     display: 'flex',
@@ -161,4 +164,4 @@ const styles = StyleService.create({
     flex: 1,
     width: '32%',
   },
-})
+}))

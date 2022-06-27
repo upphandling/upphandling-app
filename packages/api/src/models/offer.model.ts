@@ -38,6 +38,12 @@ export class Offer extends Entity {
   })
   contactId: string;
 
+  @property({
+    type: 'date',
+    required: true,
+    default: () => new Date(),
+  })
+  createdAt: string;
 
   constructor(data?: Partial<Offer>) {
     super(data);

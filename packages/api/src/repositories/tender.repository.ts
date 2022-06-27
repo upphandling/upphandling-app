@@ -8,9 +8,7 @@ export class TenderRepository extends DefaultCrudRepository<
   typeof Tender.prototype.id,
   TenderRelations
 > {
-  constructor(
-    @inject('datasources.db') dataSource: DbDataSource,
-  ) {
+  constructor(@inject('datasources.db') dataSource: DbDataSource) {
     super(Tender, dataSource);
   }
 }
