@@ -1,0 +1,5 @@
+export const SUCCESS = 0
+export const CANNOT_START_APP = 1
+export const CANNOT_MIGRATE_DATABASE_SCHEMA = 2
+export const FAIL_TO_EXPORT_OPENAPI_SPEC = 3
+export const FCM_MISSING_CONFIGURATION = 4

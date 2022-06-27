@@ -1,4 +1,5 @@
 import {ApplicationConfig, ApiApplication} from './application';
+import { CANNOT_START_APP } from './lib/exit-status';
 
 export * from './application';
 
@@ -35,6 +36,6 @@ if (require.main === module) {
   };
   main(config).catch(err => {
     console.error('Cannot start the application.', err);
-    process.exit(1);
+    process.exit(CANNOT_START_APP);
   });
 }

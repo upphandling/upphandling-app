@@ -1,6 +1,7 @@
 import * as admin from 'firebase-admin';
 
 import {AndroidConfig} from 'firebase-admin/lib/messaging/messaging-api';
+import { FCM_MISSING_CONFIGURATION } from './exit-status';
 
 import {serviceAccount} from './service-account'
 
@@ -17,7 +18,7 @@ try {
   - FCM_CLIENT_C509_CERT_URL
   ---
   Error: ${e}`);
-  process.exit(1);
+  process.exit(FCM_MISSING_CONFIGURATION);
 }
 
 
