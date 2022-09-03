@@ -39,7 +39,7 @@ export class Participation extends Entity {
 
   @property({
     type: 'date',
-    required: true,
+    required: false,
     default: () => new Date(),
   })
   createdAt: string;
