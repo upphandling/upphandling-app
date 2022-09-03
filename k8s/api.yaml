@@ -102,7 +102,7 @@ spec:
     - hosts:
         - api.upphandling.app
         - happylou.se
-        - happylou.org
+        # - happylou.org
       secretName: api-secret-tls
   rules:
     - host: api.upphandling.app
@@ -125,13 +125,13 @@ spec:
                 name: api
                 port:
                   number: 3000
-    - host: api.happylou.org
-      http:
-        paths:
-          - pathType: Prefix
-            path: '/'
-            backend:
-              service:
-                name: api
-                port:
-                  number: 3000
+    # - host: api.happylou.org
+    #   http:
+    #     paths:
+    #       - pathType: Prefix
+    #         path: '/'
+    #         backend:
+    #           service:
+    #             name: api
+    #             port:
+    #               number: 3000
