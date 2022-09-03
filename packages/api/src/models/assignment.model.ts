@@ -28,7 +28,7 @@ export class Assignment extends Entity {
 
   @property({
     type: 'date',
-    required: true,
+    required: false,
     default: () => new Date(),
   })
   createdAt: string;
